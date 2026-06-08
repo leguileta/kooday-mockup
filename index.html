@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kooday — Mockup US-001 a US-009</title>
+<style>
+  :root {
+    --brand: #FF6B35;
+    --brand-light: #FFF0EB;
+    --brand-dark: #E55A25;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF;
+    --gray-600: #4B5563;
+    --gray-800: #1F2937;
+    --green: #10B981;
+    --yellow: #F59E0B;
+    --red: #EF4444;
+    --blue: #3B82F6;
+    --radius: 12px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F0F2F5; color: var(--gray-800); }
+
+  /* ── Layout ── */
+  .app { max-width: 430px; min-height: 100vh; margin: 0 auto; background: #fff; position: relative; overflow: hidden; }
+  .screen { display: none; flex-direction: column; min-height: 100vh; }
+  .screen.active { display: flex; }
+
+  /* ── Nav Bar ── */
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; background: #fff; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--gray-100); }
+  .topbar .logo { font-weight: 800; font-size: 22px; color: var(--brand); letter-spacing: -0.5px; }
+  .topbar .back-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray-600); padding: 4px 8px 4px 0; }
+  .topbar .topbar-title { font-weight: 600; font-size: 16px; }
+  .topbar .topbar-right { display: flex; gap: 8px; align-items: center; }
+  .avatar-sm { width: 32px; height: 32px; border-radius: 50%; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; }
+
+  /* ── Bottom Nav ── */
+  .bottom-nav { display: flex; background: #fff; border-top: 1px solid var(--gray-200); position: sticky; bottom: 0; z-index: 10; }
+  .bottom-nav button { flex: 1; background: none; border: none; padding: 10px 4px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: var(--gray-400); transition: color .15s; }
+  .bottom-nav button.active { color: var(--brand); }
+  .bottom-nav button svg { width: 22px; height: 22px; }
+
+  /* ── Hero / Search ── */
+  .hero { background: linear-gradient(135deg, var(--brand) 0%, #FF9A6C 100%); padding: 24px 20px 32px; color: #fff; }
+  .hero h1 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .hero p { font-size: 13px; opacity: .85; margin-bottom: 20px; }
+  .search-bar { display: flex; background: #fff; border-radius: 14px; padding: 4px 4px 4px 14px; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+  .search-bar input { flex: 1; border: none; outline: none; font-size: 14px; color: var(--gray-800); background: transparent; }
+  .search-bar .search-btn { background: var(--brand); color: #fff; border: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s; white-space: nowrap; }
+  .search-bar .search-btn:hover { background: var(--brand-dark); }
+
+  /* ── Categories ── */
+  .section { padding: 20px 20px 0; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .section-header h2 { font-size: 16px; font-weight: 700; }
+  .section-header a { font-size: 13px; color: var(--brand); text-decoration: none; cursor: pointer; }
+  .cats { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .cats::-webkit-scrollbar { display: none; }
+  .cat { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 64px; cursor: pointer; }
+  .cat .cat-icon { width: 52px; height: 52px; border-radius: 14px; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 24px; transition: transform .15s; }
+  .cat:hover .cat-icon { transform: scale(1.06); }
+  .cat span { font-size: 11px; color: var(--gray-600); text-align: center; font-weight: 500; }
+  .cat.sel .cat-icon { background: var(--brand); }
+
+  /* ── Activity Cards ── */
+  .cards-scroll { display: flex; gap: 14px; overflow-x: auto; padding: 0 20px 20px; scrollbar-width: none; margin-top: 14px; }
+  .cards-scroll::-webkit-scrollbar { display: none; }
+  .cards-grid { display: flex; flex-direction: column; gap: 14px; padding: 0 20px 20px; }
+  .card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; cursor: pointer; transition: transform .15s, box-shadow .15s; flex-shrink: 0; }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .card-h { width: 200px; }
+  .card-full { width: 100%; flex-shrink: 1; display: flex; flex-direction: column; }
+  .card .card-img { width: 100%; height: 130px; object-fit: cover; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 42px; position: relative; }
+  .card-full .card-img { height: 180px; }
+  .card .badge-plazas { position: absolute; top: 8px; left: 8px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+  .card .fav-btn { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,.9); border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+  .card .card-body { padding: 10px 12px 12px; }
+  .card .card-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .card .card-meta { font-size: 11px; color: var(--gray-400); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .card .card-meta .dot { color: var(--gray-300); }
+  .card .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .card .card-price { font-size: 14px; font-weight: 800; color: var(--brand); }
+  .card .card-rating { font-size: 11px; color: var(--gray-600); display: flex; align-items: center; gap: 3px; }
+
+  /* ── Filters ── */
+  .filter-bar { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; scrollbar-width: none; }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-chip { background: #fff; border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 6px 13px; font-size: 12px; font-weight: 500; white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all .15s; }
+  .filter-chip.active { background: var(--brand-light); border-color: var(--brand); color: var(--brand); }
+  .filter-chip .badge { background: var(--brand); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 10px; font-weight: 700; }
+  .results-count { padding: 0 20px 10px; font-size: 13px; color: var(--gray-400); }
+
+  /* ── Filter Panel (drawer) ── */
+  .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 40; }
+  .drawer-overlay.open { display: block; }
+  .drawer { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: min(430px, 100%); background: #fff; border-radius: 20px 20px 0 0; padding: 0 0 32px; z-index: 50; max-height: 85vh; overflow-y: auto; transition: transform .25s; }
+  .drawer-handle { width: 36px; height: 4px; background: var(--gray-200); border-radius: 2px; margin: 12px auto 0; }
+  .drawer-title { font-size: 16px; font-weight: 700; padding: 16px 20px 12px; border-bottom: 1px solid var(--gray-100); }
+  .drawer-section { padding: 16px 20px; border-bottom: 1px solid var(--gray-100); }
+  .drawer-section label { font-size: 13px; font-weight: 600; color: var(--gray-600); display: block; margin-bottom: 10px; }
+  .range-slider { width: 100%; accent-color: var(--brand); }
+  .range-vals { display: flex; justify-content: space-between; font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+  .pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill { border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all .15s; }
+  .pill.active { border-color: var(--brand); background: var(--brand-light); color: var(--brand); font-weight: 600; }
+  .drawer-actions { display: flex; gap: 10px; padding: 16px 20px 0; }
+  .btn-outline { flex: 1; padding: 12px; border: 1.5px solid var(--gray-200); border-radius: 10px; background: #fff; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--gray-600); }
+  .btn-primary { flex: 2; padding: 12px; border: none; border-radius: 10px; background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+
+  /* ── Activity Detail ── */
+  .detail-img { width: 100%; height: 240px; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 72px; position: relative; }
+  .detail-img .fav-big { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,.9); border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; }
+  .detail-body { padding: 20px; flex: 1; }
+  .detail-category { font-size: 11px; font-weight: 700; color: var(--brand); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+  .detail-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; line-height: 1.25; }
+  .detail-provider { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .detail-provider .prov-av { width: 32px; height: 32px; border-radius: 50%; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .detail-provider .prov-name { font-size: 13px; font-weight: 600; color: var(--gray-600); }
+  .info-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .info-chip { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 6px 10px; font-size: 12px; color: var(--gray-600); display: flex; align-items: center; gap: 5px; }
+  .section-divider { height: 1px; background: var(--gray-100); margin: 16px 0; }
+  .detail-desc { font-size: 14px; line-height: 1.65; color: var(--gray-600); }
+  .reviews-summary { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .rating-big { font-size: 36px; font-weight: 800; color: var(--gray-800); line-height: 1; }
+  .stars { color: var(--yellow); font-size: 18px; }
+  .review-card { background: var(--gray-50); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+  .review-card .reviewer { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .review-card .review-text { font-size: 12px; color: var(--gray-600); line-height: 1.5; }
+  .sticky-cta { position: sticky; bottom: 0; background: #fff; border-top: 1px solid var(--gray-200); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .sticky-cta .price-info { display: flex; flex-direction: column; }
+  .sticky-cta .price { font-size: 20px; font-weight: 800; color: var(--brand); }
+  .sticky-cta .price-label { font-size: 11px; color: var(--gray-400); }
+  .btn-book { background: var(--brand); color: #fff; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s; }
+  .btn-book:hover { background: var(--brand-dark); }
+
+  /* ── Favorites screen ── */
+  .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; text-align: center; gap: 12px; }
+  .empty-state .empty-icon { font-size: 56px; }
+  .empty-state h3 { font-size: 18px; font-weight: 700; }
+  .empty-state p { font-size: 14px; color: var(--gray-400); line-height: 1.5; }
+  .btn-ghost { background: var(--brand-light); color: var(--brand); border: none; border-radius: 10px; padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+
+  /* ── Login modal ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 60; align-items: flex-end; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 24px 40px; width: min(430px, 100%); }
+  .modal-handle { width: 36px; height: 4px; background: var(--gray-200); border-radius: 2px; margin: 0 auto 20px; }
+  .modal h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .modal p { font-size: 13px; color: var(--gray-400); margin-bottom: 20px; }
+  .social-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 13px; border: 1.5px solid var(--gray-200); border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 10px; background: #fff; }
+  .divider-or { display: flex; align-items: center; gap: 10px; margin: 14px 0; color: var(--gray-400); font-size: 12px; }
+  .divider-or::before, .divider-or::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+  .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-size: 14px; margin-bottom: 12px; outline: none; transition: border-color .15s; }
+  .form-input:focus { border-color: var(--brand); }
+  .link-sm { font-size: 12px; color: var(--brand); cursor: pointer; text-decoration: none; display: block; text-align: right; margin-top: -6px; margin-bottom: 14px; }
+
+  /* ── Toast ── */
+  .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--gray-800); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity .3s; z-index: 100; white-space: nowrap; pointer-events: none; }
+  .toast.show { opacity: 1; }
+
+  /* ── Scrollable content ── */
+  .scroll-content { flex: 1; overflow-y: auto; }
+
+  /* ── HU Label badge ── */
+  .hu-label { position: fixed; top: 10px; right: 10px; background: var(--gray-800); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; opacity: .7; z-index: 200; pointer-events: none; }
+
+  /* ── Autocomplete ── */
+  .autocomplete-box { background: #fff; border-radius: 12px; box-shadow: var(--shadow-lg); position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 30; overflow: hidden; display: none; }
+  .autocomplete-box.open { display: block; }
+  .autocomplete-item { padding: 11px 16px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--gray-100); }
+  .autocomplete-item:last-child { border-bottom: none; }
+  .autocomplete-item:hover { background: var(--gray-50); }
+  .search-wrap { position: relative; flex: 1; }
+  .hero .search-bar { position: relative; }
+
+  /* ── Utility ── */
+  .mt-12 { margin-top: 12px; }
+  .pb-20 { padding-bottom: 20px; }
+  .text-muted { color: var(--gray-400); font-size: 13px; }
+
+  /* ── Auth screens (US-006 / US-007) ── */
+  .auth-header { padding: 40px 24px 24px; text-align: center; }
+  .auth-header .auth-logo { font-size: 36px; font-weight: 900; color: var(--brand); letter-spacing: -1px; margin-bottom: 8px; }
+  .auth-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .auth-header p { font-size: 14px; color: var(--gray-400); line-height: 1.5; }
+  .auth-body { padding: 0 24px 40px; flex: 1; display: flex; flex-direction: column; }
+  .input-group { margin-bottom: 14px; position: relative; }
+  .input-group label { font-size: 12px; font-weight: 600; color: var(--gray-600); display: block; margin-bottom: 5px; }
+  .input-group .form-input { margin: 0; width: 100%; }
+  .input-group .input-icon { position: absolute; right: 12px; top: 34px; font-size: 16px; cursor: pointer; color: var(--gray-400); }
+  .input-hint { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+  .input-error { font-size: 11px; color: var(--red); margin-top: 4px; display: none; }
+  .input-group.has-error .form-input { border-color: var(--red); }
+  .input-group.has-error .input-error { display: block; }
+  .strength-bar { height: 4px; border-radius: 2px; background: var(--gray-200); margin-top: 6px; overflow: hidden; }
+  .strength-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; width: 0; }
+  .auth-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: var(--gray-400); font-size: 12px; }
+  .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+  .auth-footer { text-align: center; font-size: 13px; color: var(--gray-400); margin-top: 20px; }
+  .auth-footer a { color: var(--brand); font-weight: 600; cursor: pointer; }
+  .terms-text { font-size: 11px; color: var(--gray-400); text-align: center; margin-top: 14px; line-height: 1.5; }
+  .terms-text a { color: var(--brand); }
+
+  /* ── Verify email (US-006) ── */
+  .verify-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 24px; text-align: center; gap: 16px; }
+  .verify-icon { font-size: 64px; }
+  .verify-screen h2 { font-size: 22px; font-weight: 800; }
+  .verify-screen p { font-size: 14px; color: var(--gray-400); line-height: 1.6; }
+  .otp-row { display: flex; gap: 10px; justify-content: center; margin: 8px 0; }
+  .otp-box { width: 48px; height: 56px; border: 2px solid var(--gray-200); border-radius: 12px; text-align: center; font-size: 22px; font-weight: 700; outline: none; transition: border-color .15s; }
+  .otp-box:focus { border-color: var(--brand); }
+  .resend-link { font-size: 13px; color: var(--brand); cursor: pointer; font-weight: 600; background: none; border: none; }
+
+  /* ── Onboarding hijos (US-008) ── */
+  .onboarding-progress { display: flex; gap: 6px; padding: 16px 24px 0; }
+  .progress-dot { flex: 1; height: 4px; border-radius: 2px; background: var(--gray-200); }
+  .progress-dot.done { background: var(--brand); }
+  .child-card { background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: 14px; padding: 16px; margin-bottom: 12px; position: relative; }
+  .child-card .child-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 10px; }
+  .child-card .remove-child { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray-400); }
+  .interests-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .interest-pill { border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 6px 12px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all .15s; }
+  .interest-pill.sel { border-color: var(--brand); background: var(--brand-light); color: var(--brand); font-weight: 600; }
+  .add-child-btn { width: 100%; padding: 13px; border: 2px dashed var(--gray-200); border-radius: 14px; background: none; font-size: 14px; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .15s; }
+  .add-child-btn:hover { border-color: var(--brand); color: var(--brand); }
+
+  /* ── Profile (US-009) ── */
+  .profile-hero { background: linear-gradient(135deg, var(--brand) 0%, #FF9A6C 100%); padding: 32px 24px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .profile-avatar { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; font-size: 32px; border: 3px solid rgba(255,255,255,.6); position: relative; cursor: pointer; }
+  .profile-avatar .edit-av { position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .profile-name { font-size: 18px; font-weight: 800; color: #fff; }
+  .profile-email { font-size: 13px; color: rgba(255,255,255,.8); }
+  .profile-section { padding: 20px 20px 0; }
+  .profile-section-title { font-size: 12px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .profile-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--gray-50); border-radius: 12px; margin-bottom: 8px; cursor: pointer; transition: background .15s; }
+  .profile-item:hover { background: var(--gray-100); }
+  .profile-item .item-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .profile-item .item-text { flex: 1; }
+  .profile-item .item-label { font-size: 14px; font-weight: 600; }
+  .profile-item .item-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+  .profile-item .item-arrow { color: var(--gray-400); font-size: 16px; }
+  .profile-item.danger .item-icon { background: #FEE2E2; }
+  .profile-item.danger .item-label { color: var(--red); }
+  .child-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--brand-light); border-radius: 20px; padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--brand); margin: 3px; }
+  .payment-chip { display: flex; align-items: center; gap: 10px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; }
+  .payment-chip .card-icon { font-size: 22px; }
+  .payment-chip .card-info { flex: 1; font-size: 13px; font-weight: 600; }
+  .payment-chip .card-exp { font-size: 11px; color: var(--gray-400); }
+  .payment-chip .card-del { background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<!-- ===================== SCREEN 1: HOME (US-001) ===================== -->
+<div class="app">
+  <div id="screen-home" class="screen active">
+    <div class="scroll-content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <span class="logo">Kooday</span>
+        <div class="topbar-right">
+          <div class="avatar-sm" onclick="showScreen('screen-favorites')">🤍</div>
+          <div class="avatar-sm">👤</div>
+        </div>
+      </div>
+
+      <!-- Hero + Search (US-001, US-002) -->
+      <div class="hero" style="position:relative">
+        <h1>Actividades para tus hijos</h1>
+        <p>Descubre planes increíbles cerca de ti</p>
+        <div class="search-bar">
+          <div class="search-wrap">
+            <input id="search-input" type="text" placeholder="¿Qué buscas? p.ej. "natación"" oninput="onSearchInput(this.value)" onfocus="onSearchFocus()" onblur="onSearchBlur()" autocomplete="off">
+            <div class="autocomplete-box" id="autocomplete-box">
+              <div class="autocomplete-item" onclick="doSearch('Natación infantil')">🏊 <span>Natación infantil</span></div>
+              <div class="autocomplete-item" onclick="doSearch('Fútbol 5-8 años')">⚽ <span>Fútbol 5-8 años</span></div>
+              <div class="autocomplete-item" onclick="doSearch('Taller de pintura')">🎨 <span>Taller de pintura</span></div>
+              <div class="autocomplete-item" onclick="doSearch('Campamento de verano')">⛺ <span>Campamento de verano</span></div>
+            </div>
+          </div>
+          <button class="search-btn" onclick="doSearch(document.getElementById('search-input').value||'Todo')">Buscar</button>
+        </div>
+      </div>
+
+      <!-- Categories (US-001) -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Categorías</h2>
+          <a onclick="doSearch('Todo')">Ver todas</a>
+        </div>
+        <div class="cats">
+          <div class="cat" onclick="doSearch('Deporte')"><div class="cat-icon">⚽</div><span>Deportes</span></div>
+          <div class="cat" onclick="doSearch('Arte')"><div class="cat-icon">🎨</div><span>Arte</span></div>
+          <div class="cat" onclick="doSearch('Música')"><div class="cat-icon">🎵</div><span>Música</span></div>
+          <div class="cat" onclick="doSearch('Naturaleza')"><div class="cat-icon">🌿</div><span>Naturaleza</span></div>
+          <div class="cat" onclick="doSearch('Ciencia')"><div class="cat-icon">🔬</div><span>Ciencia</span></div>
+          <div class="cat" onclick="doSearch('Idiomas')"><div class="cat-icon">🌍</div><span>Idiomas</span></div>
+          <div class="cat" onclick="doSearch('Cocina')"><div class="cat-icon">🍳</div><span>Cocina</span></div>
+        </div>
+      </div>
+
+      <!-- Destacadas (US-001) -->
+      <div class="section mt-12">
+        <div class="section-header"><h2>Destacadas cerca de ti</h2><a onclick="doSearch('Todo')">Ver todas</a></div>
+      </div>
+      <div class="cards-scroll">
+        <div class="card card-h" onclick="showDetail(0)">
+          <div class="card-img">🏊<span class="badge-plazas">¡Últimas plazas!</span><button class="fav-btn" onclick="toggleFav(event,0)">🤍</button></div>
+          <div class="card-body">
+            <div class="card-title">Natación bebés 0-3 años</div>
+            <div class="card-meta">📍 Madrid · 1.2 km <span class="dot">·</span> 0–3 años</div>
+            <div class="card-bottom"><span class="card-price">18 €/ses.</span><span class="card-rating">⭐ 4.9 (32)</span></div>
+          </div>
+        </div>
+        <div class="card card-h" onclick="showDetail(1)">
+          <div class="card-img">⚽<button class="fav-btn" onclick="toggleFav(event,1)">🤍</button></div>
+          <div class="card-body">
+            <div class="card-title">Fútbol sala 5-8 años</div>
+            <div class="card-meta">📍 Madrid · 2.4 km <span class="dot">·</span> 5–8 años</div>
+            <div class="card-bottom"><span class="card-price">12 €/ses.</span><span class="card-rating">⭐ 4.7 (18)</span></div>
+          </div>
+        </div>
+        <div class="card card-h" onclick="showDetail(2)">
+          <div class="card-img">🎨<button class="fav-btn" onclick="toggleFav(event,2)">🤍</button></div>
+          <div class="card-body">
+            <div class="card-title">Taller de pintura 6-10</div>
+            <div class="card-meta">📍 Madrid · 3.1 km <span class="dot">·</span> 6–10 años</div>
+            <div class="card-bottom"><span class="card-price">15 €/ses.</span><span class="card-rating">⭐ 4.8 (25)</span></div>
+          </div>
+        </div>
+        <div class="card card-h" onclick="showDetail(3)">
+          <div class="card-img">🎵<button class="fav-btn" onclick="toggleFav(event,3)">❤️</button></div>
+          <div class="card-body">
+            <div class="card-title">Piano para niños 7-12</div>
+            <div class="card-meta">📍 Madrid · 1.8 km <span class="dot">·</span> 7–12 años</div>
+            <div class="card-bottom"><span class="card-price">22 €/ses.</span><span class="card-rating">⭐ 5.0 (11)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="pb-20"></div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button class="active" onclick="showScreen('screen-home')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Inicio
+      </button>
+      <button onclick="doSearch('Todo')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Explorar
+      </button>
+      <button onclick="checkFavorites()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Favoritos
+      </button>
+      <button onclick="goToProfile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </button>
+    </nav>
+  </div>
+
+  <!-- ===================== SCREEN 2: RESULTS (US-003 + US-004) ===================== -->
+  <div id="screen-results" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <span class="topbar-title" id="results-title">Resultados</span>
+      <div style="width:32px"></div>
+    </div>
+
+    <!-- Filters (US-003) -->
+    <div class="filter-bar">
+      <div class="filter-chip active" onclick="openFilters()">⚙ Filtros <span class="badge" id="filter-badge" style="display:none">0</span></div>
+      <div class="filter-chip" id="chip-edad" onclick="toggleChip(this,'edad')">Edad</div>
+      <div class="filter-chip" id="chip-fecha" onclick="toggleChip(this,'fecha')">Fecha</div>
+      <div class="filter-chip" id="chip-precio" onclick="toggleChip(this,'precio')">Precio</div>
+      <div class="filter-chip" id="chip-distancia" onclick="toggleChip(this,'distancia')">Distancia</div>
+    </div>
+    <div class="results-count" id="results-count">Mostrando 8 actividades</div>
+
+    <div class="scroll-content">
+      <!-- Cards list (US-004) -->
+      <div class="cards-grid" id="results-grid">
+        <div class="card card-full" onclick="showDetail(0)">
+          <div class="card-img">🏊<span class="badge-plazas">¡Últimas plazas!</span><button class="fav-btn" onclick="toggleFav(event,0)">🤍</button></div>
+          <div class="card-body">
+            <div class="card-title">Natación bebés 0-3 años</div>
+            <div class="card-meta">📍 Madrid · 1.2 km <span class="dot">·</span> 0–3 años <span class="dot">·</span> Lun/Mié/Vie</div>
+            <div class="card-bottom"><span class="card-price">18 €/ses.</span><span class="card-rating">⭐ 4.9 (32)</span></div>
+          </div>
+        </div>
+        <div class="card card-full" onclick="showDetail(1)">
+          <div class="card-img">⚽<button class="fav-btn" onclick="toggleFav(event,1)">🤍</button></div>
+          <div class="card-body">
+            <div class="card-title">Fútbol sala 5-8 años</div>
+            <div class="card-meta">📍 Madrid · 2.4 km <span class="dot">·</span> 5–8 años <span class="dot">·</span> Sáb y Dom</div>
+            <div class="card-bottom"><span class="card-price">12 €/ses.</span><span class="card-rating">⭐ 4.7 (18)</span></div>
+          </div>
+        </div>
+        <div class="card card-full" onclick="showDetail(2)">
+          <div class="card-img">🎨<button class="fav-btn" onclick="toggleFav(event,2)">🤍</button></div>
+          <div class="card-body">
+            <div class="card-title">Taller de pintura 6-10 años</div>
+            <div class="card-meta">📍 Madrid · 3.1 km <span class="dot">·</span> 6–10 años <span class="dot">·</span> Mar/Jue</div>
+            <div class="card-bottom"><span class="card-price">15 €/ses.</span><span class="card-rating">⭐ 4.8 (25)</span></div>
+          </div>
+        </div>
+        <div class="card card-full" onclick="showDetail(3)">
+          <div class="card-img">🎵<button class="fav-btn" onclick="toggleFav(event,3)">❤️</button></div>
+          <div class="card-body">
+            <div class="card-title">Piano para niños 7-12 años</div>
+            <div class="card-meta">📍 Madrid · 1.8 km <span class="dot">·</span> 7–12 años <span class="dot">·</span> Mié/Vie</div>
+            <div class="card-bottom"><span class="card-price">22 €/ses.</span><span class="card-rating">⭐ 5.0 (11)</span></div>
+          </div>
+        </div>
+        <div class="card card-full" onclick="showDetail(4)">
+          <div class="card-img">🌿<button class="fav-btn" onclick="toggleFav(event,4)">🤍</button></div>
+          <div class="card-body">
+            <div class="card-title">Exploración naturaleza 8-12</div>
+            <div class="card-meta">📍 Madrid · 5.0 km <span class="dot">·</span> 8–12 años <span class="dot">·</span> Sábados</div>
+            <div class="card-bottom"><span class="card-price">20 €/ses.</span><span class="card-rating">⭐ 4.6 (9)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="pb-20"></div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button onclick="showScreen('screen-home')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Inicio
+      </button>
+      <button class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Explorar
+      </button>
+      <button onclick="checkFavorites()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Favoritos
+      </button>
+      <button onclick="goToProfile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </button>
+    </nav>
+  </div>
+
+  <!-- ===================== SCREEN 3: ACTIVITY DETAIL (US-004 detail) ===================== -->
+  <div id="screen-detail" class="screen">
+    <div class="topbar" style="border:none; position:absolute; top:0; left:0; right:0; background:transparent; z-index:5;">
+      <button class="back-btn" style="background:rgba(255,255,255,.9);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;" onclick="goBackFromDetail()">←</button>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="scroll-content">
+      <div class="detail-img" id="detail-img">🏊
+        <button class="fav-big" id="detail-fav" onclick="toggleDetailFav()">🤍</button>
+      </div>
+      <div class="detail-body">
+        <div class="detail-category" id="detail-cat">Deportes Acuáticos</div>
+        <div class="detail-title" id="detail-title">Natación bebés 0-3 años</div>
+        <div class="detail-provider">
+          <div class="prov-av" id="detail-prov-av">🏫</div>
+          <div>
+            <div class="prov-name" id="detail-prov">Aqua Kids Madrid</div>
+            <div style="font-size:11px;color:var(--gray-400)">Proveedor verificado ✓</div>
+          </div>
+        </div>
+        <div class="info-chips">
+          <span class="info-chip" id="dc-edad">👶 0–3 años</span>
+          <span class="info-chip" id="dc-dur">⏱ 45 min</span>
+          <span class="info-chip" id="dc-loc">📍 1.2 km</span>
+          <span class="info-chip" id="dc-cancel">🔄 Cancela 24h antes</span>
+        </div>
+        <div class="section-divider"></div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:10px;">Descripción</div>
+        <div class="detail-desc" id="detail-desc">Clases de natación adaptadas para bebés de 0 a 3 años junto a sus padres o cuidadores. Ambiente cálido, profesores titulados y grupos reducidos (máx. 6 bebés). Desarrollamos la confianza en el agua mediante juegos y rutinas seguras.</div>
+        <div class="section-divider"></div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Valoraciones</div>
+        <div class="reviews-summary">
+          <div class="rating-big">4.9</div>
+          <div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <div style="font-size:12px;color:var(--gray-400);margin-top:2px">32 valoraciones</div>
+          </div>
+        </div>
+        <div class="review-card"><div class="reviewer">María G. ⭐⭐⭐⭐⭐</div><div class="review-text">Mi hijo de 18 meses lleva 3 meses y está encantado. Los profesores son muy pacientes y profesionales.</div></div>
+        <div class="review-card"><div class="reviewer">Carlos M. ⭐⭐⭐⭐⭐</div><div class="review-text">Excelente experiencia. Instalaciones limpias, agua a temperatura perfecta. Lo recomiendo.</div></div>
+        <div class="pb-20"></div>
+      </div>
+    </div>
+    <div class="sticky-cta">
+      <div class="price-info">
+        <span class="price" id="detail-price">18 €</span>
+        <span class="price-label">por sesión</span>
+      </div>
+      <button class="btn-book" onclick="showScreen('screen-home'); showToast('✓ Reserva iniciada — próximamente disponible')">Reservar →</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 4: FAVORITES (US-005) ===================== -->
+  <div id="screen-favorites" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <span class="topbar-title">Mis favoritos</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content" id="favs-content">
+      <!-- filled dynamically -->
+    </div>
+    <nav class="bottom-nav">
+      <button onclick="showScreen('screen-home')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Inicio
+      </button>
+      <button onclick="doSearch('Todo')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Explorar
+      </button>
+      <button class="active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="var(--brand)"/></svg>
+        Favoritos
+      </button>
+      <button onclick="goToProfile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </button>
+    </nav>
+  </div>
+
+  <!-- ===================== SCREEN 5: REGISTRO (US-006) ===================== -->
+  <div id="screen-register" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <span class="topbar-title">Crear cuenta</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content">
+      <div class="auth-header" style="text-align:left;padding-top:20px;">
+        <h2>¡Bienvenido a Kooday! 👋</h2>
+        <p>Crea tu cuenta para reservar actividades y gestionar tus favoritos</p>
+      </div>
+      <div class="auth-body">
+        <!-- Social login -->
+        <button class="social-btn" onclick="doRegisterSocial('Google')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIj48cGF0aCBmaWxsPSIjRkZDMTA3IiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMS42NDksNC42NTctNi4wOCw4LTExLjMwMyw4Yy02LjYyNywwLTEyLTUuMzczLTEyLTEyczUuMzczLTEyLDEyLTEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzlsNS42NTctNS42NTdDMzQuMDQ2LDYuMDUzLDI5LjI2OCw0LDI0LDRDMTIuOTU1LDQsNCwxMi45NTUsNCwyNHM4Ljk1NSwyMCwyMCwyMHMyMC04Ljk1NSwyMC0yMEM0NCwyMi42NTksNDMuODYyLDIxLjM1LDQzLjYxMSwyMC4wODN6Ii8+PHBhdGggZmlsbD0iI0ZGM0QwMCIgZD0iTTYuMzA2LDE0LjY5MWw2LjU3MSw0LjgxOUMxNC42NTUsMTUuMTA4LDE5LjAzLDEyLDI0LDEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzlsNS42NTctNS42NTdDMzQuMDQ2LDYuMDUzLDI5LjI2OCw0LDI0LDRDMTYuMzE4LDQsOS42NTYsOC4zMzcsNi4zMDYsMTQuNjkxeiIvPjxwYXRoIGZpbGw9IiM0Q0FGNTAiIGQ9Ik0yNCw0NGM1LjE2NiwwLDkuODYtMS45NzcsMTMuNDA5LTUuMTkybC02LjE5LTUuMjM4QzI5LjIxMSwzNS4wOTEsMjYuNzE1LDM2LDI0LDM2Yy01LjIwMiwwLTkuNjE5LTMuMzE3LTExLjI4My03Ljk0NmwtNi41MjIsNS4wMjVDOS41MDUsMzkuNTU2LDE2LjIyNyw0NCwyNCw0NHoiLz48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMC43OTIsMi4yMzctMi4yMzEsNC4xNjYtNC4wODcsNS41NzFjMC4wMDEtMC4wMDEsMC4wMDItMC4wMDEsMC4wMDMtMC4wMDJsNi4xOSw1LjIzOEMzNi45NzEsMzkuMjA1LDQ0LDM0LDQ0LDI0QzQ0LDIyLjY1OSw0My44NjIsMjEuMzUsNDMuNjExLDIwLjA4M3oiLz48L3N2Zz4=" alt=""> Continuar con Google</button>
+        <button class="social-btn" style="margin-top:10px;" onclick="doRegisterSocial('Apple')">🍎 Continuar con Apple</button>
+        <div class="auth-divider">o regístrate con email</div>
+        <!-- Form -->
+        <div class="input-group">
+          <label>Nombre completo</label>
+          <input class="form-input" type="text" placeholder="María García" id="reg-name" oninput="validateRegName()">
+          <div class="input-error" id="reg-name-err">El nombre es obligatorio</div>
+        </div>
+        <div class="input-group">
+          <label>Correo electrónico</label>
+          <input class="form-input" type="email" placeholder="maria@ejemplo.com" id="reg-email" oninput="validateRegEmail()">
+          <div class="input-error" id="reg-email-err">Introduce un email válido</div>
+        </div>
+        <div class="input-group">
+          <label>Contraseña</label>
+          <input class="form-input" type="password" placeholder="Mínimo 8 caracteres" id="reg-pass" oninput="onRegPassInput(this.value)" style="padding-right:40px;">
+          <span class="input-icon" onclick="togglePass('reg-pass',this)">👁</span>
+          <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+          <div class="input-hint" id="strength-label" style="margin-top:4px;font-size:11px;"></div>
+          <div class="input-error" id="reg-pass-err">Mínimo 8 caracteres</div>
+        </div>
+        <button class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:15px;margin-top:4px;" onclick="submitRegister()">Crear cuenta gratis</button>
+        <div class="terms-text">Al registrarte aceptas los <a>Términos de uso</a> y la <a>Política de privacidad</a> de Kooday</div>
+        <div class="auth-footer">¿Ya tienes cuenta? <a onclick="showScreen('screen-login')">Inicia sesión</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 6: VERIFICAR EMAIL (US-006) ===================== -->
+  <div id="screen-verify" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-register')">←</button>
+      <span class="topbar-title">Verificar email</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content">
+      <div class="verify-screen">
+        <div class="verify-icon">📧</div>
+        <h2>Revisa tu correo</h2>
+        <p>Hemos enviado un código de 6 dígitos a<br><strong id="verify-email-display">maria@ejemplo.com</strong></p>
+        <div class="otp-row">
+          <input class="otp-box" type="text" maxlength="1" oninput="otpNext(this,0)" id="otp0">
+          <input class="otp-box" type="text" maxlength="1" oninput="otpNext(this,1)" id="otp1">
+          <input class="otp-box" type="text" maxlength="1" oninput="otpNext(this,2)" id="otp2">
+          <input class="otp-box" type="text" maxlength="1" oninput="otpNext(this,3)" id="otp3">
+          <input class="otp-box" type="text" maxlength="1" oninput="otpNext(this,4)" id="otp4">
+          <input class="otp-box" type="text" maxlength="1" oninput="otpNext(this,5)" id="otp5">
+        </div>
+        <button class="btn-primary" style="width:100%;max-width:280px;padding:14px;border-radius:12px;font-size:15px;" onclick="verifyOTP()">Verificar código</button>
+        <div style="font-size:13px;color:var(--gray-400);">¿No recibiste el email?</div>
+        <button class="resend-link" onclick="showToast('📧 Código reenviado')">Reenviar código</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 7: LOGIN (US-007) ===================== -->
+  <div id="screen-login" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <span class="topbar-title">Iniciar sesión</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content">
+      <div class="auth-header" style="text-align:left;padding-top:20px;">
+        <h2>¡Hola de nuevo! 👋</h2>
+        <p>Inicia sesión para acceder a tus reservas y favoritos</p>
+      </div>
+      <div class="auth-body">
+        <button class="social-btn" onclick="doLoginDirect('Google')"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIj48cGF0aCBmaWxsPSIjRkZDMTA3IiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMS42NDksNC42NTctNi4wOCw4LTExLjMwMyw4Yy02LjYyNywwLTEyLTUuMzczLTEyLTEyczUuMzczLTEyLDEyLTEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzlsNS42NTctNS42NTdDMzQuMDQ2LDYuMDUzLDI5LjI2OCw0LDI0LDRDMTIuOTU1LDQsNCwxMi45NTUsNCwyNHM4Ljk1NSwyMCwyMCwyMHMyMC04Ljk1NSwyMC0yMEM0NCwyMi42NTksNDMuODYyLDIxLjM1LDQzLjYxMSwyMC4wODN6Ii8+PHBhdGggZmlsbD0iI0ZGM0QwMCIgZD0iTTYuMzA2LDE0LjY5MWw2LjU3MSw0LjgxOUMxNC42NTUsMTUuMTA4LDE5LjAzLDEyLDI0LDEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzlsNS42NTctNS42NTdDMzQuMDQ2LDYuMDUzLDI5LjI2OCw0LDI0LDRDMTYuMzE4LDQsOS42NTYsOC4zMzcsNi4zMDYsMTQuNjkxeiIvPjxwYXRoIGZpbGw9IiM0Q0FGNTAiIGQ9Ik0yNCw0NGM1LjE2NiwwLDkuODYtMS45NzcsMTMuNDA5LTUuMTkybC02LjE5LTUuMjM4QzI5LjIxMSwzNS4wOTEsMjYuNzE1LDM2LDI0LDM2Yy01LjIwMiwwLTkuNjE5LTMuMzE3LTExLjI4My03Ljk0NmwtNi41MjIsNS4wMjVDOS41MDUsMzkuNTU2LDE2LjIyNyw0NCwyNCw0NHoiLz48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMC43OTIsMi4yMzctMi4yMzEsNC4xNjYtNC4wODcsNS41NzFjMC4wMDEtMC4wMDEsMC4wMDItMC4wMDEsMC4wMDMtMC4wMDJsNi4xOSw1LjIzOEMzNi45NzEsMzkuMjA1LDQ0LDM0LDQ0LDI0QzQ0LDIyLjY1OSw0My44NjIsMjEuMzUsNDMuNjExLDIwLjA4M3oiLz48L3N2Zz4=" alt=""> Continuar con Google</button>
+        <button class="social-btn" style="margin-top:10px;" onclick="doLoginDirect('Apple')">🍎 Continuar con Apple</button>
+        <div class="auth-divider">o con tu email</div>
+        <div class="input-group">
+          <label>Correo electrónico</label>
+          <input class="form-input" type="email" placeholder="maria@ejemplo.com" id="login-email" oninput="clearLoginError()">
+          <div class="input-error" id="login-email-err">Email o contraseña incorrectos</div>
+        </div>
+        <div class="input-group">
+          <label>Contraseña</label>
+          <input class="form-input" type="password" placeholder="Tu contraseña" id="login-pass" style="padding-right:40px;" oninput="clearLoginError()">
+          <span class="input-icon" onclick="togglePass('login-pass',this)">👁</span>
+        </div>
+        <div style="text-align:right;margin:-6px 0 14px;">
+          <a style="font-size:12px;color:var(--brand);cursor:pointer;font-weight:600;" onclick="showScreen('screen-forgot')">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:15px;" onclick="submitLogin()">Iniciar sesión</button>
+        <div class="auth-footer">¿No tienes cuenta? <a onclick="showScreen('screen-register')">Regístrate gratis</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 7b: RECUPERAR CONTRASEÑA (US-007) ===================== -->
+  <div id="screen-forgot" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-login')">←</button>
+      <span class="topbar-title">Recuperar contraseña</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content">
+      <div id="forgot-form-view">
+        <div class="auth-header" style="text-align:left;padding-top:20px;">
+          <h2>¿Olvidaste tu contraseña?</h2>
+          <p>Escribe tu email y te enviaremos un enlace para restablecerla</p>
+        </div>
+        <div class="auth-body">
+          <div class="input-group">
+            <label>Correo electrónico</label>
+            <input class="form-input" type="email" placeholder="maria@ejemplo.com" id="forgot-email">
+          </div>
+          <button class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:15px;" onclick="submitForgot()">Enviar enlace</button>
+          <div class="auth-footer"><a onclick="showScreen('screen-login')">← Volver al inicio de sesión</a></div>
+        </div>
+      </div>
+      <div id="forgot-sent-view" style="display:none;">
+        <div class="verify-screen">
+          <div class="verify-icon">📬</div>
+          <h2>Email enviado</h2>
+          <p>Revisa tu bandeja de entrada y sigue el enlace para crear una nueva contraseña. El enlace expira en 30 minutos.</p>
+          <button class="btn-primary" style="padding:14px 32px;border-radius:12px;font-size:15px;" onclick="showScreen('screen-login')">Volver al login</button>
+          <button class="resend-link" onclick="showToast('📬 Email reenviado')">Reenviar email</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 8: ONBOARDING HIJOS (US-008) ===================== -->
+  <div id="screen-onboarding" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <span class="topbar-title">Perfil familiar</span>
+      <button style="background:none;border:none;font-size:13px;color:var(--brand);font-weight:600;cursor:pointer;" onclick="skipOnboarding()">Omitir</button>
+    </div>
+    <div class="onboarding-progress">
+      <div class="progress-dot done"></div>
+      <div class="progress-dot done"></div>
+      <div class="progress-dot"></div>
+    </div>
+    <div class="scroll-content" style="padding:20px;">
+      <h2 style="font-size:20px;font-weight:800;margin-bottom:6px;">¿Quiénes son tus peques? 👧👦</h2>
+      <p style="font-size:13px;color:var(--gray-400);margin-bottom:20px;">Añade el perfil de tus hijos para que te recomendemos actividades a su medida</p>
+
+      <div id="children-list">
+        <!-- Child 1 -->
+        <div class="child-card" id="child-0">
+          <div class="child-avatar">👧</div>
+          <button class="remove-child" onclick="removeChild(0)">✕</button>
+          <div class="input-group" style="margin-bottom:10px;">
+            <label>Nombre</label>
+            <input class="form-input" type="text" placeholder="Nombre del niño/a" value="Lucía">
+          </div>
+          <div class="input-group" style="margin-bottom:10px;">
+            <label>Fecha de nacimiento</label>
+            <input class="form-input" type="date" value="2019-03-15">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:8px;">Intereses (opcional)</label>
+            <div class="interests-grid">
+              <div class="interest-pill sel" onclick="this.classList.toggle('sel')">⚽ Deportes</div>
+              <div class="interest-pill" onclick="this.classList.toggle('sel')">🎨 Arte</div>
+              <div class="interest-pill sel" onclick="this.classList.toggle('sel')">🎵 Música</div>
+              <div class="interest-pill" onclick="this.classList.toggle('sel')">🌿 Naturaleza</div>
+              <div class="interest-pill" onclick="this.classList.toggle('sel')">🔬 Ciencia</div>
+              <div class="interest-pill" onclick="this.classList.toggle('sel')">🍳 Cocina</div>
+              <div class="interest-pill" onclick="this.classList.toggle('sel')">🌍 Idiomas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="add-child-btn" onclick="addChild()">➕ Añadir otro hijo/a</button>
+
+      <button class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:15px;margin-top:20px;" onclick="finishOnboarding()">Guardar y continuar</button>
+      <div class="pb-20"></div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 9: PERFIL (US-009) ===================== -->
+  <div id="screen-profile" class="screen">
+    <div class="scroll-content">
+      <!-- Header -->
+      <div class="profile-hero">
+        <div class="profile-avatar">👩<span class="edit-av">✏️</span></div>
+        <div class="profile-name" id="profile-name-display">María García</div>
+        <div class="profile-email" id="profile-email-display">maria@ejemplo.com</div>
+      </div>
+
+      <!-- Datos personales -->
+      <div class="profile-section">
+        <div class="profile-section-title">Datos personales</div>
+        <div class="profile-item" onclick="openEditField('Nombre completo','María García')">
+          <div class="item-icon">👤</div>
+          <div class="item-text"><div class="item-label">Nombre completo</div><div class="item-sub">María García</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+        <div class="profile-item" onclick="openEditField('Correo electrónico','maria@ejemplo.com')">
+          <div class="item-icon">✉️</div>
+          <div class="item-text"><div class="item-label">Correo electrónico</div><div class="item-sub">maria@ejemplo.com</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+        <div class="profile-item" onclick="openEditField('Teléfono','+34 612 345 678')">
+          <div class="item-icon">📱</div>
+          <div class="item-text"><div class="item-label">Teléfono</div><div class="item-sub">+34 612 345 678</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+        <div class="profile-item" onclick="showScreen('screen-onboarding')">
+          <div class="item-icon">🔒</div>
+          <div class="item-text"><div class="item-label">Cambiar contraseña</div><div class="item-sub">Última vez hace 3 meses</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+      </div>
+
+      <!-- Hijos -->
+      <div class="profile-section" style="margin-top:16px;">
+        <div class="profile-section-title">Mis hijos</div>
+        <div class="profile-item" onclick="showScreen('screen-onboarding')">
+          <div class="item-icon">👧</div>
+          <div class="item-text">
+            <div class="item-label">Perfiles de hijos</div>
+            <div class="item-sub" style="margin-top:4px;">
+              <span class="child-chip">👧 Lucía, 6 años</span>
+              <span class="child-chip">👦 Marcos, 9 años</span>
+            </div>
+          </div>
+          <span class="item-arrow">›</span>
+        </div>
+      </div>
+
+      <!-- Métodos de pago -->
+      <div class="profile-section" style="margin-top:16px;">
+        <div class="profile-section-title">Métodos de pago</div>
+        <div class="payment-chip">
+          <span class="card-icon">💳</span>
+          <div class="item-text"><div class="card-info">Visa •••• 4242</div><div class="card-exp">Caduca 08/27</div></div>
+          <button class="card-del" onclick="showToast('Tarjeta eliminada')">✕</button>
+        </div>
+        <div class="payment-chip">
+          <span class="card-icon">💳</span>
+          <div class="item-text"><div class="card-info">Mastercard •••• 1881</div><div class="card-exp">Caduca 02/26</div></div>
+          <button class="card-del" onclick="showToast('Tarjeta eliminada')">✕</button>
+        </div>
+        <div class="profile-item" onclick="showToast('Próximamente: añadir tarjeta')">
+          <div class="item-icon" style="background:var(--gray-100);">➕</div>
+          <div class="item-text"><div class="item-label" style="color:var(--brand);">Añadir método de pago</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+      </div>
+
+      <!-- Cuenta -->
+      <div class="profile-section" style="margin-top:16px;">
+        <div class="profile-section-title">Cuenta</div>
+        <div class="profile-item" onclick="showToast('Sesión cerrada')">
+          <div class="item-icon">🚪</div>
+          <div class="item-text"><div class="item-label">Cerrar sesión</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+        <div class="profile-item danger" onclick="confirmDelete()">
+          <div class="item-icon">🗑️</div>
+          <div class="item-text"><div class="item-label">Eliminar cuenta</div><div class="item-sub">Esto eliminará todos tus datos (RGPD)</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+      </div>
+      <div class="pb-20" style="height:40px;"></div>
+    </div>
+    <nav class="bottom-nav">
+      <button onclick="showScreen('screen-home')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Inicio
+      </button>
+      <button onclick="doSearch('Todo')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Explorar
+      </button>
+      <button onclick="checkFavorites()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Favoritos
+      </button>
+      <button class="active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </button>
+    </nav>
+  </div>
+
+  <!-- ── Edit field modal (US-009) ── -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal" style="position:relative;">
+      <div class="modal-handle"></div>
+      <h2 id="edit-modal-title" style="font-size:18px;margin-bottom:6px;">Editar campo</h2>
+      <p style="font-size:13px;color:var(--gray-400);margin-bottom:16px;">Modifica el valor y guarda los cambios</p>
+      <input class="form-input" type="text" id="edit-modal-input" style="margin-bottom:16px;">
+      <div style="display:flex;gap:10px;">
+        <button class="btn-outline" onclick="closeEditModal()">Cancelar</button>
+        <button class="btn-primary" style="flex:2;" onclick="saveEditModal()">Guardar</button>
+      </div>
+      <button onclick="closeEditModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-400);">✕</button>
+    </div>
+  </div>
+
+  <!-- ── Filter Drawer (US-003) ── -->
+  <div class="drawer-overlay" id="filter-overlay" onclick="closeFilters()"></div>
+  <div class="drawer" id="filter-drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-title">Filtros</div>
+    <!-- Edad -->
+    <div class="drawer-section">
+      <label>Edad del niño</label>
+      <div class="pill-group">
+        <div class="pill" onclick="togglePill(this)">0–3 años</div>
+        <div class="pill" onclick="togglePill(this)">4–6 años</div>
+        <div class="pill active" onclick="togglePill(this)">7–10 años</div>
+        <div class="pill" onclick="togglePill(this)">11–14 años</div>
+        <div class="pill" onclick="togglePill(this)">15–18 años</div>
+      </div>
+    </div>
+
+    <!-- Temporada / Calendario -->
+    <div class="drawer-section">
+      <label>Temporada</label>
+      <div class="pill-group">
+        <div class="pill" onclick="togglePill(this)">📅 Todo el año</div>
+        <div class="pill" onclick="togglePill(this)">☀️ Verano</div>
+        <div class="pill" onclick="togglePill(this)">🐣 Pascua</div>
+        <div class="pill" onclick="togglePill(this)">❄️ Invierno</div>
+      </div>
+      <div style="margin-top:12px;">
+        <label style="font-size:12px;font-weight:500;color:var(--gray-400);margin-bottom:6px;display:block;">Rango de fechas (opcional)</label>
+        <div style="display:flex;gap:8px;">
+          <input type="date" id="date-from" class="form-input" style="margin:0;flex:1;font-size:12px;padding:8px 10px;" oninput="updateFilterCount()">
+          <input type="date" id="date-to" class="form-input" style="margin:0;flex:1;font-size:12px;padding:8px 10px;" oninput="updateFilterCount()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Ubicación manual -->
+    <div class="drawer-section">
+      <label>Ubicación</label>
+      <div style="position:relative;">
+        <input type="text" id="location-input" class="form-input" style="margin:0;padding-left:36px;" placeholder="Ciudad o código postal" oninput="onLocationInput(this.value)">
+        <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;">📍</span>
+      </div>
+      <div id="location-suggestions" style="display:none;background:#fff;border:1.5px solid var(--gray-200);border-radius:10px;margin-top:4px;overflow:hidden;">
+        <div class="autocomplete-item" onclick="selectLocation('Madrid, Comunidad de Madrid')">📍 <span>Madrid, Comunidad de Madrid</span></div>
+        <div class="autocomplete-item" onclick="selectLocation('Barcelona, Cataluña')">📍 <span>Barcelona, Cataluña</span></div>
+        <div class="autocomplete-item" onclick="selectLocation('Valencia, C. Valenciana')">📍 <span>Valencia, C. Valenciana</span></div>
+        <div class="autocomplete-item" onclick="selectLocation('Sevilla, Andalucía')">📍 <span>Sevilla, Andalucía</span></div>
+      </div>
+      <div style="margin-top:8px;">
+        <button onclick="useMyLocation()" style="background:none;border:none;color:var(--brand);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;padding:0;">
+          🎯 Usar mi ubicación actual
+        </button>
+      </div>
+    </div>
+
+    <!-- Precio -->
+    <div class="drawer-section">
+      <label>Precio máximo: <strong id="price-val">30 €</strong></label>
+      <input type="range" class="range-slider" min="5" max="100" value="30" oninput="document.getElementById('price-val').textContent=this.value+' €'; updateFilterCount()">
+      <div class="range-vals"><span>5 €</span><span>100 €</span></div>
+    </div>
+
+    <!-- Distancia -->
+    <div class="drawer-section">
+      <label>Distancia máxima: <strong id="dist-val">5 km</strong></label>
+      <input type="range" class="range-slider" min="1" max="30" value="5" oninput="document.getElementById('dist-val').textContent=this.value+' km'; updateFilterCount()">
+      <div class="range-vals"><span>1 km</span><span>30 km</span></div>
+    </div>
+
+    <!-- Días -->
+    <div class="drawer-section">
+      <label>Día de la semana</label>
+      <div class="pill-group">
+        <div class="pill" onclick="togglePill(this)">Lun</div>
+        <div class="pill" onclick="togglePill(this)">Mar</div>
+        <div class="pill" onclick="togglePill(this)">Mié</div>
+        <div class="pill" onclick="togglePill(this)">Jue</div>
+        <div class="pill" onclick="togglePill(this)">Vie</div>
+        <div class="pill active" onclick="togglePill(this)">Sáb</div>
+        <div class="pill" onclick="togglePill(this)">Dom</div>
+      </div>
+    </div>
+    <div class="drawer-actions">
+      <button class="btn-outline" onclick="clearFilters()">Limpiar filtros</button>
+      <button class="btn-primary" onclick="applyFilters()">Ver 5 resultados</button>
+    </div>
+  </div>
+
+  <!-- ── Login Modal (US-005 trigger) ── -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h2>Inicia sesión</h2>
+      <p>Necesitas una cuenta para guardar favoritos y gestionar reservas</p>
+      <button class="social-btn" onclick="doLogin()"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIj48cGF0aCBmaWxsPSIjRkZDMTA3IiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMS42NDksNC42NTctNi4wOCw4LTExLjMwMyw4Yy02LjYyNywwLTEyLTUuMzczLTEyLTEyczUuMzczLTEyLDEyLTEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzlsNS42NTctNS42NTdDMzQuMDQ2LDYuMDUzLDI5LjI2OCw0LDI0LDRDMTIuOTU1LDQsNCwxMi45NTUsNCwyNHM4Ljk1NSwyMCwyMCwyMHMyMC04Ljk1NSwyMC0yMEM0NCwyMi42NTksNDMuODYyLDIxLjM1LDQzLjYxMSwyMC4wODN6Ii8+PHBhdGggZmlsbD0iI0ZGM0QwMCIgZD0iTTYuMzA2LDE0LjY5MWw2LjU3MSw0LjgxOUMxNC42NTUsMTUuMTA4LDE5LjAzLDEyLDI0LDEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzlsNS42NTctNS42NTdDMzQuMDQ2LDYuMDUzLDI5LjI2OCw0LDI0LDRDMTYuMzE4LDQsOS42NTYsOC4zMzcsNi4zMDYsMTQuNjkxeiIvPjxwYXRoIGZpbGw9IiM0Q0FGNTAiIGQ9Ik0yNCw0NGM1LjE2NiwwLDkuODYtMS45NzcsMTMuNDA5LTUuMTkybC02LjE5LTUuMjM4QzI5LjIxMSwzNS4wOTEsMjYuNzE1LDM2LDI0LDM2Yy01LjIwMiwwLTkuNjE5LTMuMzE3LTExLjI4My03Ljk0NmwtNi41MjIsNS4wMjVDOS41MDUsMzkuNTU2LDE2LjIyNyw0NCwyNCw0NHoiLz48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMC43OTIsMi4yMzctMi4yMzEsNC4xNjYtNC4wODcsNS41NzFjMC4wMDEtMC4wMDEsMC4wMDItMC4wMDEsMC4wMDMtMC4wMDJsNi4xOSw1LjIzOEMzNi45NzEsMzkuMjA1LDQ0LDM0LDQ0LDI0QzQ0LDIyLjY1OSw0My44NjIsMjEuMzUsNDMuNjExLDIwLjA4M3oiLz48L3N2Zz4=" alt=""> Continuar con Google</button>
+      <button class="social-btn" onclick="doLogin()">🍎 Continuar con Apple</button>
+      <div class="divider-or">o</div>
+      <input class="form-input" type="email" placeholder="Correo electrónico">
+      <input class="form-input" type="password" placeholder="Contraseña">
+      <a class="link-sm">¿Olvidaste tu contraseña?</a>
+      <button class="btn-primary" style="width:100%;padding:13px;border-radius:12px;font-size:15px;" onclick="doLogin()">Iniciar sesión</button>
+      <div style="text-align:center;font-size:13px;color:var(--gray-400);margin-top:14px;">¿No tienes cuenta? <a style="color:var(--brand);cursor:pointer;font-weight:600;" onclick="closeLogin();showScreen('screen-register')">Regístrate gratis</a></div>
+      <button onclick="closeLogin()" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--gray-400);">✕</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- HU label -->
+  <div class="hu-label" id="hu-label">US-001 · Home</div>
+</div>
+
+<script>
+  // ─────────── Data ───────────
+  const activities = [
+    { emoji:'🏊', title:'Natación bebés 0-3 años', cat:'Deportes Acuáticos', prov:'Aqua Kids Madrid', provAv:'🏫', edad:'0–3 años', dur:'45 min', loc:'1.2 km', price:'18 €', cancel:'Cancela 24h antes', rating:'4.9', reviews:32, desc:'Clases de natación adaptadas para bebés de 0 a 3 años junto a sus padres o cuidadores. Ambiente cálido, profesores titulados y grupos reducidos (máx. 6 bebés). Desarrollamos la confianza en el agua mediante juegos y rutinas seguras.' },
+    { emoji:'⚽', title:'Fútbol sala 5-8 años', cat:'Deportes', prov:'Madrid Sport Kids', provAv:'⚽', edad:'5–8 años', dur:'60 min', loc:'2.4 km', price:'12 €', cancel:'Cancela 48h antes', rating:'4.7', reviews:18, desc:'Iniciación al fútbol sala en formato lúdico. Los peques aprenden coordinación, trabajo en equipo y técnica básica en sesiones de 60 minutos. Entrenadores UEFA C.' },
+    { emoji:'🎨', title:'Taller de pintura 6-10 años', cat:'Arte', prov:'Taller Creativo BCN', provAv:'🎨', edad:'6–10 años', dur:'90 min', loc:'3.1 km', price:'15 €', cancel:'Cancela 24h antes', rating:'4.8', reviews:25, desc:'Talleres de expresión artística donde los niños exploran la pintura acrílica, acuarela y técnicas mixtas. Cada sesión termina con una obra para llevarse a casa.' },
+    { emoji:'🎵', title:'Piano para niños 7-12 años', cat:'Música', prov:'Escuela Musicalia', provAv:'🎹', edad:'7–12 años', dur:'45 min', loc:'1.8 km', price:'22 €', cancel:'Cancela 72h antes', rating:'5.0', reviews:11, desc:'Clases individuales de piano para niños desde nivel iniciación. Metodología moderna con repertorio actual y clásico. Alumnos han ganado concursos locales.' },
+    { emoji:'🌿', title:'Exploración naturaleza 8-12', cat:'Naturaleza', prov:'GreenKids Outdoor', provAv:'🌱', edad:'8–12 años', dur:'3 horas', loc:'5.0 km', price:'20 €', cancel:'Cancela 48h antes', rating:'4.6', reviews:9, desc:'Salidas de senderismo y observación de fauna y flora con guías naturalistas. Los niños aprenden a identificar plantas, insectos y aves del entorno madrileño.' },
+  ];
+
+  const favorites = new Set([3]); // piano starts as fav
+  let prevScreen = 'screen-home';
+  let currentDetailIdx = 0;
+  let filterCount = 2;
+  let loggedIn = false;
+
+  const huLabels = {
+    'screen-home':       'US-001 · Home con búsqueda y categorías',
+    'screen-results':    'US-003 / US-004 · Filtros + Listado',
+    'screen-detail':     'US-004 · Ficha de actividad',
+    'screen-favorites':  'US-005 · Favoritos',
+    'screen-register':   'US-006 · Registro con email/social',
+    'screen-verify':     'US-006 · Verificación de email',
+    'screen-login':      'US-007 · Inicio de sesión',
+    'screen-forgot':     'US-007 · Recuperar contraseña',
+    'screen-onboarding': 'US-008 · Onboarding perfil hijos',
+    'screen-profile':    'US-009 · Perfil y datos personales',
+  };
+
+  // ─────────── Navigation ───────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('hu-label').textContent = huLabels[id] || '';
+    if (id === 'screen-favorites') renderFavorites();
+  }
+
+  function goBackFromDetail() {
+    showScreen(prevScreen);
+  }
+
+  // ─────────── Search (US-002) ───────────
+  let autocompleteTimeout;
+  function onSearchInput(val) {
+    clearTimeout(autocompleteTimeout);
+    const box = document.getElementById('autocomplete-box');
+    if (val.length > 0) {
+      autocompleteTimeout = setTimeout(() => box.classList.add('open'), 200);
+    } else {
+      box.classList.remove('open');
+    }
+  }
+  function onSearchFocus() {
+    if (document.getElementById('search-input').value.length > 0)
+      document.getElementById('autocomplete-box').classList.add('open');
+  }
+  function onSearchBlur() {
+    setTimeout(() => document.getElementById('autocomplete-box').classList.remove('open'), 200);
+  }
+  function doSearch(query) {
+    document.getElementById('search-input').value = query === 'Todo' ? '' : query;
+    document.getElementById('autocomplete-box').classList.remove('open');
+    document.getElementById('results-title').textContent = query === 'Todo' ? 'Explorar' : '"' + query + '"';
+    prevScreen = 'screen-results';
+    showScreen('screen-results');
+    updateFilterBadge();
+  }
+
+  // ─────────── Detail (US-004) ───────────
+  function showDetail(idx) {
+    prevScreen = document.querySelector('.screen.active').id;
+    currentDetailIdx = idx;
+    const a = activities[idx];
+    document.getElementById('detail-img').innerHTML = a.emoji + '<button class="fav-big" id="detail-fav" onclick="toggleDetailFav()">' + (favorites.has(idx) ? '❤️' : '🤍') + '</button>';
+    document.getElementById('detail-cat').textContent = a.cat;
+    document.getElementById('detail-title').textContent = a.title;
+    document.getElementById('detail-prov-av').textContent = a.provAv;
+    document.getElementById('detail-prov').textContent = a.prov;
+    document.getElementById('dc-edad').textContent = '👶 ' + a.edad;
+    document.getElementById('dc-dur').textContent = '⏱ ' + a.dur;
+    document.getElementById('dc-loc').textContent = '📍 ' + a.loc;
+    document.getElementById('dc-cancel').textContent = '🔄 ' + a.cancel;
+    document.getElementById('detail-desc').textContent = a.desc;
+    document.getElementById('detail-price').textContent = a.price;
+    showScreen('screen-detail');
+  }
+
+  // ─────────── Favorites (US-005) ───────────
+  function toggleFav(e, idx) {
+    e.stopPropagation();
+    if (!loggedIn) { openLogin(); return; }
+    if (favorites.has(idx)) {
+      favorites.delete(idx);
+      e.target.textContent = '🤍';
+      showToast('Eliminado de favoritos');
+    } else {
+      favorites.add(idx);
+      e.target.textContent = '❤️';
+      showToast('¡Guardado en favoritos!');
+    }
+  }
+
+  function toggleDetailFav() {
+    if (!loggedIn) { openLogin(); return; }
+    const idx = currentDetailIdx;
+    const btn = document.getElementById('detail-fav');
+    if (favorites.has(idx)) {
+      favorites.delete(idx);
+      btn.textContent = '🤍';
+      showToast('Eliminado de favoritos');
+    } else {
+      favorites.add(idx);
+      btn.textContent = '❤️';
+      showToast('¡Guardado en favoritos!');
+    }
+  }
+
+  function checkFavorites() {
+    if (!loggedIn) { openLogin(); return; }
+    showScreen('screen-favorites');
+  }
+
+  function renderFavorites() {
+    const cont = document.getElementById('favs-content');
+    if (favorites.size === 0) {
+      cont.innerHTML = `<div class="empty-state">
+        <div class="empty-icon">🤍</div>
+        <h3>Aún no tienes favoritos</h3>
+        <p>Pulsa el corazón en cualquier actividad para guardarla aquí</p>
+        <button class="btn-ghost" onclick="doSearch('Todo')">Explorar actividades</button>
+      </div>`;
+    } else {
+      let html = '<div class="cards-grid" style="padding-top:16px">';
+      favorites.forEach(idx => {
+        const a = activities[idx];
+        html += `<div class="card card-full" onclick="showDetail(${idx})">
+          <div class="card-img">${a.emoji}<button class="fav-btn" onclick="removeFav(event,${idx})">❤️</button></div>
+          <div class="card-body">
+            <div class="card-title">${a.title}</div>
+            <div class="card-meta">📍 Madrid · ${a.loc} · ${a.edad}</div>
+            <div class="card-bottom"><span class="card-price">${a.price}/ses.</span><span class="card-rating">⭐ ${a.rating} (${a.reviews})</span></div>
+          </div>
+        </div>`;
+      });
+      html += '</div><div class="pb-20"></div>';
+      cont.innerHTML = html;
+    }
+  }
+
+  function removeFav(e, idx) {
+    e.stopPropagation();
+    favorites.delete(idx);
+    showToast('Eliminado de favoritos');
+    renderFavorites();
+  }
+
+  // ─────────── Filters (US-003) ───────────
+  function openFilters() {
+    document.getElementById('filter-overlay').classList.add('open');
+    document.getElementById('filter-drawer').style.display = 'block';
+  }
+  function closeFilters() {
+    document.getElementById('filter-overlay').classList.remove('open');
+    document.getElementById('filter-drawer').style.display = 'none';
+  }
+  function applyFilters() {
+    closeFilters();
+    updateFilterBadge();
+    showToast('Filtros aplicados · 5 resultados');
+  }
+  function onLocationInput(val) {
+    const s = document.getElementById('location-suggestions');
+    s.style.display = val.length > 0 ? 'block' : 'none';
+    updateFilterCount();
+  }
+  function selectLocation(loc) {
+    document.getElementById('location-input').value = loc;
+    document.getElementById('location-suggestions').style.display = 'none';
+    updateFilterCount();
+    showToast('📍 Ubicación: ' + loc);
+  }
+  function useMyLocation() {
+    document.getElementById('location-input').value = 'Madrid, Comunidad de Madrid';
+    document.getElementById('location-suggestions').style.display = 'none';
+    updateFilterCount();
+    showToast('📍 Ubicación detectada');
+  }
+
+  function clearFilters() {
+    document.querySelectorAll('.pill.active').forEach(p => p.classList.remove('active'));
+    filterCount = 0;
+    updateFilterBadge();
+    document.getElementById('price-val').textContent = '100 €';
+    document.getElementById('dist-val').textContent = '30 km';
+    document.getElementById('location-input').value = '';
+    document.getElementById('location-suggestions').style.display = 'none';
+    document.getElementById('date-from').value = '';
+    document.getElementById('date-to').value = '';
+  }
+  function togglePill(el) {
+    el.classList.toggle('active');
+    updateFilterCount();
+  }
+  function toggleChip(el, type) {
+    el.classList.toggle('active');
+    updateFilterBadge();
+  }
+  function updateFilterCount() {
+    filterCount = document.querySelectorAll('#filter-drawer .pill.active').length;
+    updateFilterBadge();
+  }
+  function updateFilterBadge() {
+    const badge = document.getElementById('filter-badge');
+    const total = document.querySelectorAll('.filter-chip.active').length - 1 + filterCount;
+    if (total > 0) { badge.textContent = total; badge.style.display = ''; }
+    else { badge.style.display = 'none'; }
+  }
+
+  // ─────────── Login modal rápido (US-005) ───────────
+  function openLogin() {
+    document.getElementById('login-modal').classList.add('open');
+  }
+  function closeLogin() {
+    document.getElementById('login-modal').classList.remove('open');
+  }
+  function doLogin() {
+    loggedIn = true;
+    closeLogin();
+    showToast('¡Bienvenida! Sesión iniciada');
+  }
+
+  // ─────────── Registro (US-006) ───────────
+  function validateRegName() {
+    const g = document.getElementById('reg-name').closest('.input-group');
+    g.classList.toggle('has-error', document.getElementById('reg-name').value.trim().length < 2);
+  }
+  function validateRegEmail() {
+    const v = document.getElementById('reg-email').value;
+    document.getElementById('reg-email').closest('.input-group').classList.toggle('has-error', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+  }
+  function onRegPassInput(val) {
+    const fill = document.getElementById('strength-fill');
+    const lbl = document.getElementById('strength-label');
+    const levels = [
+      { min:0,  w:'0%',   bg:'',              txt:'' },
+      { min:1,  w:'25%',  bg:'var(--red)',     txt:'Muy débil' },
+      { min:5,  w:'50%',  bg:'var(--yellow)',  txt:'Débil' },
+      { min:8,  w:'75%',  bg:'var(--blue)',    txt:'Aceptable' },
+      { min:12, w:'100%', bg:'var(--green)',   txt:'Fuerte' },
+    ];
+    const l = levels.filter(x => val.length >= x.min).pop();
+    fill.style.width = l.w; fill.style.background = l.bg; lbl.textContent = l.txt;
+    lbl.style.color = l.bg;
+  }
+  function togglePass(id, btn) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+  }
+  function submitRegister() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    let ok = true;
+    if (name.length < 2) { document.getElementById('reg-name').closest('.input-group').classList.add('has-error'); ok=false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('reg-email').closest('.input-group').classList.add('has-error'); ok=false; }
+    if (pass.length < 8) { document.getElementById('reg-pass').closest('.input-group').classList.add('has-error'); ok=false; }
+    if (!ok) return;
+    document.getElementById('verify-email-display').textContent = email;
+    showScreen('screen-verify');
+  }
+  function doRegisterSocial(provider) {
+    loggedIn = true;
+    showToast('Conectado con ' + provider);
+    showScreen('screen-onboarding');
+  }
+  function otpNext(el, idx) {
+    if (el.value.length === 1 && idx < 5) document.getElementById('otp'+(idx+1)).focus();
+    const full = [0,1,2,3,4,5].map(i => document.getElementById('otp'+i).value).join('');
+    if (full.length === 6) setTimeout(verifyOTP, 300);
+  }
+  function verifyOTP() {
+    loggedIn = true;
+    showToast('✓ Email verificado');
+    showScreen('screen-onboarding');
+  }
+
+  // ─────────── Login pantalla completa (US-007) ───────────
+  function clearLoginError() {
+    document.getElementById('login-email').closest('.input-group').classList.remove('has-error');
+  }
+  function submitLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    if (!email || !pass) {
+      document.getElementById('login-email').closest('.input-group').classList.add('has-error');
+      document.getElementById('login-email-err').textContent = 'Completa todos los campos';
+      return;
+    }
+    loggedIn = true;
+    document.getElementById('profile-name-display').textContent = email.split('@')[0];
+    document.getElementById('profile-email-display').textContent = email;
+    showToast('¡Bienvenida! Sesión iniciada');
+    showScreen('screen-home');
+  }
+  function doLoginDirect(provider) {
+    loggedIn = true;
+    showToast('Conectado con ' + provider);
+    showScreen('screen-home');
+  }
+  function submitForgot() {
+    const email = document.getElementById('forgot-email').value.trim();
+    if (!email) return;
+    document.getElementById('forgot-form-view').style.display = 'none';
+    document.getElementById('forgot-sent-view').style.display = 'block';
+  }
+
+  // ─────────── Onboarding hijos (US-008) ───────────
+  let childCount = 1;
+  function addChild() {
+    const idx = childCount++;
+    const div = document.createElement('div');
+    div.className = 'child-card'; div.id = 'child-'+idx;
+    div.innerHTML = `<div class="child-avatar">👦</div>
+      <button class="remove-child" onclick="removeChild(${idx})">✕</button>
+      <div class="input-group" style="margin-bottom:10px;"><label>Nombre</label><input class="form-input" type="text" placeholder="Nombre del niño/a"></div>
+      <div class="input-group" style="margin-bottom:10px;"><label>Fecha de nacimiento</label><input class="form-input" type="date"></div>
+      <div><label style="font-size:12px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:8px;">Intereses (opcional)</label>
+      <div class="interests-grid">
+        <div class="interest-pill" onclick="this.classList.toggle('sel')">⚽ Deportes</div>
+        <div class="interest-pill" onclick="this.classList.toggle('sel')">🎨 Arte</div>
+        <div class="interest-pill" onclick="this.classList.toggle('sel')">🎵 Música</div>
+        <div class="interest-pill" onclick="this.classList.toggle('sel')">🌿 Naturaleza</div>
+        <div class="interest-pill" onclick="this.classList.toggle('sel')">🔬 Ciencia</div>
+      </div></div>`;
+    document.getElementById('children-list').appendChild(div);
+    showToast('Hijo/a añadido');
+  }
+  function removeChild(idx) {
+    const el = document.getElementById('child-'+idx);
+    if (el) { el.remove(); showToast('Perfil eliminado'); }
+  }
+  function finishOnboarding() {
+    showToast('✓ Perfiles guardados');
+    showScreen('screen-home');
+  }
+  function skipOnboarding() {
+    showScreen('screen-home');
+  }
+
+  // ─────────── Perfil (US-009) ───────────
+  function openEditField(title, current) {
+    document.getElementById('edit-modal-title').textContent = 'Editar ' + title.toLowerCase();
+    document.getElementById('edit-modal-input').value = current;
+    document.getElementById('edit-modal').classList.add('open');
+  }
+  function closeEditModal() {
+    document.getElementById('edit-modal').classList.remove('open');
+  }
+  function saveEditModal() {
+    closeEditModal();
+    showToast('✓ Cambios guardados');
+  }
+  function confirmDelete() {
+    if (confirm('¿Seguro que quieres eliminar tu cuenta? Esta acción es irreversible.')) {
+      showToast('Cuenta eliminada');
+      loggedIn = false;
+      showScreen('screen-home');
+    }
+  }
+
+  // ─────────── Toast ───────────
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  function goToProfile() {
+    if (!loggedIn) { showScreen('screen-login'); return; }
+    showScreen('screen-profile');
+  }
+
+  // También actualiza el modal de login para apuntar a la pantalla de registro
+  document.querySelector('#login-modal .auth-footer a') && null; // handled inline
+
+  // Init
+  updateFilterBadge();
+</script>
+</body>
+</html>
