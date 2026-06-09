@@ -3,25 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kooday — Mockup US-001 a US-009</title>
+<title>Kooday — Plataforma de actividades infantiles</title>
 <style>
+
   :root {
-    --brand: #FF6B35;
-    --brand-light: #FFF0EB;
-    --brand-dark: #E55A25;
-    --gray-50: #F9FAFB;
-    --gray-100: #F3F4F6;
-    --gray-200: #E5E7EB;
-    --gray-400: #9CA3AF;
-    --gray-600: #4B5563;
-    --gray-800: #1F2937;
-    --green: #10B981;
-    --yellow: #F59E0B;
-    --red: #EF4444;
-    --blue: #3B82F6;
-    --radius: 12px;
-    --shadow: 0 2px 8px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+    --brand: #FF6B35; --brand-light: #FFF0EB; --brand-dark: #E55A25;
+    --prov: #6C3FC5; --prov-light: #F0EBFF; --prov-dark: #5830B0; --prov-mid: #8B5CF6;
+    --gray-50: #F9FAFB; --gray-100: #F3F4F6; --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF; --gray-600: #4B5563; --gray-800: #1F2937;
+    --green: #10B981; --yellow: #F59E0B; --red: #EF4444; --blue: #3B82F6;
+    --radius: 12px; --shadow: 0 2px 8px rgba(0,0,0,0.08); --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F0F2F5; color: var(--gray-800); }
@@ -535,13 +526,432 @@
   .map-view-toggle { display: flex; background: var(--gray-100); border-radius: 10px; padding: 3px; gap: 3px; }
   .map-toggle-btn { flex: 1; padding: 6px 10px; border-radius: 8px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; background: none; color: var(--gray-600); transition: all .15s; }
   .map-toggle-btn.active { background: #fff; color: var(--brand); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+
+  /* ── Landing ── */
+  .landing-bg { min-height: 100vh; background: linear-gradient(160deg, #120822 0%, #1E0D3A 45%, #2D1B69 100%); display: flex; flex-direction: column; }
+  .landing-header { padding: 72px 28px 28px; text-align: center; }
+  .landing-logo { font-size: 44px; font-weight: 900; color: #fff; letter-spacing: -2px; margin-bottom: 10px; }
+  .landing-logo em { color: #FF6B35; font-style: normal; }
+  .landing-tagline { font-size: 15px; color: rgba(255,255,255,.6); line-height: 1.55; }
+  .landing-roles { padding: 12px 20px 36px; display: flex; flex-direction: column; gap: 14px; }
+  .role-card { border-radius: 20px; padding: 22px 20px; cursor: pointer; transition: transform .2s, box-shadow .2s; display: flex; gap: 16px; align-items: center; }
+  .role-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+  .role-card:active { transform: translateY(-1px); }
+  .role-card.family  { background: linear-gradient(135deg, #FF6B35 0%, #FF9A6C 100%); }
+  .role-card.provider { background: linear-gradient(135deg, #6C3FC5 0%, #8B5CF6 100%); }
+  .role-icon { font-size: 42px; flex-shrink: 0; }
+  .role-text { flex: 1; }
+  .role-text h3 { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .role-text p { font-size: 12px; color: rgba(255,255,255,.8); line-height: 1.45; }
+  .role-arrow { font-size: 26px; color: rgba(255,255,255,.55); }
+  .landing-footer { text-align: center; padding: 4px 20px 32px; margin-top: auto; }
+  .landing-footer p { font-size: 11px; color: rgba(255,255,255,.25); }
+
+*{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F0F2F5;color:var(--gray-800);}
+  .app{max-width:430px;min-height:100vh;margin:0 auto;background:#fff;position:relative;overflow:hidden;}
+  .screen{display:none;flex-direction:column;min-height:100vh;}
+  .screen.active{display:flex;}
+  .scroll-content{flex:1;overflow-y:auto;}
+
+  /* HU badge */
+  #hu-label{position:fixed;top:8px;right:8px;background:rgba(30,10,60,.82);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;z-index:9999;pointer-events:none;backdrop-filter:blur(4px);}
+
+  /* Topbar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;background:#fff;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--gray-100);}
+  .topbar .back-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-600);padding:4px 8px 4px 0;}
+  .topbar .topbar-title{font-weight:700;font-size:16px;}
+  .topbar-right{display:flex;gap:8px;align-items:center;}
+  .notif-badge{position:relative;cursor:pointer;}
+  .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--red);border-radius:50%;border:1.5px solid #fff;}
+
+  /* Bottom nav */
+  .bottom-nav{display:flex;background:#fff;border-top:1px solid var(--gray-200);position:sticky;bottom:0;z-index:10;}
+  .bottom-nav button{flex:1;background:none;border:none;padding:10px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--gray-400);transition:color .15s;}
+  .bottom-nav button.active{color:var(--prov);}
+  .bottom-nav button svg{width:22px;height:22px;}
+
+  /* Buttons */
+  .btn-primary{background:var(--prov);color:#fff;border:none;border-radius:var(--radius);padding:14px 20px;font-size:15px;font-weight:700;cursor:pointer;width:100%;transition:background .15s;}
+  .btn-primary:hover{background:var(--prov-dark);}
+  .btn-outline{background:#fff;color:var(--prov);border:2px solid var(--prov);border-radius:var(--radius);padding:12px 20px;font-size:14px;font-weight:700;cursor:pointer;width:100%;transition:all .15s;}
+  .btn-ghost{background:none;border:none;color:var(--prov);font-size:14px;font-weight:600;cursor:pointer;padding:8px 0;}
+
+  /* Form */
+  .form-input{width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:14px;outline:none;transition:border-color .15s;margin-bottom:12px;color:var(--gray-800);}
+  .form-input:focus{border-color:var(--prov);}
+  .form-select{width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:14px;background:#fff;outline:none;color:var(--gray-800);margin-bottom:12px;appearance:none;cursor:pointer;}
+  .form-select:focus{border-color:var(--prov);}
+  .input-group{margin-bottom:14px;position:relative;}
+  .input-group label{font-size:12px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:5px;}
+  .input-group .form-input{margin:0;}
+  .input-error{font-size:11px;color:var(--red);margin-top:4px;display:none;}
+  .input-group.has-error .form-input{border-color:var(--red);}
+  .input-group.has-error .input-error{display:block;}
+  .section-label{font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 10px;}
+
+  /* Toast */
+  #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-800);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:9998;white-space:nowrap;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ── E6: Landing (PR-001) ── */
+  .prov-hero{background:linear-gradient(135deg,var(--prov) 0%,var(--prov-mid) 60%,#A78BFA 100%);padding:52px 24px 36px;color:#fff;text-align:center;}
+  .prov-hero .logo{font-size:28px;font-weight:900;letter-spacing:-1px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:6px;}
+  .prov-hero .logo span{background:rgba(255,255,255,.2);border-radius:8px;padding:2px 10px;font-size:13px;font-weight:700;}
+  .prov-hero h1{font-size:26px;font-weight:900;line-height:1.2;margin-bottom:10px;}
+  .prov-hero p{font-size:14px;opacity:.9;line-height:1.6;margin-bottom:24px;}
+  .hero-stats{display:flex;gap:0;background:rgba(255,255,255,.15);border-radius:14px;padding:14px 0;margin-top:8px;}
+  .hero-stat{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.2);}
+  .hero-stat:last-child{border-right:none;}
+  .hero-stat-val{font-size:20px;font-weight:900;}
+  .hero-stat-label{font-size:10px;opacity:.8;margin-top:2px;}
+  .benefit-card{background:var(--gray-50);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .benefit-card .bc-icon{width:44px;height:44px;border-radius:12px;background:var(--prov-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .benefit-card .bc-title{font-size:14px;font-weight:700;margin-bottom:3px;}
+  .benefit-card .bc-desc{font-size:12px;color:var(--gray-600);line-height:1.5;}
+  .commission-box{background:linear-gradient(135deg,var(--prov-light),#fff);border:2px solid var(--prov-light);border-radius:14px;padding:16px 20px;text-align:center;margin:16px 0;}
+  .commission-box .comm-pct{font-size:36px;font-weight:900;color:var(--prov);}
+  .commission-box .comm-label{font-size:13px;color:var(--gray-600);margin-top:4px;}
+  .testimonial-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+  .testimonial-row::-webkit-scrollbar{display:none;}
+  .testimonial-card{min-width:200px;background:var(--gray-50);border-radius:14px;padding:14px;}
+  .test-stars{font-size:12px;margin-bottom:6px;}
+  .test-quote{font-size:12px;color:var(--gray-600);line-height:1.5;margin-bottom:8px;}
+  .test-author{font-size:11px;font-weight:700;}
+  .test-type{font-size:10px;color:var(--gray-400);}
+
+  /* ── E6: Register (PR-002) ── */
+  .entity-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+  .entity-card{border:2px solid var(--gray-200);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .15s;}
+  .entity-card.sel{border-color:var(--prov);background:var(--prov-light);}
+  .entity-card .ec-icon{font-size:32px;margin-bottom:8px;}
+  .entity-card .ec-label{font-size:13px;font-weight:700;}
+  .entity-card .ec-sub{font-size:11px;color:var(--gray-400);margin-top:3px;}
+
+  /* ── E6: KYC (PR-003) ── */
+  .kyc-steps{display:flex;gap:0;padding:16px 20px;background:#fff;border-bottom:1px solid var(--gray-100);}
+  .kyc-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;}
+  .kyc-step::after{content:'';position:absolute;top:12px;right:-50%;width:100%;height:2px;background:var(--gray-200);z-index:0;}
+  .kyc-step:last-child::after{display:none;}
+  .kyc-dot{width:24px;height:24px;border-radius:50%;background:var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;z-index:1;transition:all .2s;}
+  .kyc-dot.done{background:var(--green);color:#fff;}
+  .kyc-dot.active{background:var(--prov);color:#fff;}
+  .kyc-step-label{font-size:10px;color:var(--gray-400);text-align:center;}
+  .kyc-step.active .kyc-step-label{color:var(--prov);font-weight:700;}
+  .upload-zone{border:2px dashed var(--gray-200);border-radius:14px;padding:24px;text-align:center;cursor:pointer;transition:all .15s;margin-bottom:12px;background:var(--gray-50);}
+  .upload-zone:hover{border-color:var(--prov);background:var(--prov-light);}
+  .upload-zone.uploaded{border-color:var(--green);background:#F0FDF4;}
+  .upload-zone .uz-icon{font-size:32px;margin-bottom:8px;}
+  .upload-zone .uz-label{font-size:13px;font-weight:600;color:var(--gray-600);}
+  .upload-zone .uz-sub{font-size:11px;color:var(--gray-400);margin-top:4px;}
+  .upload-zone .uz-done{font-size:13px;color:var(--green);font-weight:700;}
+  .kyc-status-card{border-radius:14px;padding:16px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start;}
+  .kyc-status-card.pending{background:#FFFBEB;border:1.5px solid #FDE68A;}
+  .kyc-status-card.verified{background:#F0FDF4;border:1.5px solid #A7F3D0;}
+
+  /* ── E6: Profile Setup (PR-004) ── */
+  .quality-bar-wrap{background:var(--gray-50);border-radius:14px;padding:14px 16px;margin-bottom:20px;}
+  .quality-bar-wrap .qb-label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:8px;}
+  .quality-bar{height:8px;border-radius:4px;background:var(--gray-200);overflow:hidden;}
+  .quality-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--prov),var(--prov-mid));transition:width .4s;}
+  .logo-upload{width:80px;height:80px;border-radius:20px;background:var(--prov-light);border:2px dashed var(--prov);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:28px;margin-bottom:16px;position:relative;}
+  .logo-upload .lu-edit{position:absolute;bottom:-4px;right:-4px;background:var(--prov);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;}
+  .preview-mini-card{background:var(--gray-50);border-radius:14px;border:1.5px solid var(--gray-200);padding:14px;margin-top:16px;}
+  .preview-mini-card .pmc-label{font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+  .pmc-inner{display:flex;gap:12px;align-items:flex-start;}
+  .pmc-logo{width:44px;height:44px;border-radius:12px;background:var(--prov-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .pmc-name{font-size:14px;font-weight:700;}
+  .pmc-desc{font-size:12px;color:var(--gray-600);margin-top:3px;line-height:1.4;}
+  .pmc-rating{font-size:11px;color:var(--gray-400);margin-top:4px;}
+
+  /* ── E7: Activity List (PR-011) ── */
+  .activity-status-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  .status-draft{background:var(--gray-100);color:var(--gray-600);}
+  .status-review{background:#FFFBEB;color:#92400E;}
+  .status-live{background:#D1FAE5;color:#065F46;}
+  .status-rejected{background:#FEE2E2;color:#991B1B;}
+  .act-item{background:var(--gray-50);border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;}
+  .act-item-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .act-emoji{width:44px;height:44px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:var(--shadow);flex-shrink:0;}
+  .act-info{flex:1;}
+  .act-title{font-size:14px;font-weight:700;}
+  .act-meta{font-size:12px;color:var(--gray-400);margin-top:3px;}
+  .act-item-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--gray-200);}
+  .act-stat{text-align:center;}
+  .act-stat-val{font-size:14px;font-weight:700;color:var(--prov);}
+  .act-stat-label{font-size:10px;color:var(--gray-400);}
+  .fab{position:fixed;bottom:76px;right:20px;width:52px;height:52px;background:var(--prov);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;box-shadow:0 4px 16px rgba(108,63,197,.4);cursor:pointer;border:none;z-index:20;transition:transform .15s;}
+  .fab:hover{transform:scale(1.08);}
+
+  /* ── E7: Wizard (PR-005-010) ── */
+  .wizard-steps{display:flex;padding:14px 16px 12px;overflow-x:auto;scrollbar-width:none;gap:0;border-bottom:1px solid var(--gray-100);}
+  .wizard-steps::-webkit-scrollbar{display:none;}
+  .wz-step{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:52px;position:relative;}
+  .wz-step::after{content:'';position:absolute;top:12px;left:calc(50% + 12px);right:calc(-50% + 12px);height:2px;background:var(--gray-200);z-index:0;}
+  .wz-step:last-child::after{display:none;}
+  .wz-dot{width:24px;height:24px;border-radius:50%;background:var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;z-index:1;border:2px solid transparent;transition:all .2s;}
+  .wz-dot.done{background:var(--prov);color:#fff;}
+  .wz-dot.active{background:#fff;border-color:var(--prov);color:var(--prov);}
+  .wz-label{font-size:9px;color:var(--gray-400);text-align:center;white-space:nowrap;}
+  .wz-step.active .wz-label{color:var(--prov);font-weight:700;}
+  .wizard-body{flex:1;overflow-y:auto;padding:20px;}
+  .wizard-panel{display:none;}
+  .wizard-panel.active{display:block;}
+  .wz-title{font-size:18px;font-weight:800;margin-bottom:4px;}
+  .wz-subtitle{font-size:13px;color:var(--gray-400);margin-bottom:20px;}
+  .wizard-footer{padding:16px 20px;border-top:1px solid var(--gray-100);display:flex;gap:10px;background:#fff;}
+  .wizard-footer .btn-primary{flex:2;}
+  .wizard-footer .btn-outline{flex:1;padding:12px;}
+  /* Wizard specific */
+  .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+  .cat-pill{border:2px solid var(--gray-200);border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .15s;}
+  .cat-pill.sel{border-color:var(--prov);background:var(--prov-light);}
+  .cat-pill .cp-icon{font-size:22px;margin-bottom:4px;}
+  .cat-pill .cp-label{font-size:11px;font-weight:600;color:var(--gray-600);}
+  .cat-pill.sel .cp-label{color:var(--prov);}
+  .price-box{background:var(--gray-50);border-radius:14px;padding:16px;margin-bottom:14px;}
+  .price-box label{font-size:13px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:8px;}
+  .price-input-wrap{position:relative;}
+  .price-input-wrap .currency{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:var(--gray-600);}
+  .price-input-wrap input{padding-left:32px;}
+  .discount-toggle{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 0;border-top:1px solid var(--gray-200);}
+  .discount-toggle label{font-size:13px;font-weight:600;flex:1;}
+  .toggle-sm{position:relative;width:40px;height:22px;flex-shrink:0;}
+  .toggle-sm input{opacity:0;width:0;height:0;}
+  .toggle-sm-slider{position:absolute;inset:0;background:var(--gray-200);border-radius:22px;cursor:pointer;transition:background .2s;}
+  .toggle-sm-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .toggle-sm input:checked + .toggle-sm-slider{background:var(--prov);}
+  .toggle-sm input:checked + .toggle-sm-slider::before{transform:translateX(18px);}
+  .schedule-item{background:var(--gray-50);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:center;}
+  .schedule-item .si-emoji{font-size:18px;}
+  .schedule-item .si-info{flex:1;font-size:13px;}
+  .schedule-item .si-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;}
+  .recurrence-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .rec-chip{border:1.5px solid var(--gray-200);border-radius:20px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;transition:all .15s;}
+  .rec-chip.sel{border-color:var(--prov);background:var(--prov-light);color:var(--prov);}
+  .capacity-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  .policy-card{border:2px solid var(--gray-200);border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;}
+  .policy-card.sel{border-color:var(--prov);background:var(--prov-light);}
+  .policy-card .pc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .policy-card .pc-name{font-size:14px;font-weight:700;}
+  .policy-card .pc-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+  .pc-badge.green{background:#D1FAE5;color:#065F46;}
+  .pc-badge.yellow{background:#FEF3C7;color:#92400E;}
+  .pc-badge.red{background:#FEE2E2;color:#991B1B;}
+  .policy-card .pc-desc{font-size:12px;color:var(--gray-600);line-height:1.5;}
+  .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .photo-slot{aspect-ratio:1;border-radius:14px;border:2px dashed var(--gray-200);background:var(--gray-50);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;overflow:hidden;position:relative;}
+  .photo-slot:hover{border-color:var(--prov);background:var(--prov-light);}
+  .photo-slot.filled{border-style:solid;border-color:var(--prov);}
+  .photo-slot .ps-icon{font-size:28px;margin-bottom:6px;}
+  .photo-slot .ps-label{font-size:11px;color:var(--gray-400);}
+  .photo-slot .ps-filled-emoji{font-size:48px;}
+  .photo-slot .ps-remove{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:22px;height:22px;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  /* Checklist */
+  .checklist-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);}
+  .ci-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+  .ci-icon.ok{background:#D1FAE5;}
+  .ci-icon.warn{background:#FEF3C7;}
+  .ci-label{font-size:13px;font-weight:600;flex:1;}
+  .ci-status{font-size:12px;font-weight:700;}
+  .ci-status.ok{color:var(--green);}
+  .ci-status.warn{color:var(--yellow);}
+  .submission-banner{background:linear-gradient(135deg,var(--prov),var(--prov-mid));border-radius:16px;padding:20px;color:#fff;text-align:center;margin:20px 0;}
+  .submission-banner h3{font-size:18px;font-weight:800;margin-bottom:6px;}
+  .submission-banner p{font-size:13px;opacity:.9;line-height:1.5;}
+
+  /* ── Dashboard placeholder (used as nav home) ── */
+  .prov-topbar{padding:14px 20px 10px;background:#fff;border-bottom:1px solid var(--gray-100);position:sticky;top:0;z-index:10;}
+  .prov-topbar-inner{display:flex;justify-content:space-between;align-items:center;}
+  .prov-topbar .logo{font-weight:900;font-size:20px;color:var(--prov);letter-spacing:-0.5px;}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 20px 0;}
+  .kpi-card{background:var(--gray-50);border-radius:14px;padding:14px;}
+  .kpi-card.highlight{background:linear-gradient(135deg,var(--prov),var(--prov-mid));color:#fff;}
+  .kpi-val{font-size:24px;font-weight:900;}
+  .kpi-label{font-size:11px;opacity:.7;margin-top:3px;}
+  .kpi-change{font-size:11px;font-weight:700;margin-top:6px;}
+  .kpi-change.up{color:var(--green);}
+  .kpi-change.up-w{color:rgba(255,255,255,.8);}
+  .chart-wrap{padding:16px 20px 0;}
+  .chart-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--gray-600);}
+  .bar-chart{display:flex;gap:6px;align-items:flex-end;height:80px;}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .bar{width:100%;border-radius:4px 4px 0 0;background:var(--prov-light);min-height:4px;transition:background .2s;}
+  .bar.today{background:var(--prov);}
+  .bar-day{font-size:9px;color:var(--gray-400);}
+  .bar-val{font-size:9px;font-weight:700;color:var(--prov);}
+  .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 20px 0;}
+  .qa-btn{background:var(--gray-50);border:none;border-radius:14px;padding:14px;text-align:left;cursor:pointer;transition:background .15s;}
+  .qa-btn:hover{background:var(--prov-light);}
+  .qa-icon{font-size:24px;margin-bottom:6px;}
+  .qa-label{font-size:13px;font-weight:700;color:var(--gray-800);}
+  .qa-sub{font-size:11px;color:var(--gray-400);margin-top:2px;}
+
+  /* ── E8: Bookings (PR-013) ── */
+  .booking-tabs{display:flex;background:#fff;border-bottom:1px solid var(--gray-200);position:sticky;top:57px;z-index:9;}
+  .booking-tab{flex:1;padding:12px 0;text-align:center;font-size:13px;font-weight:600;color:var(--gray-400);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
+  .booking-tab.active{color:var(--prov);border-bottom-color:var(--prov);}
+  .session-group{margin-bottom:20px;}
+  .session-header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--prov-light);border-radius:12px;margin-bottom:8px;}
+  .session-header .sh-emoji{font-size:22px;}
+  .session-header .sh-info{flex:1;}
+  .session-header .sh-title{font-size:13px;font-weight:700;color:var(--prov-dark);}
+  .session-header .sh-meta{font-size:11px;color:var(--prov);margin-top:2px;}
+  .session-header .sh-cap{font-size:12px;font-weight:700;color:var(--prov);}
+  .participant-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--gray-50);border-radius:12px;margin-bottom:6px;cursor:pointer;transition:background .15s;}
+  .participant-row:hover{background:var(--prov-light);}
+  .p-avatar-letter{width:38px;height:38px;border-radius:50%;background:var(--prov-light);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--prov);flex-shrink:0;}
+  .p-row-info{flex:1;}
+  .p-row-name{font-size:14px;font-weight:700;}
+  .p-row-meta{font-size:12px;color:var(--gray-400);margin-top:2px;}
+  .p-row-obs{display:inline-block;background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-top:4px;}
+  .p-status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .dot-confirmed{background:var(--green);}
+  .dot-pending{background:var(--yellow);}
+  .dot-cancelled{background:var(--red);}
+  /* Booking detail */
+  .detail-hero{background:linear-gradient(135deg,var(--prov),var(--prov-mid));padding:24px 20px;color:#fff;display:flex;gap:14px;align-items:center;}
+  .detail-avatar{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;flex-shrink:0;border:2.5px solid rgba(255,255,255,.5);}
+  .detail-info .di-name{font-size:18px;font-weight:800;}
+  .detail-info .di-meta{font-size:13px;opacity:.85;margin-top:4px;}
+  .info-card{background:var(--gray-50);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--gray-200);}
+  .info-row:last-child{border-bottom:none;padding-bottom:0;}
+  .info-row .ir-label{font-size:13px;color:var(--gray-400);}
+  .info-row .ir-val{font-size:13px;font-weight:700;}
+  .obs-alert{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;}
+
+  /* ── E8: Notifications (PR-014) ── */
+  .notif-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;cursor:pointer;border-bottom:1px solid var(--gray-100);transition:background .15s;}
+  .notif-item:hover{background:var(--gray-50);}
+  .notif-item.unread{background:var(--prov-light);}
+  .notif-item .ni-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .notif-item .ni-body{flex:1;}
+  .notif-item .ni-title{font-size:13px;font-weight:700;}
+  .notif-item .ni-desc{font-size:12px;color:var(--gray-600);margin-top:2px;line-height:1.4;}
+  .notif-item .ni-time{font-size:11px;color:var(--gray-400);margin-top:4px;}
+  .notif-item .ni-dot{width:8px;height:8px;border-radius:50%;background:var(--prov);flex-shrink:0;margin-top:5px;}
+
+  /* ── E8: Finance (PR-016) ── */
+  .iban-card{background:linear-gradient(135deg,var(--prov),var(--prov-mid));border-radius:16px;padding:18px 20px;color:#fff;margin-bottom:16px;}
+  .iban-card .ic-label{font-size:11px;opacity:.8;margin-bottom:6px;}
+  .iban-card .ic-num{font-size:18px;font-weight:800;letter-spacing:1px;}
+  .iban-card .ic-verified{font-size:12px;background:rgba(255,255,255,.2);border-radius:20px;padding:3px 10px;display:inline-flex;align-items:center;gap:4px;margin-top:8px;}
+  .next-payout-card{background:var(--gray-50);border:2px solid var(--prov-light);border-radius:14px;padding:16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+  .npc-left .npc-label{font-size:12px;color:var(--gray-400);font-weight:600;}
+  .npc-left .npc-amount{font-size:26px;font-weight:900;color:var(--prov);}
+  .npc-left .npc-date{font-size:12px;color:var(--gray-600);margin-top:4px;}
+  .npc-right{text-align:center;}
+  .npc-badge{background:var(--prov);color:#fff;border-radius:20px;padding:6px 14px;font-size:11px;font-weight:700;}
+  .payout-row{background:var(--gray-50);border-radius:12px;padding:14px 16px;margin-bottom:8px;}
+  .payout-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .payout-row-header .pr-date{font-size:13px;font-weight:700;}
+  .payout-row-header .pr-status{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+  .pr-status.paid{background:#D1FAE5;color:#065F46;}
+  .pr-status.pending{background:#FEF3C7;color:#92400E;}
+  .payout-breakdown{display:flex;gap:0;padding-top:8px;border-top:1px solid var(--gray-200);}
+  .pb-col{flex:1;text-align:center;}
+  .pb-col:not(:last-child){border-right:1px solid var(--gray-200);}
+  .pb-val{font-size:13px;font-weight:700;}
+  .pb-val.net{color:var(--prov);}
+  .pb-val.comm{color:var(--red);}
+  .pb-label{font-size:10px;color:var(--gray-400);margin-top:2px;}
+
+  /* ── E8: Messages (PR-017) ── */
+  .msg-conv{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-bottom:1px solid var(--gray-100);cursor:pointer;transition:background .15s;}
+  .msg-conv:hover{background:var(--gray-50);}
+  .msg-conv .mc-avatar{width:44px;height:44px;border-radius:50%;background:var(--prov-light);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--prov);flex-shrink:0;}
+  .msg-conv .mc-body{flex:1;min-width:0;}
+  .msg-conv .mc-name{font-size:14px;font-weight:700;}
+  .msg-conv .mc-preview{font-size:12px;color:var(--gray-400);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .msg-conv .mc-time{font-size:11px;color:var(--gray-400);white-space:nowrap;}
+  .msg-conv .mc-badge{background:var(--prov);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+  .blocked-banner{background:#FEE2E2;border-radius:10px;padding:10px 14px;font-size:12px;color:#991B1B;margin:8px 16px;display:flex;gap:8px;align-items:flex-start;}
+  .msg-bubble{max-width:80%;padding:10px 14px;border-radius:16px;margin-bottom:6px;font-size:13px;line-height:1.5;}
+  .msg-bubble.recv{background:var(--gray-100);border-bottom-left-radius:4px;}
+  .msg-bubble.sent{background:var(--prov);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+  .msg-bubble.blocked{background:#FEE2E2;color:#991B1B;font-style:italic;}
+
+  /* ── E8: Support (PR-018) ── */
+  .sla-badge{background:var(--prov-light);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  .sla-badge .sla-icon{font-size:22px;}
+  .sla-badge .sla-text{font-size:13px;font-weight:700;color:var(--prov-dark);}
+  .sla-badge .sla-sub{font-size:11px;color:var(--prov);margin-top:2px;}
+  .ticket-history-item{background:var(--gray-50);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;}
+  .thi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+  .thi-dot.open{background:var(--yellow);}
+  .thi-dot.closed{background:var(--green);}
+  .thi-ref{font-size:11px;font-weight:700;color:var(--gray-400);}
+  .thi-subject{font-size:13px;font-weight:600;margin-top:2px;}
+  .thi-meta{font-size:11px;color:var(--gray-400);margin-top:3px;}
+
+  [data-mode="provider"] .btn-primary { background: var(--prov) !important; }
+  [data-mode="provider"] .btn-primary:hover { background: var(--prov-dark) !important; }
+  [data-mode="provider"] .btn-outline { color: var(--prov) !important; border-color: var(--prov) !important; }
+  [data-mode="provider"] .form-input:focus { border-color: var(--prov) !important; }
+  [data-mode="provider"] .bottom-nav button.active { color: var(--prov) !important; }
+
+
+  #hu-label { position: fixed; top: 8px; right: 8px; background: rgba(20,8,44,.85); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; z-index: 9999; pointer-events: none; backdrop-filter: blur(4px); }
+  .hu-label { display: none !important; }
+
+
+  /* ── Family mode: restore orange (provider CSS would otherwise override) ── */
+  [data-mode="family"] .bottom-nav button.active { color: var(--brand) !important; }
+  [data-mode="family"] .btn-primary { background: var(--brand) !important; }
+  [data-mode="family"] .btn-primary:hover { background: var(--brand-dark) !important; }
+  [data-mode="family"] .btn-outline { color: var(--brand) !important; border-color: var(--brand) !important; }
+  [data-mode="family"] .btn-ghost { background: var(--brand-light) !important; color: var(--brand) !important; }
+  [data-mode="family"] .form-input:focus { border-color: var(--brand) !important; }
+  [data-mode="family"] .form-select:focus { border-color: var(--brand) !important; }
+  [data-mode="family"] .filter-chip.active { background: var(--brand-light) !important; border-color: var(--brand) !important; color: var(--brand) !important; }
+  [data-mode="family"] .pill.active { border-color: var(--brand) !important; background: var(--brand-light) !important; color: var(--brand) !important; }
+  [data-mode="family"] .cal-day.available { background: var(--brand-light) !important; color: var(--brand) !important; }
+  [data-mode="family"] .cal-day.selected, [data-mode="family"] .cal-day.available:hover { background: var(--brand) !important; color: #fff !important; }
+  [data-mode="family"] .toggle.on { background: var(--brand) !important; }
+  [data-mode="family"] .toggle input:checked + .toggle-slider { background: var(--brand) !important; }
+  /* Landing has no data-mode – keep buttons neutral */
+  #app:not([data-mode]) .role-card.family { background: linear-gradient(135deg, #FF6B35 0%, #FF9A6C 100%); }
+  #app:not([data-mode]) .role-card.provider { background: linear-gradient(135deg, #6C3FC5 0%, #8B5CF6 100%); }
+
 </style>
 </head>
 <body>
+<div id="hu-label"></div>
+<div class="app" id="app">
 
-<!-- ===================== SCREEN 1: HOME (US-001) ===================== -->
-<div class="app">
-  <div id="screen-home" class="screen active">
+  <!-- ===================== LANDING: ROLE SELECTOR ===================== -->
+  <div id="screen-landing" class="screen active">
+    <div class="landing-bg">
+      <div class="landing-header">
+        <div class="landing-logo">K<em>oo</em>day</div>
+        <p class="landing-tagline">La plataforma de actividades<br>para niños y familias</p>
+      </div>
+      <div class="landing-roles">
+        <div class="role-card family" onclick="enterFamilyMode()">
+          <div class="role-icon">👨‍👩‍👧‍👦</div>
+          <div class="role-text">
+            <h3>Soy familia</h3>
+            <p>Descubre y reserva actividades increíbles para tus hijos</p>
+          </div>
+          <div class="role-arrow">›</div>
+        </div>
+        <div class="role-card provider" onclick="enterProviderMode()">
+          <div class="role-icon">🏫</div>
+          <div class="role-text">
+            <h3>Soy proveedor</h3>
+            <p>Publica tus actividades y llega a miles de familias de tu zona</p>
+          </div>
+          <div class="role-arrow">›</div>
+        </div>
+      </div>
+      <div class="landing-footer">
+        <p>Kooday · La plataforma de actividades infantiles</p>
+      </div>
+    </div>
+  </div>
+  <div id="screen-home" class="screen">
     <div class="scroll-content">
       <!-- Topbar -->
       <div class="topbar">
@@ -626,7 +1036,7 @@
         </div>
       </div>
       <!-- Acceso proveedor -->
-      <div style="margin:0 20px 20px;background:linear-gradient(135deg,#F0EBFF,#EDE9FE);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="window.location='mockup-provider.html'">
+      <div style="margin:0 20px 20px;background:linear-gradient(135deg,#F0EBFF,#EDE9FE);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showScreen('screen-prov-landing')">
         <div style="font-size:28px;">🏫</div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:700;color:#6C3FC5;">¿Tienes actividades para niños?</div>
@@ -1924,8 +2334,1123 @@
       <button onclick="goToProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
     </nav>
   </div>
+  <!-- ===================== PROVIDER SCREENS ===================== -->
+  <!-- ===================== PR-001: LANDING PROVEEDOR ===================== -->
+<div id="screen-prov-landing" class="screen active">
+  <div class="scroll-content">
+    <div class="prov-hero">
+      <div class="logo">Kooday <span>Proveedores</span></div>
+      <h1>Haz crecer tu negocio con miles de familias</h1>
+      <p>Publica tus actividades, gestiona reservas y cobra de forma automática. Sin complicaciones.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-val">+2.400</div><div class="hero-stat-label">Familias activas</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">98%</div><div class="hero-stat-label">Satisfacción</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">7%</div><div class="hero-stat-label">Comisión fija</div></div>
+      </div>
+    </div>
 
-  <!-- ── Filter Drawer (US-003) ── -->
+    <div style="padding:20px;">
+      <div class="section-label">Por qué elegir Kooday</div>
+      <div class="benefit-card"><div class="bc-icon">📣</div><div><div class="bc-title">Visibilidad inmediata</div><div class="bc-desc">Llega a familias que buscan activamente actividades en tu zona. Sin publicidad ni costes fijos.</div></div></div>
+      <div class="benefit-card"><div class="bc-icon">⚡</div><div><div class="bc-title">Gestión sin esfuerzo</div><div class="bc-desc">Reservas, pagos y recordatorios automatizados. Tú solo tienes que impartir la actividad.</div></div></div>
+      <div class="benefit-card"><div class="bc-icon">💳</div><div><div class="bc-title">Cobros garantizados</div><div class="bc-desc">Pago por anticipado de las familias. Liquidación semanal directa a tu cuenta bancaria.</div></div></div>
+
+      <div class="commission-box">
+        <div class="comm-pct">Solo 7%</div>
+        <div class="comm-label">de comisión por reserva completada · Sin cuotas mensuales · Sin permanencia</div>
+      </div>
+
+      <div class="section-label">Lo que dicen nuestros proveedores</div>
+      <div class="testimonial-row">
+        <div class="testimonial-card"><div class="test-stars">⭐⭐⭐⭐⭐</div><div class="test-quote">"En el primer mes ya tenía todas las plazas cubiertas. La gestión es muy sencilla."</div><div class="test-author">Ana M.</div><div class="test-type">Profesora de música</div></div>
+        <div class="testimonial-card"><div class="test-stars">⭐⭐⭐⭐⭐</div><div class="test-quote">"Los pagos llegan puntualmente cada semana. Cero preocupaciones con la gestión."</div><div class="test-author">Carlos P.</div><div class="test-type">Club deportivo infantil</div></div>
+        <div class="testimonial-card"><div class="test-stars">⭐⭐⭐⭐⭐</div><div class="test-quote">"Mis talleres de pintura se llenan solos. Es la mejor decisión que he tomado."</div><div class="test-author">Laura R.</div><div class="test-type">Monitora de arte</div></div>
+      </div>
+
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-primary" onclick="showScreen('screen-prov-register')">Publicar mi actividad gratis →</button>
+        <button class="btn-outline" onclick="showScreen('screen-prov-login')">Ya tengo cuenta · Iniciar sesión</button>
+      </div>
+      <div style="text-align:center;margin-top:14px;">
+        <span onclick="showScreen('screen-home')" style="font-size:12px;color:var(--gray-400);cursor:pointer;">← Volver a la app de familias</span>
+      </div>
+      <div class="pb-20" style="height:30px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PR-002: REGISTRO PROVEEDOR ===================== -->
+<div id="screen-prov-register" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-landing')">←</button>
+    <span class="topbar-title">Crear cuenta proveedor</span>
+    <div style="width:32px"></div>
+  </div>
+  <div class="scroll-content" style="padding:20px;">
+    <div class="section-label">Tipo de entidad</div>
+    <div class="entity-selector">
+      <div class="entity-card sel" id="ent-autonomo" onclick="selectEntity('autonomo')">
+        <div class="ec-icon">👤</div>
+        <div class="ec-label">Autónomo</div>
+        <div class="ec-sub">Persona física</div>
+      </div>
+      <div class="entity-card" id="ent-empresa" onclick="selectEntity('empresa')">
+        <div class="ec-icon">🏢</div>
+        <div class="ec-label">Empresa</div>
+        <div class="ec-sub">Persona jurídica</div>
+      </div>
+    </div>
+
+    <div class="section-label">Datos de acceso</div>
+    <div class="input-group">
+      <label>Nombre comercial</label>
+      <input class="form-input" type="text" id="reg-nombre" placeholder="Ej: Aqua Kids Madrid" oninput="updateRegQuality()">
+      <div class="input-error">Mínimo 3 caracteres</div>
+    </div>
+    <div class="input-group">
+      <label id="doc-label">NIF del titular</label>
+      <input class="form-input" type="text" id="reg-doc" placeholder="12345678A" oninput="updateRegQuality()">
+      <div class="input-error">Formato no válido</div>
+    </div>
+    <div class="input-group" id="cif-group" style="display:none;">
+      <label>CIF de la empresa</label>
+      <input class="form-input" type="text" placeholder="B12345678">
+    </div>
+    <div class="input-group">
+      <label>Correo electrónico</label>
+      <input class="form-input" type="email" id="reg-email" placeholder="hola@miempresa.com" oninput="updateRegQuality()">
+      <div class="input-error">Email no válido</div>
+    </div>
+    <div class="input-group">
+      <label>Contraseña</label>
+      <input class="form-input" type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" oninput="updateRegQuality()">
+      <div class="input-error">Mínimo 8 caracteres</div>
+    </div>
+    <div style="font-size:12px;color:var(--gray-400);line-height:1.5;margin-bottom:20px;">
+      Al registrarte aceptas los <a href="#" style="color:var(--prov);">Términos y condiciones</a> y la <a href="#" style="color:var(--prov);">Política de privacidad</a> de Kooday para proveedores.
+    </div>
+    <button class="btn-primary" onclick="submitProvRegister()">Crear cuenta y continuar →</button>
+    <div class="pb-20"></div>
+  </div>
+</div>
+
+<!-- ===================== REGISTRO: VERIFICAR EMAIL ===================== -->
+<div id="screen-prov-verify" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-register')">←</button>
+    <span class="topbar-title">Verificar email</span>
+    <div style="width:32px"></div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px 24px;text-align:center;gap:16px;">
+    <div style="font-size:64px;">📧</div>
+    <h2 style="font-size:22px;font-weight:800;">Revisa tu email</h2>
+    <p style="font-size:14px;color:var(--gray-400);line-height:1.6;">Hemos enviado un enlace de verificación a <strong id="prov-verify-email">hola@empresa.com</strong></p>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <input class="form-input" style="width:48px;height:56px;text-align:center;font-size:22px;font-weight:700;margin:0;padding:0;" maxlength="1" oninput="provOtpNext(this)">
+      <input class="form-input" style="width:48px;height:56px;text-align:center;font-size:22px;font-weight:700;margin:0;padding:0;" maxlength="1" oninput="provOtpNext(this)">
+      <input class="form-input" style="width:48px;height:56px;text-align:center;font-size:22px;font-weight:700;margin:0;padding:0;" maxlength="1" oninput="provOtpNext(this)">
+      <input class="form-input" style="width:48px;height:56px;text-align:center;font-size:22px;font-weight:700;margin:0;padding:0;" maxlength="1" oninput="provVerifyOTP(this)">
+    </div>
+    <button class="btn-ghost" onclick="showToast('Email reenviado')">¿No lo recibiste? Reenviar</button>
+  </div>
+</div>
+
+<!-- ===================== PR-003: KYC ===================== -->
+<div id="screen-prov-kyc" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-verify')">←</button>
+    <span class="topbar-title">Verificación de identidad</span>
+    <div style="width:32px"></div>
+  </div>
+  <div class="kyc-steps" id="kyc-steps-bar">
+    <div class="kyc-step done"><div class="kyc-dot done">✓</div><div class="kyc-step-label">Cuenta</div></div>
+    <div class="kyc-step active"><div class="kyc-dot active">2</div><div class="kyc-step-label">Documentos</div></div>
+    <div class="kyc-step"><div class="kyc-dot">3</div><div class="kyc-step-label">Bancario</div></div>
+  </div>
+
+  <!-- KYC Step 2: Documentos -->
+  <div id="kyc-docs" class="scroll-content" style="padding:20px;">
+    <h3 style="font-size:16px;font-weight:800;margin-bottom:4px;">Documentación obligatoria</h3>
+    <p style="font-size:13px;color:var(--gray-400);margin-bottom:20px;">Necesitamos verificar tu identidad para habilitar los cobros. Proceso seguro y cifrado.</p>
+
+    <div class="upload-zone" id="uz-nif" onclick="uploadDoc('uz-nif','nif-label','📄 NIF/DNI subido correctamente')">
+      <div class="uz-icon">🪪</div>
+      <div class="uz-label">NIF / DNI del titular</div>
+      <div class="uz-sub">JPG, PNG o PDF · Máx. 10 MB</div>
+    </div>
+    <div class="upload-zone" id="uz-cert" onclick="uploadDoc('uz-cert','cert-label','📄 Certificado subido')">
+      <div class="uz-icon">📋</div>
+      <div class="uz-label">Certificado de actividad (autónomos)</div>
+      <div class="uz-sub">Alta en Hacienda o modelo 036/037</div>
+    </div>
+    <div class="upload-zone" id="uz-escritura" style="display:none;" onclick="uploadDoc('uz-escritura','esc-label','📄 Escritura subida')">
+      <div class="uz-icon">📜</div>
+      <div class="uz-label">Escritura de constitución</div>
+      <div class="uz-sub">Solo para empresas · PDF</div>
+    </div>
+    <button class="btn-primary" onclick="goToKycBanking()">Continuar →</button>
+    <div class="pb-20"></div>
+  </div>
+
+  <!-- KYC Step 3: Datos bancarios -->
+  <div id="kyc-banking" class="scroll-content" style="padding:20px;display:none;">
+    <h3 style="font-size:16px;font-weight:800;margin-bottom:4px;">Cuenta bancaria</h3>
+    <p style="font-size:13px;color:var(--gray-400);margin-bottom:20px;">Los pagos semanales se ingresarán directamente en esta cuenta.</p>
+    <div class="input-group">
+      <label>IBAN</label>
+      <input class="form-input" type="text" id="kyc-iban" placeholder="ES00 0000 0000 0000 0000 0000" oninput="formatIBAN(this)">
+    </div>
+    <div class="input-group">
+      <label>Titular de la cuenta</label>
+      <input class="form-input" type="text" placeholder="Debe coincidir con el titular del NIF/CIF">
+    </div>
+    <div class="input-group">
+      <label>Razón social / Nombre fiscal</label>
+      <input class="form-input" type="text" placeholder="Tal y como aparece en los documentos">
+    </div>
+    <div class="kyc-status-card pending" style="margin-bottom:20px;">
+      <div style="font-size:24px;">⏳</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#92400E;">Verificación en proceso</div>
+        <div style="font-size:12px;color:#92400E;margin-top:3px;">Tu documentación será revisada en 24–48h. Recibirás un email cuando esté aprobada.</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="submitKYC()">Enviar documentación →</button>
+    <div class="pb-20"></div>
+  </div>
+</div>
+
+<!-- ===================== PR-004: PERFIL PÚBLICO ===================== -->
+<div id="screen-prov-setup" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-kyc')">←</button>
+    <span class="topbar-title">Completa tu perfil</span>
+    <div style="width:32px"></div>
+  </div>
+  <div class="scroll-content" style="padding:20px;">
+    <div class="quality-bar-wrap">
+      <div class="qb-label"><span>Calidad del perfil</span><span id="quality-pct" style="color:var(--prov);">40%</span></div>
+      <div class="quality-bar"><div class="quality-fill" id="quality-fill" style="width:40%"></div></div>
+      <div style="font-size:11px;color:var(--gray-400);margin-top:6px;">Completa todos los campos para maximizar visibilidad y reservas</div>
+    </div>
+
+    <div style="display:flex;align-items:flex-end;gap:16px;margin-bottom:20px;">
+      <div class="logo-upload" onclick="showToast('Sube tu logo o foto de portada')">
+        🏊<div class="lu-edit">✏️</div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;">Logo / foto de portada</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:3px;">Recomendado: 400×400px · JPG o PNG</div>
+        <button class="btn-ghost" style="font-size:12px;padding:4px 0;" onclick="showToast('Abriendo galería...')">Subir imagen</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Nombre del negocio</label>
+      <input class="form-input" type="text" id="setup-name" value="Aqua Kids Madrid" oninput="updateQuality()">
+    </div>
+    <div class="input-group">
+      <label>Descripción <span style="color:var(--gray-400);font-weight:400;">(min. 50 caracteres)</span></label>
+      <textarea class="form-input" id="setup-desc" rows="4" oninput="updateQuality()" style="resize:none;">Somos un centro especializado en actividades acuáticas para bebés y niños pequeños. Contamos con monitores certificados y piscina climatizada.</textarea>
+      <div style="text-align:right;font-size:11px;color:var(--gray-400);" id="setup-desc-count">112 / 500</div>
+    </div>
+    <div class="input-group">
+      <label>Ubicación</label>
+      <input class="form-input" type="text" id="setup-loc" value="Madrid, Comunidad de Madrid" oninput="updateQuality()">
+    </div>
+    <div class="capacity-row">
+      <div class="input-group" style="margin:0;">
+        <label>Años de experiencia</label>
+        <input class="form-input" type="number" id="setup-years" value="8" min="0" oninput="updateQuality()">
+      </div>
+      <div class="input-group" style="margin:0;">
+        <label>Categoría principal</label>
+        <select class="form-select" style="margin:0;" onchange="updateQuality()">
+          <option>Deportes acuáticos</option>
+          <option>Artes</option>
+          <option>Música</option>
+          <option>Naturaleza</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="preview-mini-card">
+      <div class="pmc-label">Preview · Así te verán las familias</div>
+      <div class="pmc-inner">
+        <div class="pmc-logo">🏊</div>
+        <div>
+          <div class="pmc-name" id="pmc-name">Aqua Kids Madrid</div>
+          <div class="pmc-desc" id="pmc-desc">Actividades acuáticas para bebés y niños pequeños con monitores certificados.</div>
+          <div class="pmc-rating">📍 Madrid · 8 años de experiencia · ⭐ Nuevo</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary" style="margin-top:20px;" onclick="saveProvProfile()">Guardar y continuar →</button>
+    <div class="pb-20"></div>
+  </div>
+</div>
+
+<!-- ===================== DASHBOARD HOME (PR-015 placeholder) ===================== -->
+<div id="screen-prov-home" class="screen">
+  <div class="prov-topbar">
+    <div class="prov-topbar-inner">
+      <div>
+        <div class="logo">Kooday <span style="font-size:11px;font-weight:600;color:var(--gray-400);vertical-align:middle;">Proveedor</span></div>
+        <div style="font-size:12px;color:var(--gray-400);">¡Buenos días, Aqua Kids! 👋</div>
+      </div>
+      <div class="notif-badge" onclick="showToast('3 notificaciones nuevas')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-content">
+    <div class="kpi-grid">
+      <div class="kpi-card highlight">
+        <div class="kpi-val">12</div>
+        <div class="kpi-label">Reservas este mes</div>
+        <div class="kpi-change up-w">▲ +3 vs mes anterior</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color:var(--prov);">234€</div>
+        <div class="kpi-label">Ingresos netos</div>
+        <div class="kpi-change up" style="color:var(--green);">▲ +18%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color:var(--prov);">75%</div>
+        <div class="kpi-label">Ocupación media</div>
+        <div class="kpi-change" style="color:var(--gray-400);">— Sin cambios</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color:var(--prov);">4.9</div>
+        <div class="kpi-label">Rating medio</div>
+        <div class="kpi-change up" style="color:var(--green);">⭐ 14 valoraciones</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Reservas · Últimos 7 días</div>
+      <div class="bar-chart">
+        <div class="bar-col"><div class="bar-val">1</div><div class="bar" style="height:20%;"></div><div class="bar-day">L</div></div>
+        <div class="bar-col"><div class="bar-val">3</div><div class="bar" style="height:60%;"></div><div class="bar-day">M</div></div>
+        <div class="bar-col"><div class="bar-val">2</div><div class="bar" style="height:40%;"></div><div class="bar-day">X</div></div>
+        <div class="bar-col"><div class="bar-val">4</div><div class="bar" style="height:80%;"></div><div class="bar-day">J</div></div>
+        <div class="bar-col"><div class="bar-val">3</div><div class="bar" style="height:60%;"></div><div class="bar-day">V</div></div>
+        <div class="bar-col"><div class="bar-val">5</div><div class="bar" style="height:100%;"></div><div class="bar-day">S</div></div>
+        <div class="bar-col"><div class="bar-val">2</div><div class="bar today" style="height:40%;"></div><div class="bar-day">D</div></div>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <button class="qa-btn" onclick="showScreen('screen-prov-wizard')">
+        <div class="qa-icon">➕</div>
+        <div class="qa-label">Nueva actividad</div>
+        <div class="qa-sub">Crear y publicar</div>
+      </button>
+      <button class="qa-btn" onclick="showScreen('screen-prov-activities')">
+        <div class="qa-icon">📋</div>
+        <div class="qa-label">Mis actividades</div>
+        <div class="qa-sub">2 publicadas</div>
+      </button>
+    </div>
+
+    <div style="padding:16px 20px 0;">
+      <div class="section-label">Top actividades</div>
+      <div class="act-item" onclick="showScreen('screen-prov-activities')">
+        <div class="act-item-header">
+          <div class="act-emoji">🏊</div>
+          <div class="act-info">
+            <div class="act-title">Natación bebés 0-3 años</div>
+            <div class="act-meta">18 €/ses. · Lun/Mié/Vie</div>
+          </div>
+          <span class="activity-status-badge status-live">Publicada</span>
+        </div>
+        <div class="act-item-footer">
+          <div class="act-stat"><div class="act-stat-val">8</div><div class="act-stat-label">Reservas</div></div>
+          <div class="act-stat"><div class="act-stat-val">75%</div><div class="act-stat-label">Ocupación</div></div>
+          <div class="act-stat"><div class="act-stat-val">4.9 ⭐</div><div class="act-stat-label">Rating</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="pb-20" style="height:50px;"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="active" onclick="showScreen('screen-prov-home')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Inicio
+    </button>
+    <button onclick="showScreen('screen-prov-activities')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Actividades
+    </button>
+    <button onclick="showScreen('screen-prov-bookings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Reservas
+    </button>
+    <button onclick="showScreen('screen-prov-finance')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finanzas
+    </button>
+    <button onclick="showScreen('screen-prov-setup')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil
+    </button>
+  </nav>
+</div>
+
+<!-- ===================== PR-011: LISTA ACTIVIDADES ===================== -->
+<div id="screen-prov-activities" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-home')">←</button>
+    <span class="topbar-title">Mis actividades</span>
+    <div style="width:32px"></div>
+  </div>
+  <div class="scroll-content" style="padding:16px 20px;">
+    <!-- Publicada -->
+    <div class="act-item" onclick="showToast('Editar: Natación bebés')">
+      <div class="act-item-header">
+        <div class="act-emoji">🏊</div>
+        <div class="act-info">
+          <div class="act-title">Natación bebés 0-3 años</div>
+          <div class="act-meta">18 €/ses. · 8 plazas · Lun/Mié/Vie</div>
+        </div>
+        <span class="activity-status-badge status-live">Publicada</span>
+      </div>
+      <div class="act-item-footer">
+        <div class="act-stat"><div class="act-stat-val">8</div><div class="act-stat-label">Reservas</div></div>
+        <div class="act-stat"><div class="act-stat-val">4.9⭐</div><div class="act-stat-label">Rating</div></div>
+        <div class="act-stat"><div class="act-stat-val">75%</div><div class="act-stat-label">Ocupación</div></div>
+      </div>
+    </div>
+    <!-- En revisión -->
+    <div class="act-item" onclick="showToast('Ver estado de revisión')">
+      <div class="act-item-header">
+        <div class="act-emoji">🎨</div>
+        <div class="act-info">
+          <div class="act-title">Taller de manualidades 4-7</div>
+          <div class="act-meta">12 €/ses. · 10 plazas · Sábados</div>
+        </div>
+        <span class="activity-status-badge status-review">En revisión</span>
+      </div>
+      <div class="act-item-footer">
+        <div style="font-size:12px;color:var(--gray-400);">📅 Enviada hace 2 días · Respuesta en &lt; 24h</div>
+        <button class="btn-ghost" style="font-size:12px;padding:4px 0;" onclick="event.stopPropagation();showToast('Edición bloqueada durante revisión')">Ver estado</button>
+      </div>
+    </div>
+    <!-- Borrador -->
+    <div class="act-item" onclick="showScreen('screen-prov-wizard')">
+      <div class="act-item-header">
+        <div class="act-emoji">⚽</div>
+        <div class="act-info">
+          <div class="act-title">Fútbol sala 6-9 años</div>
+          <div class="act-meta">Borrador · Paso 3 de 7</div>
+        </div>
+        <span class="activity-status-badge status-draft">Borrador</span>
+      </div>
+      <div class="act-item-footer">
+        <div style="font-size:12px;color:var(--gray-400);">Continúa donde lo dejaste</div>
+        <button class="btn-ghost" style="font-size:12px;" onclick="event.stopPropagation();showScreen('screen-prov-wizard')">Continuar →</button>
+      </div>
+    </div>
+    <!-- Rechazada -->
+    <div class="act-item" onclick="showToast('Ver motivo del rechazo')">
+      <div class="act-item-header">
+        <div class="act-emoji">🎵</div>
+        <div class="act-info">
+          <div class="act-title">Piano infantil 5-10 años</div>
+          <div class="act-meta">25 €/ses. · 6 plazas · Mié/Vie</div>
+        </div>
+        <span class="activity-status-badge status-rejected">Rechazada</span>
+      </div>
+      <div class="act-item-footer">
+        <div style="font-size:12px;color:var(--red);">⚠ Fotos de baja calidad · Descripción incompleta</div>
+        <button class="btn-ghost" style="font-size:12px;color:var(--red);" onclick="event.stopPropagation();showScreen('screen-prov-wizard')">Corregir →</button>
+      </div>
+    </div>
+    <div class="pb-20" style="height:60px;"></div>
+  </div>
+  <button class="fab" onclick="showScreen('screen-prov-wizard')">＋</button>
+  <nav class="bottom-nav">
+    <button onclick="showScreen('screen-prov-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Inicio</button>
+    <button class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Actividades</button>
+    <button onclick="showScreen('screen-prov-bookings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Reservas</button>
+    <button onclick="showScreen('screen-prov-finance')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finanzas</button>
+    <button onclick="showScreen('screen-prov-setup')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+  </nav>
+</div>
+
+<!-- ===================== PR-005–010: WIZARD CREAR ACTIVIDAD ===================== -->
+<div id="screen-prov-wizard" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="wizardBack()">←</button>
+    <span class="topbar-title" id="wz-topbar-title">Nueva actividad</span>
+    <button class="btn-ghost" style="font-size:12px;" onclick="showToast('Borrador guardado automáticamente')">Guardar</button>
+  </div>
+
+  <div class="wizard-steps" id="wizard-steps">
+    <div class="wz-step active" id="ws-0"><div class="wz-dot active">1</div><div class="wz-label">Básico</div></div>
+    <div class="wz-step" id="ws-1"><div class="wz-dot">2</div><div class="wz-label">Precio</div></div>
+    <div class="wz-step" id="ws-2"><div class="wz-dot">3</div><div class="wz-label">Horarios</div></div>
+    <div class="wz-step" id="ws-3"><div class="wz-dot">4</div><div class="wz-label">Aforo</div></div>
+    <div class="wz-step" id="ws-4"><div class="wz-dot">5</div><div class="wz-label">Política</div></div>
+    <div class="wz-step" id="ws-5"><div class="wz-dot">6</div><div class="wz-label">Fotos</div></div>
+    <div class="wz-step" id="ws-6"><div class="wz-dot">7</div><div class="wz-label">Revisión</div></div>
+  </div>
+
+  <div class="wizard-body">
+
+    <!-- Step 1: Básico (PR-005) -->
+    <div class="wizard-panel active" id="wp-0">
+      <div class="wz-title">Información básica</div>
+      <div class="wz-subtitle">Cuéntanos de qué trata tu actividad</div>
+      <div class="input-group">
+        <label>Título de la actividad</label>
+        <input class="form-input" type="text" id="wz-titulo" placeholder="Ej: Natación bebés 0-3 años" value="Fútbol sala 6-9 años">
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:10px;">Categoría</div>
+      <div class="cat-grid">
+        <div class="cat-pill" onclick="selectCat(this)"><div class="cp-icon">⚽</div><div class="cp-label">Deporte</div></div>
+        <div class="cat-pill sel" onclick="selectCat(this)"><div class="cp-icon">⚽</div><div class="cp-label">Fútbol</div></div>
+        <div class="cat-pill" onclick="selectCat(this)"><div class="cp-icon">🎨</div><div class="cp-label">Arte</div></div>
+        <div class="cat-pill" onclick="selectCat(this)"><div class="cp-icon">🎵</div><div class="cp-label">Música</div></div>
+        <div class="cat-pill" onclick="selectCat(this)"><div class="cp-icon">🌿</div><div class="cp-label">Naturaleza</div></div>
+        <div class="cat-pill" onclick="selectCat(this)"><div class="cp-icon">🔬</div><div class="cp-label">Ciencia</div></div>
+      </div>
+      <div class="input-group">
+        <label>Descripción <span style="color:var(--gray-400);font-weight:400;">(min. 50 chars)</span></label>
+        <textarea class="form-input" id="wz-desc" rows="4" style="resize:none;" placeholder="Describe la actividad, metodología, qué aprenderán los niños...">Entrenamiento de fútbol sala para niños de 6 a 9 años. Trabajamos técnica, táctica y valores como el trabajo en equipo.</textarea>
+      </div>
+      <div class="input-group">
+        <label>Ubicación</label>
+        <input class="form-input" type="text" value="Polideportivo La Paloma, Madrid">
+      </div>
+    </div>
+
+    <!-- Step 2: Precio (PR-006) -->
+    <div class="wizard-panel" id="wp-1">
+      <div class="wz-title">Precio</div>
+      <div class="wz-subtitle">Define el precio por sesión</div>
+      <div class="price-box">
+        <label>Precio por sesión</label>
+        <div class="price-input-wrap">
+          <span class="currency">€</span>
+          <input class="form-input" type="number" id="wz-price" value="15" min="1" step="0.5" style="margin:0;" oninput="updatePricePreview()">
+        </div>
+        <div class="discount-toggle">
+          <label>Precio con descuento (precio tachado)</label>
+          <label class="toggle-sm"><input type="checkbox" id="discount-toggle" onchange="toggleDiscount()"><span class="toggle-sm-slider"></span></label>
+        </div>
+      </div>
+      <div class="price-box" id="discount-box" style="display:none;">
+        <label>Precio original (se mostrará tachado)</label>
+        <div class="price-input-wrap">
+          <span class="currency">€</span>
+          <input class="form-input" type="number" id="wz-price-original" value="20" min="1" step="0.5" style="margin:0;">
+        </div>
+      </div>
+      <div style="background:var(--prov-light);border-radius:12px;padding:14px;margin-top:8px;">
+        <div style="font-size:12px;color:var(--prov-dark);font-weight:600;">Vista previa del precio</div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:8px;">
+          <span id="price-preview-val" style="font-size:22px;font-weight:900;color:var(--prov);">15 €</span>
+          <span id="price-preview-orig" style="font-size:14px;color:var(--gray-400);text-decoration:line-through;display:none;">20 €</span>
+          <span style="font-size:12px;color:var(--gray-400);">/sesión</span>
+        </div>
+        <div style="font-size:11px;color:var(--prov-dark);margin-top:6px;">💰 Recibirás: <strong id="price-net">13,95 €</strong> / sesión (después de comisión 7%)</div>
+      </div>
+    </div>
+
+    <!-- Step 3: Horarios (PR-007) -->
+    <div class="wizard-panel" id="wp-2">
+      <div class="wz-title">Horarios y sesiones</div>
+      <div class="wz-subtitle">¿Cuándo se imparte la actividad?</div>
+      <div class="input-group">
+        <label>Fecha de la primera sesión</label>
+        <input class="form-input" type="date" id="wz-fecha" style="margin:0;" value="2026-06-20">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div class="input-group" style="margin:0;"><label>Hora inicio</label><input class="form-input" type="time" value="10:00" style="margin:0;"></div>
+        <div class="input-group" style="margin:0;"><label>Duración</label>
+          <select class="form-select" style="margin:0;">
+            <option>45 minutos</option>
+            <option selected>60 minutos</option>
+            <option>90 minutos</option>
+            <option>2 horas</option>
+          </select>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:8px;">Recurrencia</div>
+      <div class="recurrence-chips">
+        <div class="rec-chip" onclick="toggleWzChip(this)">Sin repetir</div>
+        <div class="rec-chip sel" onclick="toggleWzChip(this)">Semanal</div>
+        <div class="rec-chip" onclick="toggleWzChip(this)">Lunes</div>
+        <div class="rec-chip sel" onclick="toggleWzChip(this)">Miércoles</div>
+        <div class="rec-chip sel" onclick="toggleWzChip(this)">Viernes</div>
+        <div class="rec-chip" onclick="toggleWzChip(this)">Sábados</div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:8px;">Sesiones añadidas</div>
+      <div id="schedule-list">
+        <div class="schedule-item"><div class="si-emoji">📅</div><div class="si-info"><strong>Lun 20 jun · 10:00h</strong> · 60 min</div><button class="si-del" onclick="removeScheduleItem(this)">✕</button></div>
+        <div class="schedule-item"><div class="si-emoji">📅</div><div class="si-info"><strong>Mié 22 jun · 10:00h</strong> · 60 min</div><button class="si-del" onclick="removeScheduleItem(this)">✕</button></div>
+        <div class="schedule-item"><div class="si-emoji">📅</div><div class="si-info"><strong>Vie 24 jun · 10:00h</strong> · 60 min</div><button class="si-del" onclick="removeScheduleItem(this)">✕</button></div>
+      </div>
+      <button class="btn-ghost" style="margin-top:8px;" onclick="addScheduleItem()">＋ Añadir sesión manualmente</button>
+    </div>
+
+    <!-- Step 4: Aforo y edad (PR-008) -->
+    <div class="wizard-panel" id="wp-3">
+      <div class="wz-title">Aforo y edad</div>
+      <div class="wz-subtitle">Define quién puede participar</div>
+      <div class="input-group">
+        <label>Capacidad máxima por sesión</label>
+        <input class="form-input" type="number" id="wz-capacity" value="12" min="1" max="100">
+        <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Plazas disponibles para reservar por sesión</div>
+      </div>
+      <div class="capacity-row">
+        <div class="input-group" style="margin:0;">
+          <label>Edad mínima</label>
+          <div style="position:relative;">
+            <input class="form-input" type="number" id="wz-edad-min" value="6" min="0" max="17" style="margin:0;">
+            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--gray-400);">años</span>
+          </div>
+        </div>
+        <div class="input-group" style="margin:0;">
+          <label>Edad máxima</label>
+          <div style="position:relative;">
+            <input class="form-input" type="number" id="wz-edad-max" value="9" min="0" max="17" style="margin:0;">
+            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--gray-400);">años</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--prov-light);border-radius:12px;padding:14px;margin-top:8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--prov);">👶 Resumen de participantes</div>
+        <div style="font-size:12px;color:var(--prov-dark);margin-top:6px;">Grupo de <strong id="age-summary">6 a 9 años</strong> · Máx. <strong id="cap-summary">12 niños</strong> por sesión</div>
+      </div>
+    </div>
+
+    <!-- Step 5: Política de cancelación (PR-009) -->
+    <div class="wizard-panel" id="wp-4">
+      <div class="wz-title">Política de cancelación</div>
+      <div class="wz-subtitle">¿Qué pasa si una familia cancela?</div>
+      <div class="policy-card sel" id="policy-flexible" onclick="selectPolicy('flexible')">
+        <div class="pc-header"><span class="pc-name">🟢 Flexible</span><span class="pc-badge green">Recomendada</span></div>
+        <div class="pc-desc">Reembolso del 100% si se cancela con más de 24h de antelación. Más reservas, más confianza.</div>
+      </div>
+      <div class="policy-card" id="policy-media" onclick="selectPolicy('media')">
+        <div class="pc-header"><span class="pc-name">🟡 Moderada</span><span class="pc-badge yellow">Equilibrada</span></div>
+        <div class="pc-desc">Reembolso del 50% si se cancela entre 24h y 48h antes. Sin reembolso si es con menos de 24h.</div>
+      </div>
+      <div class="policy-card" id="policy-estricta" onclick="selectPolicy('estricta')">
+        <div class="pc-header"><span class="pc-name">🔴 Estricta</span><span class="pc-badge red">Sin reembolso</span></div>
+        <div class="pc-desc">No se realizan reembolsos una vez confirmada la reserva. Puede reducir la tasa de conversión.</div>
+      </div>
+      <div style="background:var(--gray-50);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--gray-600);">
+        ℹ️ La política seleccionada se muestra claramente en la ficha de actividad antes de que la familia reserve.
+      </div>
+    </div>
+
+    <!-- Step 6: Fotos (PR-010) -->
+    <div class="wizard-panel" id="wp-5">
+      <div class="wz-title">Fotos de la actividad</div>
+      <div class="wz-subtitle">Las actividades con buenas fotos convierten 3× más</div>
+      <div class="photo-grid">
+        <div class="photo-slot filled" id="photo-0" onclick="togglePhoto(0)">
+          <div class="ps-filled-emoji">⚽</div>
+          <button class="ps-remove" onclick="event.stopPropagation();removePhoto(0)">✕</button>
+        </div>
+        <div class="photo-slot" id="photo-1" onclick="addPhoto(1)">
+          <div class="ps-icon">📷</div>
+          <div class="ps-label">Añadir foto</div>
+        </div>
+        <div class="photo-slot" id="photo-2" onclick="addPhoto(2)">
+          <div class="ps-icon">📷</div>
+          <div class="ps-label">Añadir foto</div>
+        </div>
+        <div class="photo-slot" id="photo-3" onclick="addPhoto(3)">
+          <div class="ps-icon">📷</div>
+          <div class="ps-label">Añadir foto</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--gray-400);line-height:1.6;margin-bottom:8px;">
+        📌 Formatos: JPG, PNG, WEBP · Máx. 10 MB por foto · Mínimo 1 foto requerida<br>
+        🖼 La primera foto será la portada principal de tu actividad.
+      </div>
+      <div style="background:#FFFBEB;border-radius:12px;padding:12px 14px;font-size:12px;color:#92400E;">
+        💡 <strong>Consejo:</strong> Usa fotos reales de tus sesiones con buena iluminación y niños participando activamente.
+      </div>
+    </div>
+
+    <!-- Step 7: Revisión y envío (PR-011) -->
+    <div class="wizard-panel" id="wp-6">
+      <div class="wz-title">Revisión previa</div>
+      <div class="wz-subtitle">Comprueba que todo esté completo antes de enviar</div>
+      <div id="checklist">
+        <div class="checklist-item"><div class="ci-icon ok">✅</div><div class="ci-label">Título y descripción</div><span class="ci-status ok">Completo</span></div>
+        <div class="checklist-item"><div class="ci-icon ok">✅</div><div class="ci-label">Categoría seleccionada</div><span class="ci-status ok">Fútbol</span></div>
+        <div class="checklist-item"><div class="ci-icon ok">✅</div><div class="ci-label">Precio definido</div><span class="ci-status ok">15 €/ses.</span></div>
+        <div class="checklist-item"><div class="ci-icon ok">✅</div><div class="ci-label">Sesiones creadas</div><span class="ci-status ok">3 sesiones</span></div>
+        <div class="checklist-item"><div class="ci-icon ok">✅</div><div class="ci-label">Aforo y rango de edad</div><span class="ci-status ok">6–9 años · 12 plazas</span></div>
+        <div class="checklist-item"><div class="ci-icon ok">✅</div><div class="ci-label">Política de cancelación</div><span class="ci-status ok">Flexible</span></div>
+        <div class="checklist-item"><div class="ci-icon warn">⚠️</div><div class="ci-label">Fotos</div><span class="ci-status warn">Solo 1 (mín. requerido)</span></div>
+      </div>
+      <div class="submission-banner" id="submission-banner" style="display:none;">
+        <div style="font-size:40px;margin-bottom:10px;">🎉</div>
+        <h3>¡Actividad enviada a revisión!</h3>
+        <p>Nuestro equipo la revisará en menos de 24h. Recibirás un email cuando esté publicada.</p>
+        <div style="background:rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;font-size:12px;margin-top:10px;">Ref: ACT-2026-0034</div>
+      </div>
+    </div>
+
+  </div><!-- /wizard-body -->
+
+  <div class="wizard-footer">
+    <button class="btn-outline" onclick="wizardBack()">Atrás</button>
+    <button class="btn-primary" id="wz-next-btn" onclick="wizardNext()">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ===================== PR-002: LOGIN ===================== -->
+<div id="screen-prov-login" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-landing')">←</button>
+    <span class="topbar-title">Iniciar sesión</span>
+    <div style="width:32px"></div>
+  </div>
+  <div style="padding:30px 24px 20px;flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div style="font-size:28px;margin-bottom:20px;text-align:center;">🔐</div>
+    <div class="input-group">
+      <label>Correo electrónico</label>
+      <input class="form-input" type="email" placeholder="hola@miempresa.com">
+    </div>
+    <div class="input-group">
+      <label>Contraseña</label>
+      <input class="form-input" type="password" placeholder="Tu contraseña">
+    </div>
+    <button class="btn-primary" style="margin-top:8px;" onclick="showScreen('screen-prov-home')">Entrar al panel →</button>
+    <button class="btn-ghost" style="margin-top:12px;text-align:center;" onclick="showToast('Te enviamos un enlace de recuperación')">¿Olvidaste tu contraseña?</button>
+    <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--gray-400);">¿Aún no tienes cuenta? <span style="color:var(--prov);font-weight:700;cursor:pointer;" onclick="showScreen('screen-prov-register')">Regístrate gratis</span></div>
+  </div>
+</div>
+
+<!-- ===================== PR-013: RESERVAS ===================== -->
+<div id="screen-prov-bookings" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-home')">←</button>
+    <span class="topbar-title">Reservas</span>
+    <div style="font-size:12px;color:var(--prov);font-weight:700;cursor:pointer;" onclick="showToast('Exportar a CSV próximamente')">Exportar</div>
+  </div>
+  <div class="booking-tabs">
+    <div class="booking-tab active" id="btab-today" onclick="switchBookingTab('today')">Hoy</div>
+    <div class="booking-tab" id="btab-week" onclick="switchBookingTab('week')">Esta semana</div>
+    <div class="booking-tab" id="btab-all" onclick="switchBookingTab('all')">Todas</div>
+  </div>
+  <div class="scroll-content" style="padding:16px;" id="bookings-list">
+    <!-- Sesión 1 -->
+    <div class="session-group">
+      <div class="session-header">
+        <div class="sh-emoji">🏊</div>
+        <div class="sh-info">
+          <div class="sh-title">Natación bebés 0-3 años</div>
+          <div class="sh-meta">📅 Lun 15 jun · 10:30h · 60 min</div>
+        </div>
+        <div class="sh-cap">6/8 plazas</div>
+      </div>
+      <div class="participant-row" onclick="showProvBookingDetail('lucía')">
+        <div class="p-avatar-letter">L</div>
+        <div class="p-row-info">
+          <div class="p-row-name">Lucía García</div>
+          <div class="p-row-meta">👧 6 años · Reserva KDY-2026-00847</div>
+          <span class="p-row-obs">⚠ Alergia al cloro</span>
+        </div>
+        <div class="p-status-dot dot-confirmed"></div>
+      </div>
+      <div class="participant-row" onclick="showProvBookingDetail('marcos')">
+        <div class="p-avatar-letter">M</div>
+        <div class="p-row-info">
+          <div class="p-row-name">Marcos Pérez</div>
+          <div class="p-row-meta">👦 4 años · Reserva KDY-2026-00912</div>
+        </div>
+        <div class="p-status-dot dot-confirmed"></div>
+      </div>
+      <div class="participant-row" onclick="showProvBookingDetail('sofia')">
+        <div class="p-avatar-letter">S</div>
+        <div class="p-row-info">
+          <div class="p-row-name">Sofía Ruiz</div>
+          <div class="p-row-meta">👧 3 años · Reserva KDY-2026-00934</div>
+        </div>
+        <div class="p-status-dot dot-pending"></div>
+      </div>
+    </div>
+    <!-- Sesión 2 -->
+    <div class="session-group">
+      <div class="session-header">
+        <div class="sh-emoji">🏊</div>
+        <div class="sh-info">
+          <div class="sh-title">Natación bebés 0-3 años</div>
+          <div class="sh-meta">📅 Lun 15 jun · 12:00h · 60 min</div>
+        </div>
+        <div class="sh-cap">3/8 plazas</div>
+      </div>
+      <div class="participant-row" onclick="showProvBookingDetail('ana')">
+        <div class="p-avatar-letter">A</div>
+        <div class="p-row-info">
+          <div class="p-row-name">Ana Martínez</div>
+          <div class="p-row-meta">👧 2 años · Reserva KDY-2026-00956</div>
+        </div>
+        <div class="p-status-dot dot-confirmed"></div>
+      </div>
+      <div class="participant-row" onclick="showProvBookingDetail('pedro')">
+        <div class="p-avatar-letter">P</div>
+        <div class="p-row-info">
+          <div class="p-row-name">Pedro López</div>
+          <div class="p-row-meta">👦 1 año · Reserva KDY-2026-00963</div>
+          <span class="p-row-obs">ℹ Primera vez en piscina</span>
+        </div>
+        <div class="p-status-dot dot-confirmed"></div>
+      </div>
+    </div>
+    <div style="height:60px;"></div>
+  </div>
+  <nav class="bottom-nav">
+    <button onclick="showScreen('screen-prov-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Inicio</button>
+    <button onclick="showScreen('screen-prov-activities')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Actividades</button>
+    <button class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Reservas</button>
+    <button onclick="showScreen('screen-prov-finance')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finanzas</button>
+    <button onclick="showScreen('screen-prov-setup')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+  </nav>
+</div>
+
+<!-- DETALLE RESERVA -->
+<div id="screen-prov-booking-detail" class="screen">
+  <div class="topbar" style="background:transparent;position:absolute;top:0;left:0;right:0;border:none;z-index:5;">
+    <button class="back-btn" style="background:rgba(255,255,255,.9);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;" onclick="showScreen('screen-prov-bookings')">←</button>
+    <div style="width:36px;"></div>
+  </div>
+  <div class="scroll-content">
+    <div class="detail-hero">
+      <div class="detail-avatar" id="bd-avatar">L</div>
+      <div class="detail-info">
+        <div class="di-name" id="bd-name">Lucía García</div>
+        <div class="di-meta" id="bd-meta">👧 6 años · Tutora: María García</div>
+      </div>
+    </div>
+    <div style="padding:16px 20px;">
+      <div id="bd-obs-wrap" class="obs-alert" style="display:none;">
+        <div style="font-size:22px;">⚠️</div>
+        <div><div style="font-size:13px;font-weight:700;color:#92400E;">Observaciones especiales</div><div style="font-size:13px;color:#92400E;margin-top:4px;" id="bd-obs">Alergia al cloro</div></div>
+      </div>
+      <div class="info-card">
+        <div class="info-row"><span class="ir-label">Actividad</span><span class="ir-val">Natación bebés 0-3 años</span></div>
+        <div class="info-row"><span class="ir-label">Sesión</span><span class="ir-val">Lun 15 jun · 10:30h</span></div>
+        <div class="info-row"><span class="ir-label">Reserva</span><span class="ir-val">KDY-2026-00847</span></div>
+        <div class="info-row"><span class="ir-label">Importe</span><span class="ir-val" style="color:var(--prov);">18,00 €</span></div>
+        <div class="info-row"><span class="ir-label">Estado</span><span class="ir-val" style="color:var(--green);">✓ Confirmada</span></div>
+      </div>
+      <div class="info-card">
+        <div style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Datos de contacto</div>
+        <div class="info-row"><span class="ir-label">Tutor/a</span><span class="ir-val">María García</span></div>
+        <div class="info-row"><span class="ir-label">Contacto</span><span class="ir-val" style="color:var(--prov);cursor:pointer;" onclick="showScreen('screen-prov-messages')">Enviar mensaje →</span></div>
+      </div>
+      <div style="background:#F0FDF4;border-radius:12px;padding:12px 14px;font-size:12px;color:#166534;margin-bottom:16px;">
+        ✓ El pago de 18,00 € fue recibido el 10 jun 2026. Se liquidará el 15 jun 2026.
+      </div>
+      <button class="btn-outline" style="padding:12px;" onclick="showToast('✓ Asistencia confirmada')">Confirmar asistencia</button>
+      <div style="height:30px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PR-014: NOTIFICACIONES ===================== -->
+<div id="screen-prov-notifications" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-home')">←</button>
+    <span class="topbar-title">Notificaciones</span>
+    <button class="btn-ghost" style="font-size:12px;" onclick="markAllRead()">Marcar leídas</button>
+  </div>
+  <div id="notif-list">
+    <div class="notif-item unread" onclick="markRead(this)">
+      <div class="ni-icon" style="background:#D1FAE5;">🆕</div>
+      <div class="ni-body">
+        <div class="ni-title">Nueva reserva recibida</div>
+        <div class="ni-desc">Sofía Ruiz ha reservado <strong>Natación bebés</strong> para el Lun 15 jun · 10:30h. Importe: 18,00 €</div>
+        <div class="ni-time">Hace 5 minutos</div>
+      </div>
+      <div class="ni-dot"></div>
+    </div>
+    <div class="notif-item unread" onclick="markRead(this)">
+      <div class="ni-icon" style="background:#D1FAE5;">💳</div>
+      <div class="ni-body">
+        <div class="ni-title">Pago recibido</div>
+        <div class="ni-desc">Confirmación de pago de <strong>18,00 €</strong> de Lucía García · KDY-2026-00847</div>
+        <div class="ni-time">Hace 1 hora</div>
+      </div>
+      <div class="ni-dot"></div>
+    </div>
+    <div class="notif-item unread" onclick="markRead(this)">
+      <div class="ni-icon" style="background:#FEE2E2;">❌</div>
+      <div class="ni-body">
+        <div class="ni-title">Reserva cancelada</div>
+        <div class="ni-desc">Carlos Muñoz ha cancelado <strong>Natación bebés</strong> del Mar 16 jun. Reembolso procesado: 18,00 €</div>
+        <div class="ni-time">Hace 3 horas</div>
+      </div>
+      <div class="ni-dot"></div>
+    </div>
+    <div class="notif-item" onclick="markRead(this)">
+      <div class="ni-icon" style="background:#FEF3C7;">⭐</div>
+      <div class="ni-body">
+        <div class="ni-title">Nueva valoración</div>
+        <div class="ni-desc">Ana Pérez ha valorado <strong>Natación bebés</strong> con 4,8 estrellas: "Muy buen trato y atención"</div>
+        <div class="ni-time">Ayer · 18:32</div>
+      </div>
+    </div>
+    <div class="notif-item" onclick="markRead(this)">
+      <div class="ni-icon" style="background:#D1FAE5;">💰</div>
+      <div class="ni-body">
+        <div class="ni-title">Liquidación enviada</div>
+        <div class="ni-desc"><strong>234,50 €</strong> enviados a tu cuenta bancaria ••••4532. Disponible en 1-2 días hábiles.</div>
+        <div class="ni-time">Hace 2 días · 09:00</div>
+      </div>
+    </div>
+    <div class="notif-item" onclick="markRead(this)">
+      <div class="ni-icon" style="background:var(--prov-light);">📋</div>
+      <div class="ni-body">
+        <div class="ni-title">Actividad en revisión</div>
+        <div class="ni-desc">Tu actividad <strong>Taller de manualidades</strong> está siendo revisada. Te notificaremos cuando esté aprobada.</div>
+        <div class="ni-time">Hace 2 días · 11:14</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px 20px;border-top:1px solid var(--gray-100);">
+    <button class="btn-ghost" style="width:100%;text-align:center;" onclick="showScreen('screen-prov-support')">Configurar notificaciones</button>
+  </div>
+</div>
+
+<!-- ===================== PR-016: FINANZAS ===================== -->
+<div id="screen-prov-finance" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-home')">←</button>
+    <span class="topbar-title">Finanzas</span>
+    <div style="font-size:12px;color:var(--prov);font-weight:700;cursor:pointer;" onclick="showToast('Descargando extracto PDF...')">PDF</div>
+  </div>
+  <div class="scroll-content" style="padding:16px 20px;">
+    <div class="iban-card">
+      <div class="ic-label">Cuenta de cobro</div>
+      <div class="ic-num">ES•• •••• •••• •••• 4532</div>
+      <div class="ic-verified">✓ Verificado · Banco Santander</div>
+    </div>
+
+    <div class="next-payout-card">
+      <div class="npc-left">
+        <div class="npc-label">Próxima liquidación</div>
+        <div class="npc-amount">234,50 €</div>
+        <div class="npc-date">📅 15 de junio 2026</div>
+      </div>
+      <div class="npc-right">
+        <div style="font-size:28px;margin-bottom:6px;">⏳</div>
+        <div class="npc-badge">En 6 días</div>
+      </div>
+    </div>
+
+    <div class="section-label">Historial de liquidaciones</div>
+
+    <div class="payout-row">
+      <div class="payout-row-header">
+        <span class="pr-date">15 may 2026 · Natación bebés</span>
+        <span class="pr-status paid">Procesado</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray-400);margin-bottom:8px;">6 sesiones · 8 participantes</div>
+      <div class="payout-breakdown">
+        <div class="pb-col"><div class="pb-val">108,00€</div><div class="pb-label">Bruto</div></div>
+        <div class="pb-col"><div class="pb-val comm">-7,56€</div><div class="pb-label">Comisión 7%</div></div>
+        <div class="pb-col"><div class="pb-val net">100,44€</div><div class="pb-label">Neto</div></div>
+      </div>
+    </div>
+
+    <div class="payout-row">
+      <div class="payout-row-header">
+        <span class="pr-date">1 may 2026 · Natación bebés</span>
+        <span class="pr-status paid">Procesado</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray-400);margin-bottom:8px;">4 sesiones · 6 participantes</div>
+      <div class="payout-breakdown">
+        <div class="pb-col"><div class="pb-val">72,00€</div><div class="pb-label">Bruto</div></div>
+        <div class="pb-col"><div class="pb-val comm">-5,04€</div><div class="pb-label">Comisión 7%</div></div>
+        <div class="pb-col"><div class="pb-val net">66,96€</div><div class="pb-label">Neto</div></div>
+      </div>
+    </div>
+
+    <div class="payout-row">
+      <div class="payout-row-header">
+        <span class="pr-date">20 abr 2026 · Fútbol sala</span>
+        <span class="pr-status paid">Procesado</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray-400);margin-bottom:8px;">3 sesiones · 5 participantes</div>
+      <div class="payout-breakdown">
+        <div class="pb-col"><div class="pb-val">45,00€</div><div class="pb-label">Bruto</div></div>
+        <div class="pb-col"><div class="pb-val comm">-3,15€</div><div class="pb-label">Comisión 7%</div></div>
+        <div class="pb-col"><div class="pb-val net">41,85€</div><div class="pb-label">Neto</div></div>
+      </div>
+    </div>
+
+    <div style="background:var(--prov-light);border-radius:12px;padding:14px 16px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-size:12px;color:var(--gray-400);font-weight:600;">Total cobrado (2026)</div><div style="font-size:20px;font-weight:900;color:var(--prov);">209,25 €</div></div>
+      <div style="text-align:right;"><div style="font-size:12px;color:var(--gray-400);">Comisiones pagadas</div><div style="font-size:14px;font-weight:700;color:var(--red);">-15,75 €</div></div>
+    </div>
+    <div style="height:60px;"></div>
+  </div>
+  <nav class="bottom-nav">
+    <button onclick="showScreen('screen-prov-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Inicio</button>
+    <button onclick="showScreen('screen-prov-activities')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Actividades</button>
+    <button onclick="showScreen('screen-prov-bookings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Reservas</button>
+    <button class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finanzas</button>
+    <button onclick="showScreen('screen-prov-setup')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+  </nav>
+</div>
+
+<!-- ===================== PR-017: MENSAJERÍA (V2) ===================== -->
+<div id="screen-prov-messages" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-home')">←</button>
+    <span class="topbar-title">Mensajes</span>
+    <div style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;">V2</div>
+  </div>
+  <div class="blocked-banner">
+    <div>🔒</div>
+    <div>Los mensajes están moderados por Kooday. Está prohibido compartir datos de contacto externos (teléfono, email, WhatsApp). Las conversaciones son solo sobre reservas.</div>
+  </div>
+  <div>
+    <div class="msg-conv" onclick="openConversation()">
+      <div class="mc-avatar">MG</div>
+      <div class="mc-body">
+        <div style="display:flex;justify-content:space-between;"><div class="mc-name">María García</div><div class="mc-time">10:42</div></div>
+        <div class="mc-preview">¿Necesito llevar algo especial para Lucía?</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">Natación bebés · KDY-2026-00847</div>
+      </div>
+      <div class="mc-badge">1</div>
+    </div>
+    <div class="msg-conv" onclick="openConversation()">
+      <div class="mc-avatar">JP</div>
+      <div class="mc-body">
+        <div style="display:flex;justify-content:space-between;"><div class="mc-name">Jorge Pérez</div><div class="mc-time">Ayer</div></div>
+        <div class="mc-preview">Perfecto, nos vemos el lunes entonces 👍</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">Natación bebés · KDY-2026-00912</div>
+      </div>
+    </div>
+    <div class="msg-conv" onclick="openConversation()">
+      <div class="mc-avatar">SR</div>
+      <div class="mc-body">
+        <div style="display:flex;justify-content:space-between;"><div class="mc-name">Sara Rodríguez</div><div class="mc-time">Lun</div></div>
+        <div class="mc-preview" style="color:var(--red);">[Mensaje bloqueado: contiene datos de contacto]</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">Natación bebés · KDY-2026-00956</div>
+      </div>
+    </div>
+  </div>
+  <!-- Conversation view (modal-like) -->
+  <div id="conv-view" style="display:none;position:fixed;inset:0;background:#fff;z-index:100;flex-direction:column;max-width:430px;margin:0 auto;">
+    <div class="topbar">
+      <button class="back-btn" onclick="document.getElementById('conv-view').style.display='none'">←</button>
+      <span class="topbar-title">María García</span>
+      <div style="font-size:11px;color:var(--gray-400);">KDY-2026-00847</div>
+    </div>
+    <div class="blocked-banner" style="margin:8px;">
+      <div>🔒</div><div>No puedes compartir datos de contacto. Solo comunicaciones relacionadas con la reserva.</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:6px;">
+      <div style="text-align:center;font-size:11px;color:var(--gray-400);margin-bottom:8px;">Hoy · 10:38</div>
+      <div class="msg-bubble recv">Hola, ¿necesito llevar algo especial para Lucía a la clase de natación?</div>
+      <div class="msg-bubble recv">Tiene alergia al cloro, ya lo indiqué en la reserva ¿está anotado?</div>
+      <div class="msg-bubble sent">¡Hola María! Sí, tenemos anotada la alergia de Lucía. Usamos productos sin cloro en la piscina cubierta. Solo necesitáis traer bañador, gorro y gafas 🏊</div>
+      <div class="msg-bubble blocked">⛔ Mensaje bloqueado: el usuario intentó compartir un número de teléfono.</div>
+    </div>
+    <div style="padding:12px 16px;border-top:1px solid var(--gray-200);display:flex;gap:8px;">
+      <input class="form-input" style="flex:1;margin:0;padding:10px 14px;" placeholder="Escribe tu respuesta..." id="msg-input">
+      <button style="background:var(--prov);border:none;border-radius:12px;padding:10px 16px;color:#fff;font-weight:700;cursor:pointer;" onclick="sendMsg()">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PR-018: SOPORTE PROVEEDOR ===================== -->
+<div id="screen-prov-support" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="showScreen('screen-prov-home')">←</button>
+    <span class="topbar-title">Centro de soporte</span>
+    <div style="width:32px;"></div>
+  </div>
+  <div id="prov-support-main" class="scroll-content" style="padding:20px;">
+    <div class="sla-badge">
+      <div class="sla-icon">⚡</div>
+      <div>
+        <div class="sla-text">Soporte prioritario para proveedores</div>
+        <div class="sla-sub">Respondemos en menos de 4h · Días laborables</div>
+      </div>
+    </div>
+
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Preguntas frecuentes</div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-question">¿Cuándo recibo el pago de mis reservas? <span class="faq-arrow">⌄</span></div>
+      <div class="faq-answer">Las liquidaciones se procesan cada <strong>lunes</strong> por las reservas completadas la semana anterior. El dinero llega a tu cuenta en 1-2 días hábiles. Puedes ver el estado en la sección Finanzas.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-question">¿Por qué mi actividad fue rechazada? <span class="faq-arrow">⌄</span></div>
+      <div class="faq-answer">El equipo de Kooday revisa todas las actividades antes de publicarlas. Los motivos más comunes de rechazo son: fotos de baja calidad, descripción insuficiente (&lt;50 caracteres) o información incompleta. Corrígelos y vuelve a enviar.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-question">¿Puedo cancelar una sesión ya publicada? <span class="faq-arrow">⌄</span></div>
+      <div class="faq-answer">Sí, pero deberás notificarlo con al menos <strong>48h de antelación</strong>. Las familias recibirán reembolso automático y notificación. Cancelaciones frecuentes pueden afectar a tu rating y visibilidad en la plataforma.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-question">¿Cómo completo la verificación KYC? <span class="faq-arrow">⌄</span></div>
+      <div class="faq-answer">Ve a <strong>Perfil → Verificación KYC</strong> y sube los documentos requeridos (NIF/CIF, certificado de actividad, IBAN). El proceso puede tardar 24-48h. Sin KYC verificado no podrás recibir pagos.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-question">¿Cómo cambio mi IBAN? <span class="faq-arrow">⌄</span></div>
+      <div class="faq-answer">Por seguridad, los cambios de IBAN requieren reverificación KYC. Ve a <strong>Finanzas → Cuenta de cobro → Cambiar IBAN</strong> y sigue el proceso. Tardará 24-48h adicionales.</div>
+    </div>
+
+    <div style="text-align:center;padding:16px 0;font-size:14px;font-weight:700;color:var(--gray-600);">— ¿No encuentras respuesta? —</div>
+
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Crear ticket de soporte</div>
+    <select class="form-select" id="prov-ticket-cat">
+      <option value="">Categoría del problema</option>
+      <option>💰 Pago o liquidación</option>
+      <option>📋 Actividad o contenido</option>
+      <option>📅 Reserva o participante</option>
+      <option>🪪 KYC o verificación</option>
+      <option>⚙️ Problema técnico</option>
+    </select>
+    <textarea class="form-input" id="prov-ticket-msg" rows="4" placeholder="Describe tu problema con el máximo detalle. Incluye referencias (IDs de reserva, actividad...) si las tienes."></textarea>
+    <button class="btn-primary" style="margin-top:4px;" onclick="submitProvTicket()">Enviar ticket</button>
+
+    <div style="font-size:14px;font-weight:700;margin:20px 0 12px;">Mis tickets anteriores</div>
+    <div class="ticket-history-item">
+      <div class="thi-dot closed"></div>
+      <div>
+        <div class="thi-ref">KDY-SUP-20260520-042</div>
+        <div class="thi-subject">Liquidación no recibida en el plazo</div>
+        <div class="thi-meta">Resuelta · 20 may 2026 · Finanzas</div>
+      </div>
+    </div>
+    <div class="ticket-history-item">
+      <div class="thi-dot open"></div>
+      <div>
+        <div class="thi-ref">KDY-SUP-20260607-118</div>
+        <div class="thi-subject">Actividad rechazada sin motivo claro</div>
+        <div class="thi-meta">En proceso · 7 jun 2026 · Actividad</div>
+      </div>
+    </div>
+    <div style="height:30px;"></div>
+  </div>
+  <!-- Submitted -->
+  <div id="prov-support-ok" style="display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px 24px;text-align:center;gap:14px;">
+    <div style="font-size:64px;">✅</div>
+    <h2 style="font-size:20px;font-weight:800;">Ticket enviado</h2>
+    <p style="font-size:13px;color:var(--gray-400);line-height:1.6;">Recibirás respuesta en menos de 4h en tu email. Recuerda revisar la carpeta de spam.</p>
+    <div style="background:var(--prov-light);border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;color:var(--prov);" id="prov-ticket-ref">KDY-SUP-20260609-201</div>
+    <div style="background:#F0FDF4;border-radius:12px;padding:12px 16px;width:100%;font-size:12px;color:var(--green);">Estado: Recibido ✓ · SLA: &lt; 4 horas</div>
+    <button class="btn-outline" style="width:100%;padding:12px;" onclick="resetProvSupport()">Volver al soporte</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<!-- ── Filter Drawer (US-003) ── -->
   <div class="drawer-overlay" id="filter-overlay" onclick="closeFilters()"></div>
   <div class="drawer" id="filter-drawer">
     <div class="drawer-handle"></div>
@@ -2031,31 +3556,13 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <!-- HU label -->
-  <div class="hu-label" id="hu-label">US-001 · Home</div>
-</div>
-
 <script>
-  // ─────────── Data ───────────
-  const activities = [
-    { emoji:'🏊', title:'Natación bebés 0-3 años', cat:'Deportes Acuáticos', prov:'Aqua Kids Madrid', provAv:'🏫', edad:'0–3 años', dur:'45 min', loc:'1.2 km', price:'18 €', priceNum:18, cancel:'Cancela 24h antes', cancelDesc:'Cancela hasta 24h antes y recibe el 100% de reembolso.', rating:'4.9', reviews:32, provYears:'5 años', provActs:6, desc:'Clases de natación adaptadas para bebés de 0 a 3 años junto a sus padres o cuidadores. Ambiente cálido, profesores titulados y grupos reducidos (máx. 6 bebés). Desarrollamos la confianza en el agua mediante juegos y rutinas seguras.', provDesc:'Centro especializado en actividades acuáticas para bebés y niños. Contamos con instalaciones de primer nivel y monitores titulados con más de 5 años de experiencia.' },
-    { emoji:'⚽', title:'Fútbol sala 5-8 años', cat:'Deportes', prov:'Madrid Sport Kids', provAv:'⚽', edad:'5–8 años', dur:'60 min', loc:'2.4 km', price:'12 €', priceNum:12, cancel:'Cancela 48h antes', cancelDesc:'Cancela hasta 48h antes y recibe el 100% de reembolso.', rating:'4.7', reviews:18, provYears:'3 años', provActs:4, desc:'Iniciación al fútbol sala en formato lúdico. Los peques aprenden coordinación, trabajo en equipo y técnica básica en sesiones de 60 minutos. Entrenadores UEFA C.', provDesc:'Club deportivo especializado en iniciación al fútbol para niños. Metodología lúdica con entrenadores licenciados UEFA.' },
-    { emoji:'🎨', title:'Taller de pintura 6-10 años', cat:'Arte', prov:'Taller Creativo BCN', provAv:'🎨', edad:'6–10 años', dur:'90 min', loc:'3.1 km', price:'15 €', priceNum:15, cancel:'Cancela 24h antes', cancelDesc:'Cancela hasta 24h antes y recibe el 100% de reembolso.', rating:'4.8', reviews:25, provYears:'7 años', provActs:8, desc:'Talleres de expresión artística donde los niños exploran la pintura acrílica, acuarela y técnicas mixtas. Cada sesión termina con una obra para llevarse a casa.', provDesc:'Estudio de arte fundado en 2019, especializado en educación artística infantil. Más de 500 niños han pasado por nuestros talleres.' },
-    { emoji:'🎵', title:'Piano para niños 7-12 años', cat:'Música', prov:'Escuela Musicalia', provAv:'🎹', edad:'7–12 años', dur:'45 min', loc:'1.8 km', price:'22 €', priceNum:22, cancel:'Cancela 72h antes', cancelDesc:'Cancela hasta 72h antes y recibe el 100% de reembolso.', rating:'5.0', reviews:11, provYears:'10 años', provActs:5, desc:'Clases individuales de piano para niños desde nivel iniciación. Metodología moderna con repertorio actual y clásico. Alumnos han ganado concursos locales.', provDesc:'Escuela de música con más de 10 años de historia. Ofrecemos formación en piano, guitarra, violín y canto para todas las edades.' },
-    { emoji:'🌿', title:'Exploración naturaleza 8-12', cat:'Naturaleza', prov:'GreenKids Outdoor', provAv:'🌱', edad:'8–12 años', dur:'3 horas', loc:'5.0 km', price:'20 €', priceNum:20, cancel:'Cancela 48h antes', cancelDesc:'Cancela hasta 48h antes y recibe el 100% de reembolso. Cancelaciones por mal tiempo: reembolso completo.', rating:'4.6', reviews:9, provYears:'4 años', provActs:3, desc:'Salidas de senderismo y observación de fauna y flora con guías naturalistas. Los niños aprenden a identificar plantas, insectos y aves del entorno madrileño.', provDesc:'Empresa de educación ambiental outdoor. Guías naturalistas certificados y grupos reducidos para máximo aprendizaje.' },
-  ];
-
-  const favorites = new Set([3]); // piano starts as fav
-  let prevScreen = 'screen-home';
-  let currentDetailIdx = 0;
-  let filterCount = 2;
-  let loggedIn = false;
-
   const huLabels = {
-    'screen-home':       'US-001 · Home con búsqueda y categorías',
+    'screen-landing': '🏠 Kooday — Elige tu perfil',
+    // ── Familia ──
+'screen-home':       'US-001 · Home con búsqueda y categorías',
     'screen-results':    'US-003 / US-004 · Filtros + Listado',
     'screen-detail':     'US-004 · Ficha de actividad',
     'screen-favorites':  'US-005 · Favoritos',
@@ -2078,19 +3585,65 @@
     'screen-referral':   'US-023 · Invitar amigos (Referral)',
     'screen-support':    'US-024 · Centro de soporte',
     'screen-map':        'US-025 · Mapa de actividades',
+    // ── Proveedor ──
+'screen-prov-landing':    'PR-001 · Landing captación proveedor',
+    'screen-prov-register':   'PR-002 · Registro proveedor',
+    'screen-prov-verify':     'PR-002 · Verificación email',
+    'screen-prov-kyc':        'PR-003 · KYC y documentación',
+    'screen-prov-setup':      'PR-004 · Perfil público del proveedor',
+    'screen-prov-home':       'PR-015 · Dashboard de métricas',
+    'screen-prov-activities': 'PR-011 · Lista de actividades y estados',
+    'screen-prov-wizard':     'PR-005–010 · Wizard creación de actividad',
+    'screen-prov-login':          'PR-002 · Login proveedor',
+    'screen-prov-bookings':       'PR-013 · Lista de reservas por sesión',
+    'screen-prov-booking-detail': 'PR-013 · Detalle de reserva y participante',
+    'screen-prov-notifications':  'PR-014 · Centro de notificaciones',
+    'screen-prov-finance':        'PR-016 · Cobros y liquidaciones',
+    'screen-prov-messages':       'PR-017 · Mensajería interna (V2)',
+    'screen-prov-support':        'PR-018 · Soporte proveedor'
   };
 
-  // ─────────── Navigation ───────────
+  // ─── Unified navigation ────────────────────────────────────────
+
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.getElementById('hu-label').textContent = huLabels[id] || '';
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    const app = document.getElementById('app');
+    if (id.startsWith('screen-prov-')) {
+      app.dataset.mode = 'provider';
+    } else if (id === 'screen-landing') {
+      delete app.dataset.mode;
+    } else {
+      app.dataset.mode = 'family';
+    }
+    const lbl = document.getElementById('hu-label');
+    if (lbl) lbl.textContent = huLabels[id] || '';
+    try { window.scrollTo(0, 0); } catch(e) {}
     if (id === 'screen-favorites') renderFavorites();
   }
+  function enterFamilyMode() { showScreen('screen-home'); }
+  function enterProviderMode() { showScreen('screen-prov-landing'); }
+  function goBackFromDetail() { showScreen(prevScreen); }
 
-  function goBackFromDetail() {
-    showScreen(prevScreen);
-  }
+  // ══════════════════════════════════════════════════════════════
+  // FAMILIA: US-001 → US-025
+  // ══════════════════════════════════════════════════════════════
+
+  // ─────────── Data ───────────
+  const activities = [
+    { emoji:'🏊', title:'Natación bebés 0-3 años', cat:'Deportes Acuáticos', prov:'Aqua Kids Madrid', provAv:'🏫', edad:'0–3 años', dur:'45 min', loc:'1.2 km', price:'18 €', priceNum:18, cancel:'Cancela 24h antes', cancelDesc:'Cancela hasta 24h antes y recibe el 100% de reembolso.', rating:'4.9', reviews:32, provYears:'5 años', provActs:6, desc:'Clases de natación adaptadas para bebés de 0 a 3 años junto a sus padres o cuidadores. Ambiente cálido, profesores titulados y grupos reducidos (máx. 6 bebés). Desarrollamos la confianza en el agua mediante juegos y rutinas seguras.', provDesc:'Centro especializado en actividades acuáticas para bebés y niños. Contamos con instalaciones de primer nivel y monitores titulados con más de 5 años de experiencia.' },
+    { emoji:'⚽', title:'Fútbol sala 5-8 años', cat:'Deportes', prov:'Madrid Sport Kids', provAv:'⚽', edad:'5–8 años', dur:'60 min', loc:'2.4 km', price:'12 €', priceNum:12, cancel:'Cancela 48h antes', cancelDesc:'Cancela hasta 48h antes y recibe el 100% de reembolso.', rating:'4.7', reviews:18, provYears:'3 años', provActs:4, desc:'Iniciación al fútbol sala en formato lúdico. Los peques aprenden coordinación, trabajo en equipo y técnica básica en sesiones de 60 minutos. Entrenadores UEFA C.', provDesc:'Club deportivo especializado en iniciación al fútbol para niños. Metodología lúdica con entrenadores licenciados UEFA.' },
+    { emoji:'🎨', title:'Taller de pintura 6-10 años', cat:'Arte', prov:'Taller Creativo BCN', provAv:'🎨', edad:'6–10 años', dur:'90 min', loc:'3.1 km', price:'15 €', priceNum:15, cancel:'Cancela 24h antes', cancelDesc:'Cancela hasta 24h antes y recibe el 100% de reembolso.', rating:'4.8', reviews:25, provYears:'7 años', provActs:8, desc:'Talleres de expresión artística donde los niños exploran la pintura acrílica, acuarela y técnicas mixtas. Cada sesión termina con una obra para llevarse a casa.', provDesc:'Estudio de arte fundado en 2019, especializado en educación artística infantil. Más de 500 niños han pasado por nuestros talleres.' },
+    { emoji:'🎵', title:'Piano para niños 7-12 años', cat:'Música', prov:'Escuela Musicalia', provAv:'🎹', edad:'7–12 años', dur:'45 min', loc:'1.8 km', price:'22 €', priceNum:22, cancel:'Cancela 72h antes', cancelDesc:'Cancela hasta 72h antes y recibe el 100% de reembolso.', rating:'5.0', reviews:11, provYears:'10 años', provActs:5, desc:'Clases individuales de piano para niños desde nivel iniciación. Metodología moderna con repertorio actual y clásico. Alumnos han ganado concursos locales.', provDesc:'Escuela de música con más de 10 años de historia. Ofrecemos formación en piano, guitarra, violín y canto para todas las edades.' },
+    { emoji:'🌿', title:'Exploración naturaleza 8-12', cat:'Naturaleza', prov:'GreenKids Outdoor', provAv:'🌱', edad:'8–12 años', dur:'3 horas', loc:'5.0 km', price:'20 €', priceNum:20, cancel:'Cancela 48h antes', cancelDesc:'Cancela hasta 48h antes y recibe el 100% de reembolso. Cancelaciones por mal tiempo: reembolso completo.', rating:'4.6', reviews:9, provYears:'4 años', provActs:3, desc:'Salidas de senderismo y observación de fauna y flora con guías naturalistas. Los niños aprenden a identificar plantas, insectos y aves del entorno madrileño.', provDesc:'Empresa de educación ambiental outdoor. Guías naturalistas certificados y grupos reducidos para máximo aprendizaje.' },
+  ];
+
+  const favorites = new Set([3]); // piano starts as fav
+  let prevScreen = 'screen-home';
+  let currentDetailIdx = 0;
+  let filterCount = 2;
+  let loggedIn = false;
 
   // ─────────── Search (US-002) ───────────
   let autocompleteTimeout;
@@ -2912,6 +4465,245 @@
 
   // Init
   updateFilterBadge();
+
+  // ══════════════════════════════════════════════════════════════
+  // PROVEEDOR: PR-001 → PR-018
+  // ══════════════════════════════════════════════════════════════
+
+
+  // ── PR-002: Register ──
+  let entityType = 'autonomo';
+  function selectEntity(type) {
+    entityType = type;
+    document.getElementById('ent-autonomo').classList.toggle('sel', type === 'autonomo');
+    document.getElementById('ent-empresa').classList.toggle('sel', type === 'empresa');
+    document.getElementById('doc-label').textContent = type === 'empresa' ? 'NIF del representante' : 'NIF del titular';
+    document.getElementById('cif-group').style.display = type === 'empresa' ? 'block' : 'none';
+  }
+  function submitProvRegister() {
+    const nombre = document.getElementById('reg-nombre').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    if (nombre.length < 3) { document.getElementById('reg-nombre').closest('.input-group').classList.add('has-error'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('reg-email').closest('.input-group').classList.add('has-error'); return; }
+    if (pass.length < 8) { document.getElementById('reg-pass').closest('.input-group').classList.add('has-error'); return; }
+    document.getElementById('prov-verify-email').textContent = email;
+    showScreen('screen-prov-verify');
+  }
+
+  // ── PR-002: OTP ──
+  function provOtpNext(el) {
+    if (el.value.length === 1) {
+      const inputs = el.closest('div').querySelectorAll('input');
+      const idx = Array.from(inputs).indexOf(el);
+      if (idx < inputs.length - 1) inputs[idx + 1].focus();
+    }
+  }
+  function provVerifyOTP(el) {
+    if (el.value.length === 1) { showScreen('screen-prov-kyc'); showToast('✓ Email verificado'); }
+  }
+
+  // ── PR-003: KYC ──
+  function uploadDoc(zoneId, labelId, msg) {
+    const zone = document.getElementById(zoneId);
+    zone.classList.add('uploaded');
+    zone.innerHTML = `<div class="uz-icon">✅</div><div class="uz-done">${msg}</div>`;
+    showToast(msg);
+  }
+  function goToKycBanking() {
+    document.getElementById('kyc-docs').style.display = 'none';
+    document.getElementById('kyc-banking').style.display = 'block';
+    const steps = document.querySelectorAll('.kyc-step');
+    steps[1].querySelector('.kyc-dot').classList.remove('active');
+    steps[1].querySelector('.kyc-dot').classList.add('done');
+    steps[1].querySelector('.kyc-dot').textContent = '✓';
+    steps[2].querySelector('.kyc-dot').classList.add('active');
+    steps[2].closest('.kyc-step').classList.add('active');
+  }
+  function formatIBAN(el) {
+    let v = el.value.replace(/\s/g, '').toUpperCase();
+    el.value = v.replace(/(.{4})/g, '$1 ').trim();
+  }
+  function submitKYC() { showScreen('screen-prov-setup'); showToast('✓ Documentación enviada · Revisión en 24-48h'); }
+
+  // ── PR-004: Profile Setup ──
+  function updateQuality() {
+    const name = document.getElementById('setup-name').value.trim();
+    const desc = document.getElementById('setup-desc').value.trim();
+    const loc = document.getElementById('setup-loc').value.trim();
+    const years = document.getElementById('setup-years').value;
+    let score = 0;
+    if (name.length >= 3) score += 25;
+    if (desc.length >= 50) score += 35;
+    if (loc.length >= 3) score += 20;
+    if (years > 0) score += 10;
+    score += 10; // logo placeholder
+    document.getElementById('quality-fill').style.width = score + '%';
+    document.getElementById('quality-pct').textContent = score + '%';
+    const descCount = desc.length;
+    document.getElementById('setup-desc-count').textContent = descCount + ' / 500';
+    document.getElementById('pmc-name').textContent = name || 'Tu negocio';
+    document.getElementById('pmc-desc').textContent = desc.slice(0, 80) + (desc.length > 80 ? '...' : '');
+  }
+  function saveProvProfile() { showScreen('screen-prov-home'); showToast('✓ Perfil guardado · ¡Bienvenido al panel!'); }
+
+  // ── PR-005-011: Wizard ──
+  let wzStep = 0;
+  const wzTitles = ['Información básica','Precio','Horarios','Aforo y edad','Política cancelación','Fotos','Revisión'];
+  const wzNextLabels = ['Siguiente →','Siguiente →','Siguiente →','Siguiente →','Siguiente →','Siguiente →','Enviar para revisión ✓'];
+
+  function wizardGoTo(step) {
+    document.querySelectorAll('.wizard-panel').forEach((p,i) => p.classList.toggle('active', i === step));
+    document.querySelectorAll('.wz-step').forEach((s,i) => {
+      s.classList.toggle('active', i === step);
+      const dot = s.querySelector('.wz-dot');
+      dot.classList.toggle('active', i === step);
+      dot.classList.toggle('done', i < step);
+      if (i < step) dot.textContent = '✓';
+      else if (i === step) dot.textContent = (i + 1);
+      else { dot.textContent = (i + 1); dot.classList.remove('done','active'); }
+    });
+    document.getElementById('wz-topbar-title').textContent = wzTitles[step];
+    document.getElementById('wz-next-btn').textContent = wzNextLabels[step];
+    wzStep = step;
+  }
+  function wizardNext() {
+    if (wzStep < 6) { wizardGoTo(wzStep + 1); }
+    else { submitActivity(); }
+  }
+  function wizardBack() {
+    if (wzStep > 0) wizardGoTo(wzStep - 1);
+    else showScreen('screen-prov-activities');
+  }
+  function submitActivity() {
+    document.getElementById('submission-banner').style.display = 'block';
+    document.getElementById('wz-next-btn').textContent = 'Ver mis actividades';
+    document.getElementById('wz-next-btn').onclick = () => showScreen('screen-prov-activities');
+    showToast('🎉 ¡Actividad enviada a revisión!');
+  }
+
+  // Wizard helpers
+  function selectCat(el) { document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('sel')); el.classList.add('sel'); }
+  function toggleWzChip(el) { el.classList.toggle('sel'); }
+  function toggleDiscount() {
+    const on = document.getElementById('discount-toggle').checked;
+    document.getElementById('discount-box').style.display = on ? 'block' : 'none';
+    document.getElementById('price-preview-orig').style.display = on ? 'inline' : 'none';
+  }
+  function updatePricePreview() {
+    const price = parseFloat(document.getElementById('wz-price').value) || 0;
+    document.getElementById('price-preview-val').textContent = price.toFixed(2).replace('.',',') + ' €';
+    document.getElementById('price-net').textContent = (price * 0.93).toFixed(2).replace('.',',') + ' €';
+  }
+  function selectPolicy(p) {
+    ['flexible','media','estricta'].forEach(x => document.getElementById('policy-'+x).classList.toggle('sel', x === p));
+  }
+  function addScheduleItem() {
+    const li = document.createElement('div');
+    li.className = 'schedule-item';
+    li.innerHTML = `<div class="si-emoji">📅</div><div class="si-info"><strong>Nueva sesión · 10:00h</strong> · 60 min</div><button class="si-del" onclick="removeScheduleItem(this)">✕</button>`;
+    document.getElementById('schedule-list').appendChild(li);
+    showToast('Sesión añadida');
+  }
+  function removeScheduleItem(btn) { btn.closest('.schedule-item').remove(); showToast('Sesión eliminada'); }
+
+  // Photos
+  const photoEmojis = ['⚽','🏃','🥅','🏆'];
+  function addPhoto(idx) {
+    const slot = document.getElementById('photo-' + idx);
+    slot.classList.add('filled');
+    slot.innerHTML = `<div class="ps-filled-emoji">${photoEmojis[idx]||'📸'}</div><button class="ps-remove" onclick="event.stopPropagation();removePhoto(${idx})">✕</button>`;
+    showToast('Foto añadida');
+  }
+  function removePhoto(idx) {
+    const slot = document.getElementById('photo-' + idx);
+    slot.classList.remove('filled');
+    slot.innerHTML = `<div class="ps-icon">📷</div><div class="ps-label">Añadir foto</div>`;
+  }
+  function togglePhoto(idx) { showToast('Foto principal: ' + (idx + 1)); }
+
+  // Profile capacity summary live update
+  document.addEventListener('input', (e) => {
+    if (e.target.id === 'wz-edad-min' || e.target.id === 'wz-edad-max') {
+      const min = document.getElementById('wz-edad-min').value;
+      const max = document.getElementById('wz-edad-max').value;
+      document.getElementById('age-summary').textContent = min + ' a ' + max + ' años';
+    }
+    if (e.target.id === 'wz-capacity') {
+      document.getElementById('cap-summary').textContent = document.getElementById('wz-capacity').value + ' niños';
+    }
+  });
+
+  // ── PR-013: Bookings ──
+  function switchBookingTab(tab) {
+    ['today','week','all'].forEach(t => document.getElementById('btab-'+t).classList.toggle('active', t === tab));
+    showToast(tab === 'today' ? '5 reservas hoy' : tab === 'week' ? '12 reservas esta semana' : '38 reservas en total');
+  }
+  const bdData = {
+    lucía: { avatar:'L', name:'Lucía García', meta:'👧 6 años · Tutora: María García', obs:'Alergia al cloro', hasObs:true },
+    marcos: { avatar:'M', name:'Marcos Pérez', meta:'👦 4 años · Tutor: Jorge Pérez', obs:'', hasObs:false },
+    sofia: { avatar:'S', name:'Sofía Ruiz', meta:'👧 3 años · Tutora: Laura Ruiz', obs:'', hasObs:false },
+    ana: { avatar:'A', name:'Ana Martínez', meta:'👧 2 años · Tutora: Carmen Martínez', obs:'', hasObs:false },
+    pedro: { avatar:'P', name:'Pedro López', meta:'👦 1 año · Tutor: Carlos López', obs:'Primera vez en piscina', hasObs:true },
+  };
+  function showProvBookingDetail(key) {
+    const d = bdData[key] || bdData.lucía;
+    document.getElementById('bd-avatar').textContent = d.avatar;
+    document.getElementById('bd-name').textContent = d.name;
+    document.getElementById('bd-meta').textContent = d.meta;
+    document.getElementById('bd-obs-wrap').style.display = d.hasObs ? 'flex' : 'none';
+    if (d.hasObs) document.getElementById('bd-obs').textContent = d.obs;
+    showScreen('screen-prov-booking-detail');
+  }
+
+  // ── PR-014: Notifications ──
+  function markRead(item) {
+    item.classList.remove('unread');
+    const dot = item.querySelector('.ni-dot');
+    if (dot) dot.remove();
+  }
+  function markAllRead() {
+    document.querySelectorAll('.notif-item.unread').forEach(item => markRead(item));
+    showToast('✓ Todas las notificaciones leídas');
+  }
+
+  // ── PR-017: Messages ──
+  function openConversation() { document.getElementById('conv-view').style.display = 'flex'; }
+  function sendMsg() {
+    const inp = document.getElementById('msg-input');
+    const msg = inp.value.trim();
+    if (!msg) return;
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble sent';
+    bubble.textContent = msg;
+    document.getElementById('conv-view').querySelector('.overflow-y-auto, [style*="overflow-y:auto"], [style*="overflow-y: auto"]')?.appendChild(bubble);
+    inp.value = '';
+    showToast('Mensaje enviado');
+  }
+
+  // ── PR-018: Support ──
+  function submitProvTicket() {
+    const cat = document.getElementById('prov-ticket-cat').value;
+    const msg = document.getElementById('prov-ticket-msg').value.trim();
+    if (!cat) { showToast('Selecciona la categoría'); return; }
+    if (msg.length < 10) { showToast('Describe el problema (mín. 10 caracteres)'); return; }
+    document.getElementById('prov-support-main').style.display = 'none';
+    const ok = document.getElementById('prov-support-ok');
+    ok.style.display = 'flex';
+    document.getElementById('prov-ticket-ref').textContent = 'KDY-SUP-2026' + Math.floor(Math.random()*900+100);
+  }
+  function resetProvSupport() {
+    document.getElementById('prov-support-main').style.display = 'block';
+    document.getElementById('prov-support-ok').style.display = 'none';
+    document.getElementById('prov-ticket-cat').value = '';
+    document.getElementById('prov-ticket-msg').value = '';
+  }
+
+  // ── CSS helpers ──
+  
+
+  
+
 </script>
 </body>
 </html>
