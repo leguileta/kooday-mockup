@@ -178,6 +178,196 @@
   .search-wrap { position: relative; flex: 1; }
   .hero .search-bar { position: relative; }
 
+  /* ── Gallery (US-010) ── */
+  .gallery-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; background: var(--gray-100); }
+  .gallery-slides { display: flex; height: 100%; transition: transform .3s ease; }
+  .gallery-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 80px; background: var(--gray-100); }
+  .gallery-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
+  .gdot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.5); transition: all .2s; }
+  .gdot.active { background: #fff; width: 18px; border-radius: 3px; }
+  .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,.85); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .gallery-arrow.left { left: 10px; }
+  .gallery-arrow.right { right: 10px; }
+
+  /* ── Provider card (US-013) ── */
+  .provider-card { background: var(--gray-50); border-radius: 14px; padding: 16px; margin: 0 0 4px; cursor: pointer; transition: background .15s; }
+  .provider-card:hover { background: var(--gray-100); }
+  .provider-card-inner { display: flex; align-items: center; gap: 12px; }
+  .prov-logo { width: 52px; height: 52px; border-radius: 12px; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+  .prov-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .prov-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; color: var(--green); background: #D1FAE5; border-radius: 20px; padding: 2px 8px; }
+  .prov-stats { display: flex; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--gray-200); }
+  .prov-stat { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .prov-stat .stat-val { font-size: 15px; font-weight: 800; color: var(--gray-800); }
+  .prov-stat .stat-lbl { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+  .see-all-link { font-size: 12px; color: var(--brand); font-weight: 600; text-align: center; display: block; padding: 8px; cursor: pointer; }
+
+  /* ── Cancellation policy pill ── */
+  .cancel-policy { display: flex; gap: 8px; align-items: flex-start; background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 10px 12px; font-size: 12px; line-height: 1.5; color: var(--gray-600); }
+  .cancel-policy .cp-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* ── Availability / Calendar (US-011) ── */
+  .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px; }
+  .cal-header h3 { font-size: 16px; font-weight: 700; }
+  .cal-nav { background: none; border: 1.5px solid var(--gray-200); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; padding: 0 20px 16px; }
+  .cal-day-label { text-align: center; font-size: 11px; font-weight: 600; color: var(--gray-400); padding: 4px 0 8px; }
+  .cal-day { aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; cursor: pointer; position: relative; transition: all .15s; }
+  .cal-day.empty { pointer-events: none; }
+  .cal-day.past { color: var(--gray-300); pointer-events: none; }
+  .cal-day.available { background: var(--brand-light); color: var(--brand); font-weight: 700; }
+  .cal-day.full { background: var(--gray-100); color: var(--gray-400); text-decoration: line-through; cursor: default; }
+  .cal-day.selected { background: var(--brand); color: #fff; font-weight: 700; }
+  .cal-day.available:hover { background: var(--brand); color: #fff; }
+  .cal-legend { display: flex; gap: 16px; padding: 0 20px 16px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray-600); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* ── Session slots (US-012) ── */
+  .slots-header { padding: 16px 20px 12px; border-top: 1px solid var(--gray-100); }
+  .slots-header h4 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .slots-header p { font-size: 12px; color: var(--gray-400); }
+  .slots-list { display: flex; flex-direction: column; gap: 10px; padding: 0 20px 20px; }
+  .slot { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 2px solid var(--gray-200); border-radius: 14px; cursor: pointer; transition: all .15s; }
+  .slot:hover { border-color: var(--brand); background: var(--brand-light); }
+  .slot.selected { border-color: var(--brand); background: var(--brand-light); }
+  .slot.full { opacity: .5; cursor: default; }
+  .slot.full:hover { border-color: var(--gray-200); background: transparent; }
+  .slot-time { font-size: 16px; font-weight: 800; min-width: 52px; }
+  .slot-info { flex: 1; }
+  .slot-plazas { font-size: 12px; font-weight: 600; }
+  .slot-plazas.pocas { color: var(--red); }
+  .slot-plazas.disponible { color: var(--green); }
+  .slot-plazas.completo { color: var(--gray-400); }
+  .slot-dur { font-size: 11px; color: var(--gray-400); }
+  .slot-price { font-size: 15px; font-weight: 800; color: var(--brand); }
+  .slot-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all .15s; }
+  .slot.selected .slot-check { background: var(--brand); border-color: var(--brand); color: #fff; }
+
+  /* ── PSP banner (SYS-004) ── */
+  .psp-banner { background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 10px; padding: 10px 14px; margin: 0 20px 16px; font-size: 12px; color: #92400E; display: flex; gap: 8px; align-items: flex-start; display:none; }
+  .psp-banner.show { display: flex; }
+
+  /* ── Provider screen (US-013) ── */
+  .prov-hero { background: linear-gradient(135deg, #1F2937 0%, #374151 100%); padding: 32px 24px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+  .prov-hero-logo { width: 72px; height: 72px; border-radius: 16px; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .prov-hero-name { font-size: 18px; font-weight: 800; color: #fff; }
+  .prov-hero-stats { display: flex; gap: 24px; margin-top: 8px; }
+  .prov-hero-stat { display: flex; flex-direction: column; align-items: center; }
+  .prov-hero-stat .val { font-size: 20px; font-weight: 800; color: #fff; }
+  .prov-hero-stat .lbl { font-size: 10px; color: rgba(255,255,255,.6); margin-top: 2px; }
+  .act-mini-card { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--gray-100); cursor: pointer; }
+  .act-mini-card:hover { background: var(--gray-50); }
+  .act-mini-emoji { font-size: 28px; width: 48px; height: 48px; background: var(--gray-100); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .act-mini-info { flex: 1; }
+  .act-mini-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .act-mini-meta { font-size: 11px; color: var(--gray-400); }
+  .act-mini-price { font-size: 14px; font-weight: 800; color: var(--brand); }
+
+  /* ── Checkout steps progress ── */
+  .checkout-steps { display: flex; align-items: center; padding: 14px 20px; gap: 0; }
+  .ck-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+  .ck-step::after { content:''; position:absolute; top:14px; left:50%; width:100%; height:2px; background:var(--gray-200); z-index:0; }
+  .ck-step:last-child::after { display:none; }
+  .ck-dot { width:28px; height:28px; border-radius:50%; border:2px solid var(--gray-200); background:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; position:relative; z-index:1; transition:all .2s; }
+  .ck-step.done .ck-dot { background:var(--brand); border-color:var(--brand); color:#fff; }
+  .ck-step.done::after { background:var(--brand); }
+  .ck-step.active .ck-dot { border-color:var(--brand); color:var(--brand); font-weight:800; }
+  .ck-label { font-size:9px; color:var(--gray-400); margin-top:4px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
+  .ck-step.active .ck-label, .ck-step.done .ck-label { color:var(--brand); }
+
+  /* ── Participant selector (US-014) ── */
+  .participant-card { display:flex; align-items:center; gap:12px; padding:14px 16px; border:2px solid var(--gray-200); border-radius:14px; margin-bottom:10px; cursor:pointer; transition:all .15s; }
+  .participant-card:hover { border-color:var(--brand); background:var(--brand-light); }
+  .participant-card.selected { border-color:var(--brand); background:var(--brand-light); }
+  .participant-card .p-avatar { width:44px; height:44px; border-radius:50%; background:var(--brand-light); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .participant-card.selected .p-avatar { background:#fff; }
+  .participant-card .p-info { flex:1; }
+  .participant-card .p-name { font-size:14px; font-weight:700; }
+  .participant-card .p-age { font-size:12px; color:var(--gray-400); margin-top:2px; }
+  .participant-card .p-check { width:22px; height:22px; border-radius:50%; border:2px solid var(--gray-200); display:flex; align-items:center; justify-content:center; font-size:12px; transition:all .15s; }
+  .participant-card.selected .p-check { background:var(--brand); border-color:var(--brand); color:#fff; }
+  .age-warning { background:#FEF3C7; border:1px solid #FDE68A; border-radius:10px; padding:10px 12px; font-size:12px; color:#92400E; display:flex; gap:8px; margin-bottom:10px; }
+  .obs-input { width:100%; border:1.5px solid var(--gray-200); border-radius:10px; padding:10px 12px; font-size:13px; resize:none; outline:none; font-family:inherit; transition:border-color .15s; }
+  .obs-input:focus { border-color:var(--brand); }
+
+  /* ── Summary (US-015) ── */
+  .summary-activity-card { display:flex; gap:12px; background:var(--gray-50); border-radius:14px; padding:14px; margin-bottom:16px; }
+  .summary-activity-card .sa-emoji { font-size:32px; width:52px; height:52px; background:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .summary-activity-card .sa-info { flex:1; }
+  .summary-activity-card .sa-title { font-size:14px; font-weight:700; margin-bottom:4px; }
+  .summary-activity-card .sa-meta { font-size:12px; color:var(--gray-400); line-height:1.5; }
+  .price-breakdown { border:1.5px solid var(--gray-200); border-radius:14px; overflow:hidden; margin-bottom:16px; }
+  .price-row { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid var(--gray-100); font-size:14px; }
+  .price-row:last-child { border-bottom:none; }
+  .price-row.total { font-weight:800; font-size:16px; background:var(--gray-50); }
+  .price-row.discount { color:var(--green); }
+  .coupon-row { display:flex; gap:8px; margin-bottom:16px; }
+  .coupon-input { flex:1; border:1.5px solid var(--gray-200); border-radius:10px; padding:11px 14px; font-size:13px; outline:none; transition:border-color .15s; }
+  .coupon-input:focus { border-color:var(--brand); }
+  .coupon-btn { background:var(--gray-800); color:#fff; border:none; border-radius:10px; padding:11px 18px; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; }
+
+  /* ── Payment (US-016) ── */
+  .payment-methods { display:flex; gap:10px; margin-bottom:20px; }
+  .pay-method { flex:1; border:2px solid var(--gray-200); border-radius:12px; padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; transition:all .15s; font-size:11px; font-weight:600; color:var(--gray-600); }
+  .pay-method.active { border-color:var(--brand); background:var(--brand-light); color:var(--brand); }
+  .pay-method .pm-icon { font-size:22px; }
+  .card-form { background:var(--gray-50); border-radius:14px; padding:16px; }
+  .card-number-wrap { display:flex; align-items:center; background:#fff; border:1.5px solid var(--gray-200); border-radius:10px; padding:0 14px; margin-bottom:12px; transition:border-color .15s; }
+  .card-number-wrap:focus-within { border-color:var(--brand); }
+  .card-number-wrap .card-brand { font-size:20px; margin-right:8px; }
+  .card-number-wrap input { flex:1; border:none; outline:none; font-size:15px; padding:12px 0; background:transparent; letter-spacing:2px; }
+  .card-row { display:flex; gap:10px; margin-bottom:12px; }
+  .card-row input { flex:1; border:1.5px solid var(--gray-200); border-radius:10px; padding:12px 14px; font-size:14px; outline:none; transition:border-color .15s; }
+  .card-row input:focus { border-color:var(--brand); }
+  .save-card-row { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--gray-600); }
+  .toggle { width:40px; height:22px; border-radius:11px; background:var(--gray-200); position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
+  .toggle.on { background:var(--brand); }
+  .toggle::after { content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:transform .2s; }
+  .toggle.on::after { transform:translateX(18px); }
+  .secure-badge { display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:var(--gray-400); margin-top:14px; }
+
+  /* ── Confirmation (US-017) ── */
+  .confirm-hero { background:linear-gradient(135deg, var(--green) 0%, #34D399 100%); padding:40px 24px 32px; display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; }
+  .confirm-check { width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,.25); display:flex; align-items:center; justify-content:center; font-size:36px; border:3px solid rgba(255,255,255,.5); }
+  .confirm-hero h2 { font-size:22px; font-weight:800; color:#fff; }
+  .confirm-hero p { font-size:13px; color:rgba(255,255,255,.85); }
+  .booking-id { background:rgba(255,255,255,.2); border-radius:8px; padding:6px 14px; font-size:12px; font-weight:700; color:#fff; letter-spacing:1px; }
+  .confirm-card { background:var(--gray-50); border-radius:14px; padding:16px; margin-bottom:12px; }
+  .confirm-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--gray-200); font-size:13px; }
+  .confirm-row:last-child { border-bottom:none; }
+  .confirm-row .label { color:var(--gray-400); }
+  .confirm-row .value { font-weight:600; text-align:right; max-width:60%; }
+  .cal-add-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:13px; border:1.5px solid var(--gray-200); border-radius:12px; background:#fff; font-size:14px; font-weight:600; cursor:pointer; margin-bottom:10px; transition:all .15s; }
+  .cal-add-btn:hover { border-color:var(--brand); color:var(--brand); }
+
+  /* ── My Bookings (US-018) ── */
+  .bookings-tabs { display:flex; border-bottom:2px solid var(--gray-200); margin:0 20px; }
+  .bookings-tab { flex:1; text-align:center; padding:12px 8px; font-size:13px; font-weight:600; color:var(--gray-400); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
+  .bookings-tab.active { color:var(--brand); border-bottom-color:var(--brand); }
+  .booking-item { margin:0 20px 12px; background:#fff; border:1.5px solid var(--gray-200); border-radius:14px; overflow:hidden; cursor:pointer; transition:all .15s; }
+  .booking-item:hover { box-shadow:var(--shadow); }
+  .booking-item-header { display:flex; align-items:center; gap:12px; padding:14px; border-bottom:1px solid var(--gray-100); }
+  .booking-emoji { width:44px; height:44px; background:var(--gray-100); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .booking-info { flex:1; }
+  .booking-title { font-size:13px; font-weight:700; margin-bottom:3px; }
+  .booking-date { font-size:12px; color:var(--gray-400); }
+  .booking-status { font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
+  .status-confirmed { background:#D1FAE5; color:#065F46; }
+  .status-past { background:var(--gray-100); color:var(--gray-400); }
+  .status-cancelled { background:#FEE2E2; color:#991B1B; }
+  .booking-item-footer { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; }
+  .booking-price { font-size:14px; font-weight:800; color:var(--brand); }
+  .booking-action { font-size:12px; color:var(--brand); font-weight:600; }
+
+  /* ── Cancel flow (US-019) ── */
+  .cancel-detail-card { background:var(--gray-50); border-radius:14px; padding:16px; margin-bottom:16px; display:flex; gap:12px; align-items:center; }
+  .refund-breakdown { border:1.5px solid var(--gray-200); border-radius:14px; overflow:hidden; margin-bottom:16px; }
+  .refund-row { display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--gray-100); font-size:13px; }
+  .refund-row:last-child { border-bottom:none; font-weight:800; }
+  .refund-row.green { color:var(--green); font-weight:700; }
+  .confirm-cancel-btn { width:100%; padding:14px; border-radius:12px; background:var(--red); color:#fff; border:none; font-size:15px; font-weight:700; cursor:pointer; }
+
   /* ── Utility ── */
   .mt-12 { margin-top: 12px; }
   .pb-20 { padding-bottom: 20px; }
@@ -252,6 +442,99 @@
   .payment-chip .card-info { flex: 1; font-size: 13px; font-weight: 600; }
   .payment-chip .card-exp { font-size: 11px; color: var(--gray-400); }
   .payment-chip .card-del { background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 16px; }
+
+  /* ── Notifications / Reminders (US-020) ── */
+  .notif-banner { background: var(--brand-light); border-radius: 14px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 20px; }
+  .notif-banner-icon { font-size: 28px; flex-shrink: 0; }
+  .notif-banner p { font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+  .notif-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--gray-50); border-radius: 12px; margin-bottom: 8px; }
+  .notif-row .notif-icon { font-size: 22px; flex-shrink: 0; }
+  .notif-row .notif-text { flex: 1; }
+  .notif-row .notif-label { font-size: 14px; font-weight: 600; }
+  .notif-row .notif-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+  .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: var(--gray-200); border-radius: 24px; cursor: pointer; transition: background .2s; }
+  .toggle-slider::before { content: ''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .toggle input:checked + .toggle-slider { background: var(--brand); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+  /* ── Review / Rating (US-021) ── */
+  .review-activity-card { background: var(--gray-50); border-radius: 14px; padding: 14px 16px; display: flex; gap: 12px; align-items: center; margin-bottom: 20px; border: 1.5px solid var(--gray-200); }
+  .review-emoji { font-size: 36px; flex-shrink: 0; }
+  .review-act-title { font-size: 14px; font-weight: 700; }
+  .review-act-meta { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+  .stars-selector { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
+  .star-btn { font-size: 36px; background: none; border: none; cursor: pointer; transition: transform .1s; filter: grayscale(1); }
+  .star-btn.active { filter: none; transform: scale(1.1); }
+  .review-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .review-tag { border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all .15s; }
+  .review-tag.sel { border-color: var(--brand); background: var(--brand-light); color: var(--brand); font-weight: 600; }
+  .char-counter { text-align: right; font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+  .review-success { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 24px; text-align: center; gap: 16px; }
+  .review-success.show { display: flex; }
+
+  /* ── Referral (US-023) ── */
+  .referral-hero { background: linear-gradient(135deg, #FF6B35 0%, #FFB347 100%); padding: 28px 24px; text-align: center; color: #fff; }
+  .referral-hero h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .referral-hero p { font-size: 13px; opacity: .9; }
+  .referral-code-box { background: #fff; border: 2.5px dashed var(--brand); border-radius: 14px; padding: 16px; margin: 20px 0; display: flex; align-items: center; justify-content: space-between; }
+  .referral-code { font-size: 22px; font-weight: 900; color: var(--brand); letter-spacing: 2px; }
+  .copy-btn { background: var(--brand); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .15s; }
+  .copy-btn:hover { background: var(--brand-dark); }
+  .benefit-row { display: flex; align-items: flex-start; gap: 12px; background: var(--gray-50); border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; }
+  .benefit-icon { font-size: 24px; flex-shrink: 0; }
+  .benefit-text .benefit-label { font-size: 13px; font-weight: 600; }
+  .benefit-text .benefit-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+  .share-btns { display: flex; gap: 10px; margin: 16px 0; }
+  .share-btn { flex: 1; padding: 12px 8px; border-radius: 12px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: opacity .15s; }
+  .share-btn:hover { opacity: .85; }
+  .share-btn.wa { background: #25D366; color: #fff; }
+  .share-btn.em { background: #3B82F6; color: #fff; }
+  .share-btn.cp { background: var(--gray-100); color: var(--gray-800); border: 1.5px solid var(--gray-200); }
+  .referral-stats { background: var(--gray-50); border-radius: 14px; padding: 16px; display: flex; gap: 0; }
+  .ref-stat { flex: 1; text-align: center; border-right: 1px solid var(--gray-200); }
+  .ref-stat:last-child { border-right: none; }
+  .ref-stat-val { font-size: 22px; font-weight: 800; color: var(--brand); }
+  .ref-stat-label { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+
+  /* ── Support (US-024) ── */
+  .support-search { display: flex; background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 10px 14px; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .support-search input { flex: 1; border: none; background: none; outline: none; font-size: 14px; }
+  .faq-item { border-bottom: 1px solid var(--gray-100); }
+  .faq-question { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .faq-arrow { transition: transform .2s; color: var(--gray-400); font-size: 18px; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .faq-answer { font-size: 13px; color: var(--gray-600); line-height: 1.6; padding-bottom: 14px; display: none; }
+  .faq-item.open .faq-answer { display: block; }
+  .support-divider { text-align: center; padding: 20px 0 16px; font-size: 14px; font-weight: 700; color: var(--gray-600); }
+  .ticket-select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 12px; font-size: 14px; background: #fff; outline: none; margin-bottom: 12px; color: var(--gray-800); appearance: none; cursor: pointer; }
+  .ticket-select:focus { border-color: var(--brand); }
+  .ticket-submitted { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 24px; text-align: center; gap: 14px; }
+  .ticket-submitted.show { display: flex; }
+  .ticket-ref { background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 12px 20px; font-size: 14px; font-weight: 700; color: var(--brand); letter-spacing: 1px; }
+
+  /* ── Map (US-025) ── */
+  .map-container { flex: 1; position: relative; overflow: hidden; background: #E8F5E9; }
+  .map-bg { width: 100%; height: 100%; background:
+    radial-gradient(circle at 30% 40%, #C8E6C9 0%, transparent 35%),
+    radial-gradient(circle at 70% 60%, #DCEDC8 0%, transparent 30%),
+    radial-gradient(circle at 50% 20%, #B2DFDB 0%, transparent 25%),
+    linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 50%, #E0F2F1 100%); }
+  .map-road-h { position: absolute; height: 8px; background: rgba(255,255,255,.7); border-top: 1px solid rgba(0,0,0,.05); border-bottom: 1px solid rgba(0,0,0,.05); left: 0; right: 0; }
+  .map-road-v { position: absolute; width: 8px; background: rgba(255,255,255,.7); border-left: 1px solid rgba(0,0,0,.05); border-right: 1px solid rgba(0,0,0,.05); top: 0; bottom: 0; }
+  .map-pin { position: absolute; cursor: pointer; transform: translate(-50%, -100%); text-align: center; z-index: 2; }
+  .map-pin-bubble { background: #fff; border-radius: 20px; padding: 4px 8px; font-size: 11px; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.2); display: flex; align-items: center; gap: 4px; border: 2px solid var(--brand); white-space: nowrap; transition: transform .15s; }
+  .map-pin-bubble:hover { transform: scale(1.08); }
+  .map-pin-bubble.sel { background: var(--brand); color: #fff; }
+  .map-pin-tail { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--brand); margin: 0 auto; }
+  .map-mini-card { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-radius: 20px 20px 0 0; padding: 16px 20px 24px; box-shadow: 0 -4px 20px rgba(0,0,0,.12); transform: translateY(100%); transition: transform .3s ease; z-index: 5; }
+  .map-mini-card.open { transform: translateY(0); }
+  .map-mini-card-inner { display: flex; gap: 14px; align-items: flex-start; }
+  .map-mini-emoji { font-size: 38px; flex-shrink: 0; background: var(--gray-100); border-radius: 12px; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; }
+  .map-view-toggle { display: flex; background: var(--gray-100); border-radius: 10px; padding: 3px; gap: 3px; }
+  .map-toggle-btn { flex: 1; padding: 6px 10px; border-radius: 8px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; background: none; color: var(--gray-600); transition: all .15s; }
+  .map-toggle-btn.active { background: #fff; color: var(--brand); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
 </style>
 </head>
 <body>
@@ -342,6 +625,15 @@
           </div>
         </div>
       </div>
+      <!-- Acceso proveedor -->
+      <div style="margin:0 20px 20px;background:linear-gradient(135deg,#F0EBFF,#EDE9FE);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="window.location='mockup-provider.html'">
+        <div style="font-size:28px;">🏫</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#6C3FC5;">¿Tienes actividades para niños?</div>
+          <div style="font-size:11px;color:#8B5CF6;margin-top:2px;">Publica en Kooday y llega a miles de familias →</div>
+        </div>
+        <div style="color:#6C3FC5;font-size:20px;">›</div>
+      </div>
       <div class="pb-20"></div>
     </div>
 
@@ -373,13 +665,21 @@
       <div style="width:32px"></div>
     </div>
 
-    <!-- Filters (US-003) -->
-    <div class="filter-bar">
-      <div class="filter-chip active" onclick="openFilters()">⚙ Filtros <span class="badge" id="filter-badge" style="display:none">0</span></div>
-      <div class="filter-chip" id="chip-edad" onclick="toggleChip(this,'edad')">Edad</div>
-      <div class="filter-chip" id="chip-fecha" onclick="toggleChip(this,'fecha')">Fecha</div>
-      <div class="filter-chip" id="chip-precio" onclick="toggleChip(this,'precio')">Precio</div>
-      <div class="filter-chip" id="chip-distancia" onclick="toggleChip(this,'distancia')">Distancia</div>
+    <!-- Filters (US-003) + Map toggle (US-025) -->
+    <div class="filter-bar" style="justify-content:space-between;">
+      <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex:1;">
+        <div class="filter-chip active" onclick="openFilters()">⚙ Filtros <span class="badge" id="filter-badge" style="display:none">0</span></div>
+        <div class="filter-chip" id="chip-edad" onclick="toggleChip(this,'edad')">Edad</div>
+        <div class="filter-chip" id="chip-fecha" onclick="toggleChip(this,'fecha')">Fecha</div>
+        <div class="filter-chip" id="chip-precio" onclick="toggleChip(this,'precio')">Precio</div>
+        <div class="filter-chip" id="chip-distancia" onclick="toggleChip(this,'distancia')">Distancia</div>
+      </div>
+      <div style="flex-shrink:0;margin-left:8px;">
+        <div class="map-view-toggle">
+          <button class="map-toggle-btn active" id="toggle-list-btn" onclick="switchToList()">☰ Lista</button>
+          <button class="map-toggle-btn" id="toggle-map-btn" onclick="switchToMap()">🗺 Mapa</button>
+        </div>
+      </div>
     </div>
     <div class="results-count" id="results-count">Mostrando 8 actividades</div>
 
@@ -450,47 +750,88 @@
     </nav>
   </div>
 
-  <!-- ===================== SCREEN 3: ACTIVITY DETAIL (US-004 detail) ===================== -->
+  <!-- ===================== SCREEN 3: ACTIVITY DETAIL (US-010) ===================== -->
   <div id="screen-detail" class="screen">
-    <div class="topbar" style="border:none; position:absolute; top:0; left:0; right:0; background:transparent; z-index:5;">
+    <div style="border:none; position:absolute; top:0; left:0; right:0; z-index:5; display:flex; justify-content:space-between; padding:14px 16px;">
       <button class="back-btn" style="background:rgba(255,255,255,.9);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;" onclick="goBackFromDetail()">←</button>
-      <div></div>
-      <div></div>
+      <button id="detail-fav" style="background:rgba(255,255,255,.9);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;" onclick="toggleDetailFav()">🤍</button>
     </div>
     <div class="scroll-content">
-      <div class="detail-img" id="detail-img">🏊
-        <button class="fav-big" id="detail-fav" onclick="toggleDetailFav()">🤍</button>
+      <!-- Gallery (US-010) -->
+      <div class="gallery-wrap" id="gallery-wrap">
+        <div class="gallery-slides" id="gallery-slides">
+          <div class="gallery-slide" id="gslide-0">🏊</div>
+          <div class="gallery-slide" style="background:#E0F2FE;">🏊‍♀️</div>
+          <div class="gallery-slide" style="background:#FEF9C3;">📸</div>
+        </div>
+        <button class="gallery-arrow left" onclick="galleryPrev()">‹</button>
+        <button class="gallery-arrow right" onclick="galleryNext()">›</button>
+        <div class="gallery-dots" id="gallery-dots">
+          <div class="gdot active"></div><div class="gdot"></div><div class="gdot"></div>
+        </div>
       </div>
+
       <div class="detail-body">
+        <!-- Header -->
         <div class="detail-category" id="detail-cat">Deportes Acuáticos</div>
         <div class="detail-title" id="detail-title">Natación bebés 0-3 años</div>
-        <div class="detail-provider">
-          <div class="prov-av" id="detail-prov-av">🏫</div>
-          <div>
-            <div class="prov-name" id="detail-prov">Aqua Kids Madrid</div>
-            <div style="font-size:11px;color:var(--gray-400)">Proveedor verificado ✓</div>
-          </div>
-        </div>
-        <div class="info-chips">
+
+        <!-- Info chips -->
+        <div class="info-chips" style="margin-bottom:14px;">
           <span class="info-chip" id="dc-edad">👶 0–3 años</span>
           <span class="info-chip" id="dc-dur">⏱ 45 min</span>
           <span class="info-chip" id="dc-loc">📍 1.2 km</span>
-          <span class="info-chip" id="dc-cancel">🔄 Cancela 24h antes</span>
         </div>
+
+        <!-- Política de cancelación (US-010) -->
+        <div class="cancel-policy" id="dc-cancel-block">
+          <span class="cp-icon">🔄</span>
+          <div><strong>Cancela 24h antes</strong> y recibe el 100% de reembolso. Cancelaciones tardías: sin reembolso.</div>
+        </div>
+
         <div class="section-divider"></div>
+
+        <!-- Descripción -->
         <div style="font-size:15px;font-weight:700;margin-bottom:10px;">Descripción</div>
         <div class="detail-desc" id="detail-desc">Clases de natación adaptadas para bebés de 0 a 3 años junto a sus padres o cuidadores. Ambiente cálido, profesores titulados y grupos reducidos (máx. 6 bebés). Desarrollamos la confianza en el agua mediante juegos y rutinas seguras.</div>
+
         <div class="section-divider"></div>
-        <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Valoraciones</div>
-        <div class="reviews-summary">
-          <div class="rating-big">4.9</div>
-          <div>
-            <div class="stars">⭐⭐⭐⭐⭐</div>
-            <div style="font-size:12px;color:var(--gray-400);margin-top:2px">32 valoraciones</div>
+
+        <!-- Proveedor (US-013) -->
+        <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Proveedor</div>
+        <div class="provider-card" onclick="showProvider(currentDetailIdx)">
+          <div class="provider-card-inner">
+            <div class="prov-logo" id="detail-prov-av">🏫</div>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:700;" id="detail-prov">Aqua Kids Madrid</div>
+              <span class="prov-badge">✓ Verificado</span>
+            </div>
+            <span style="color:var(--gray-400);font-size:18px;">›</span>
+          </div>
+          <div class="prov-stats">
+            <div class="prov-stat"><span class="stat-val" id="prov-rating-val">4.9</span><span class="stat-lbl">Rating</span></div>
+            <div class="prov-stat"><span class="stat-val" id="prov-acts-val">6</span><span class="stat-lbl">Actividades</span></div>
+            <div class="prov-stat"><span class="stat-val" id="prov-years-val">5 años</span><span class="stat-lbl">Experiencia</span></div>
           </div>
         </div>
-        <div class="review-card"><div class="reviewer">María G. ⭐⭐⭐⭐⭐</div><div class="review-text">Mi hijo de 18 meses lleva 3 meses y está encantado. Los profesores son muy pacientes y profesionales.</div></div>
-        <div class="review-card"><div class="reviewer">Carlos M. ⭐⭐⭐⭐⭐</div><div class="review-text">Excelente experiencia. Instalaciones limpias, agua a temperatura perfecta. Lo recomiendo.</div></div>
+
+        <div class="section-divider"></div>
+
+        <!-- Reviews -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div style="font-size:15px;font-weight:700;">Valoraciones</div>
+          <div class="stars" style="font-size:13px;" id="detail-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <div class="reviews-summary">
+          <div class="rating-big" id="detail-rating">4.9</div>
+          <div>
+            <div style="font-size:12px;color:var(--gray-400);margin-top:2px" id="detail-review-count">32 valoraciones</div>
+          </div>
+        </div>
+        <div id="detail-reviews">
+          <div class="review-card"><div class="reviewer">María G. ⭐⭐⭐⭐⭐</div><div class="review-text">Mi hijo de 18 meses lleva 3 meses y está encantado. Los profesores son muy pacientes y profesionales.</div></div>
+          <div class="review-card"><div class="reviewer">Carlos M. ⭐⭐⭐⭐⭐</div><div class="review-text">Excelente experiencia. Instalaciones limpias, agua a temperatura perfecta. Lo recomiendo.</div></div>
+        </div>
         <div class="pb-20"></div>
       </div>
     </div>
@@ -499,7 +840,105 @@
         <span class="price" id="detail-price">18 €</span>
         <span class="price-label">por sesión</span>
       </div>
-      <button class="btn-book" onclick="showScreen('screen-home'); showToast('✓ Reserva iniciada — próximamente disponible')">Reservar →</button>
+      <button class="btn-book" onclick="goToAvailability()">Ver disponibilidad →</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: DISPONIBILIDAD (US-011) ===================== -->
+  <div id="screen-availability" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-detail')">←</button>
+      <span class="topbar-title" id="avail-title">Disponibilidad</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content">
+      <!-- Month nav -->
+      <div class="cal-header">
+        <button class="cal-nav" onclick="calPrev()">‹</button>
+        <h3 id="cal-month-label">Junio 2026</h3>
+        <button class="cal-nav" onclick="calNext()">›</button>
+      </div>
+
+      <!-- Day labels -->
+      <div class="cal-grid">
+        <div class="cal-day-label">L</div><div class="cal-day-label">M</div>
+        <div class="cal-day-label">X</div><div class="cal-day-label">J</div>
+        <div class="cal-day-label">V</div><div class="cal-day-label">S</div>
+        <div class="cal-day-label">D</div>
+        <!-- Days filled by JS -->
+      </div>
+
+      <!-- Legend -->
+      <div class="cal-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--brand-light);border:1px solid var(--brand);"></div> Disponible</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--brand);"></div> Seleccionada</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gray-100);"></div> Completa</div>
+      </div>
+
+      <div class="section-divider" style="margin:0 20px;"></div>
+
+      <!-- Session slots (US-012) — shown when date selected -->
+      <div id="slots-section" style="display:none;">
+        <div class="slots-header">
+          <h4 id="slots-date-title">Sesiones del lunes, 8 jun</h4>
+          <p>Selecciona el horario que mejor te venga</p>
+        </div>
+
+        <!-- PSP downtime banner (SYS-004) -->
+        <div class="psp-banner" id="psp-banner">
+          ⚠️ <div>Pasarela de pago temporalmente no disponible. Tu selección se mantiene. Estimado: ~10 min.</div>
+        </div>
+
+        <div class="slots-list" id="slots-list"></div>
+      </div>
+
+      <div id="slots-empty" style="padding:32px 20px;text-align:center;color:var(--gray-400);font-size:14px;">
+        👆 Selecciona una fecha disponible para ver los horarios
+      </div>
+      <div class="pb-20"></div>
+    </div>
+    <!-- Sticky CTA appears after slot selected -->
+    <div class="sticky-cta" id="avail-cta" style="display:none;">
+      <div class="price-info">
+        <span class="price" id="avail-price">18 €</span>
+        <span class="price-label" id="avail-slot-label">Lun 8 jun · 10:00h</span>
+      </div>
+      <button class="btn-book" onclick="showScreen('screen-ck-participant')">Reservar →</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: PERFIL PROVEEDOR (US-013) ===================== -->
+  <div id="screen-provider" class="screen">
+    <div class="topbar" style="position:absolute;top:0;left:0;right:0;border:none;background:transparent;z-index:5;">
+      <button class="back-btn" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;" onclick="showScreen('screen-detail')">←</button>
+      <div></div><div></div>
+    </div>
+    <div class="scroll-content">
+      <!-- Hero -->
+      <div class="prov-hero">
+        <div class="prov-hero-logo" id="ph-logo">🏫</div>
+        <div class="prov-hero-name" id="ph-name">Aqua Kids Madrid</div>
+        <span class="prov-badge" style="background:rgba(16,185,129,.2);color:#6EE7B7;">✓ Proveedor verificado</span>
+        <div class="prov-hero-stats">
+          <div class="prov-hero-stat"><span class="val" id="ph-rating">4.9 ⭐</span><span class="lbl">Rating</span></div>
+          <div class="prov-hero-stat"><span class="val" id="ph-acts">6</span><span class="lbl">Actividades</span></div>
+          <div class="prov-hero-stat"><span class="val" id="ph-reviews">32</span><span class="lbl">Reseñas</span></div>
+          <div class="prov-hero-stat"><span class="val" id="ph-years">5 años</span><span class="lbl">Experiencia</span></div>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div style="padding:20px;border-bottom:1px solid var(--gray-100);">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px;">Sobre nosotros</div>
+        <div class="detail-desc" id="ph-desc">Centro especializado en actividades acuáticas para bebés y niños. Contamos con instalaciones de primer nivel, agua a temperatura óptima y monitores titulados en natación infantil con más de 5 años de experiencia.</div>
+      </div>
+
+      <!-- Sus actividades -->
+      <div style="padding:16px 0 0;">
+        <div style="font-size:15px;font-weight:700;padding:0 20px 12px;">Todas sus actividades</div>
+        <div id="provider-acts-list"></div>
+      </div>
+      <div class="pb-20"></div>
     </div>
   </div>
 
@@ -733,8 +1172,17 @@
         <div class="profile-email" id="profile-email-display">maria@ejemplo.com</div>
       </div>
 
+      <!-- Mis reservas acceso rápido -->
+      <div class="profile-section" style="padding-top:16px;">
+        <div class="profile-item" style="background:var(--brand-light);" onclick="loggedIn?showScreen('screen-bookings'):openLogin()">
+          <div class="item-icon" style="background:#fff;">📋</div>
+          <div class="item-text"><div class="item-label" style="color:var(--brand);">Mis reservas</div><div class="item-sub">1 próxima · 1 pasada</div></div>
+          <span class="item-arrow" style="color:var(--brand);">›</span>
+        </div>
+      </div>
+
       <!-- Datos personales -->
-      <div class="profile-section">
+      <div class="profile-section" style="margin-top:8px;">
         <div class="profile-section-title">Datos personales</div>
         <div class="profile-item" onclick="openEditField('Nombre completo','María García')">
           <div class="item-icon">👤</div>
@@ -794,6 +1242,26 @@
         </div>
       </div>
 
+      <!-- Notificaciones + Referral + Soporte -->
+      <div class="profile-section" style="margin-top:16px;">
+        <div class="profile-section-title">Preferencias y más</div>
+        <div class="profile-item" onclick="showScreen('screen-reminder')">
+          <div class="item-icon">🔔</div>
+          <div class="item-text"><div class="item-label">Recordatorios y notificaciones</div><div class="item-sub">Email, push y preferencias</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+        <div class="profile-item" onclick="showScreen('screen-referral')">
+          <div class="item-icon" style="background:#FEF3C7;">🎁</div>
+          <div class="item-text"><div class="item-label" style="color:#D97706;">Invitar amigos</div><div class="item-sub">Gana 10€ por referido</div></div>
+          <span class="item-arrow" style="color:#D97706;">›</span>
+        </div>
+        <div class="profile-item" onclick="showScreen('screen-support')">
+          <div class="item-icon" style="background:#EFF6FF;">💬</div>
+          <div class="item-text"><div class="item-label">Centro de soporte</div><div class="item-sub">FAQ e incidencias</div></div>
+          <span class="item-arrow">›</span>
+        </div>
+      </div>
+
       <!-- Cuenta -->
       <div class="profile-section" style="margin-top:16px;">
         <div class="profile-section-title">Cuenta</div>
@@ -843,6 +1311,618 @@
       </div>
       <button onclick="closeEditModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-400);">✕</button>
     </div>
+  </div>
+
+  <!-- ===================== CHECKOUT: PARTICIPANTE (US-014) ===================== -->
+  <div id="screen-ck-participant" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-availability')">←</button>
+      <span class="topbar-title">Participante</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="checkout-steps">
+      <div class="ck-step active"><div class="ck-dot">1</div><div class="ck-label">Quién</div></div>
+      <div class="ck-step"><div class="ck-dot">2</div><div class="ck-label">Resumen</div></div>
+      <div class="ck-step"><div class="ck-dot">3</div><div class="ck-label">Pago</div></div>
+      <div class="ck-step"><div class="ck-dot">✓</div><div class="ck-label">Listo</div></div>
+    </div>
+    <div class="scroll-content" style="padding:16px 20px;">
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px;">¿Quién asiste?</div>
+      <div style="font-size:13px;color:var(--gray-400);margin-bottom:16px;">Selecciona el participante o añade uno nuevo</div>
+
+      <!-- Hijos guardados -->
+      <div id="participant-list">
+        <div class="participant-card selected" id="pc-0" onclick="selectParticipant(0)">
+          <div class="p-avatar">👧</div>
+          <div class="p-info">
+            <div class="p-name">Lucía</div>
+            <div class="p-age">6 años · Deportes, Música</div>
+          </div>
+          <div class="p-check">✓</div>
+        </div>
+        <div class="participant-card" id="pc-1" onclick="selectParticipant(1)">
+          <div class="p-avatar">👦</div>
+          <div class="p-info">
+            <div class="p-name">Marcos</div>
+            <div class="p-age">9 años · Naturaleza, Ciencia</div>
+          </div>
+          <div class="p-check"></div>
+        </div>
+      </div>
+
+      <!-- Añadir nuevo -->
+      <button class="add-child-btn" onclick="showScreen('screen-onboarding');showToast('Añade el perfil y vuelve al checkout')">➕ Añadir participante nuevo</button>
+
+      <!-- Observaciones -->
+      <div style="margin-top:20px;">
+        <label style="font-size:13px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:8px;">Necesidades especiales (opcional)</label>
+        <textarea class="obs-input" rows="3" placeholder="Ej: alergia al cloro, necesita adaptación especial..."></textarea>
+      </div>
+      <div class="pb-20"></div>
+    </div>
+    <div class="sticky-cta">
+      <div class="price-info">
+        <span class="price" id="ck1-price">18 €</span>
+        <span class="price-label" id="ck1-slot">Lun 15 jun · 10:30h</span>
+      </div>
+      <button class="btn-book" onclick="goToSummary()">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ===================== CHECKOUT: RESUMEN (US-015) ===================== -->
+  <div id="screen-ck-summary" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-ck-participant')">←</button>
+      <span class="topbar-title">Resumen</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="checkout-steps">
+      <div class="ck-step done"><div class="ck-dot">✓</div><div class="ck-label">Quién</div></div>
+      <div class="ck-step active"><div class="ck-dot">2</div><div class="ck-label">Resumen</div></div>
+      <div class="ck-step"><div class="ck-dot">3</div><div class="ck-label">Pago</div></div>
+      <div class="ck-step"><div class="ck-dot">✓</div><div class="ck-label">Listo</div></div>
+    </div>
+    <div class="scroll-content" style="padding:16px 20px;">
+      <!-- Activity card -->
+      <div class="summary-activity-card">
+        <div class="sa-emoji" id="sum-emoji">🏊</div>
+        <div class="sa-info">
+          <div class="sa-title" id="sum-title">Natación bebés 0-3 años</div>
+          <div class="sa-meta">
+            <div id="sum-date">📅 Lun 15 jun · 10:30h</div>
+            <div id="sum-participant">👧 Lucía · 6 años</div>
+            <div id="sum-prov">🏫 Aqua Kids Madrid</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price breakdown -->
+      <div class="price-breakdown">
+        <div class="price-row"><span>Precio sesión</span><span id="sum-base">18,00 €</span></div>
+        <div class="price-row"><span>Comisión servicio</span><span>1,80 €</span></div>
+        <div class="price-row discount" id="sum-discount-row" style="display:none"><span>🎟 Descuento cupón</span><span id="sum-discount">-0,00 €</span></div>
+        <div class="price-row total"><span>Total</span><span id="sum-total">19,80 €</span></div>
+      </div>
+
+      <!-- Coupon (US-015) -->
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;">¿Tienes un cupón?</div>
+      <div class="coupon-row">
+        <input class="coupon-input" type="text" placeholder="Código de descuento" id="coupon-input" oninput="this.value=this.value.toUpperCase()">
+        <button class="coupon-btn" onclick="applyCoupon()">Aplicar</button>
+      </div>
+
+      <!-- Política cancelación -->
+      <div class="cancel-policy">
+        <span class="cp-icon">🔄</span>
+        <div id="sum-cancel-policy">Cancela hasta 24h antes y recibe el 100% de reembolso. Cancelaciones tardías: sin reembolso.</div>
+      </div>
+      <div class="pb-20"></div>
+    </div>
+    <div class="sticky-cta">
+      <div class="price-info">
+        <span class="price" id="ck2-total">19,80 €</span>
+        <span class="price-label">total con comisión</span>
+      </div>
+      <button class="btn-book" onclick="goToPayment()">Ir a pago →</button>
+    </div>
+  </div>
+
+  <!-- ===================== CHECKOUT: PAGO (US-016) ===================== -->
+  <div id="screen-ck-payment" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-ck-summary')">←</button>
+      <span class="topbar-title">Pago seguro</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="checkout-steps">
+      <div class="ck-step done"><div class="ck-dot">✓</div><div class="ck-label">Quién</div></div>
+      <div class="ck-step done"><div class="ck-dot">✓</div><div class="ck-label">Resumen</div></div>
+      <div class="ck-step active"><div class="ck-dot">3</div><div class="ck-label">Pago</div></div>
+      <div class="ck-step"><div class="ck-dot">✓</div><div class="ck-label">Listo</div></div>
+    </div>
+    <div class="scroll-content" style="padding:16px 20px;">
+      <!-- Método de pago -->
+      <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:10px;">Método de pago</div>
+      <div class="payment-methods">
+        <div class="pay-method active" id="pm-card" onclick="setPayMethod('card')"><span class="pm-icon">💳</span>Tarjeta</div>
+        <div class="pay-method" id="pm-apple" onclick="setPayMethod('apple')"><span class="pm-icon">🍎</span>Apple Pay</div>
+        <div class="pay-method" id="pm-google" onclick="setPayMethod('google')"><span class="pm-icon">🔵</span>Google Pay</div>
+      </div>
+
+      <!-- Card form (Stripe-style) -->
+      <div class="card-form" id="card-form-section">
+        <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:10px;">Datos de la tarjeta</div>
+        <div class="card-number-wrap">
+          <span class="card-brand" id="card-brand-icon">💳</span>
+          <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" id="card-number" oninput="formatCardNumber(this)">
+        </div>
+        <div class="card-row">
+          <input type="text" placeholder="MM / AA" maxlength="7" id="card-exp" oninput="formatExpiry(this)">
+          <input type="text" placeholder="CVV" maxlength="4" id="card-cvv">
+        </div>
+        <div class="card-row" style="margin-bottom:0;">
+          <input type="text" placeholder="Nombre en la tarjeta" id="card-name" style="text-transform:uppercase;">
+        </div>
+        <div class="save-card-row" style="margin-top:14px;">
+          <div class="toggle on" id="save-toggle" onclick="this.classList.toggle('on')"></div>
+          <span>Guardar tarjeta para futuras reservas</span>
+        </div>
+      </div>
+
+      <!-- Tarjeta guardada -->
+      <div id="saved-cards-section" style="display:none;">
+        <div class="payment-chip" style="border:2px solid var(--brand);background:var(--brand-light);">
+          <span class="card-icon">💳</span>
+          <div class="item-text"><div class="card-info">Visa •••• 4242</div><div class="card-exp">Caduca 08/27</div></div>
+          <span style="color:var(--brand);font-weight:700;font-size:12px;">✓</span>
+        </div>
+        <button style="background:none;border:none;color:var(--brand);font-size:13px;font-weight:600;cursor:pointer;padding:4px 0;" onclick="document.getElementById('saved-cards-section').style.display='none';document.getElementById('card-form-section').style.display='block';">+ Usar otra tarjeta</button>
+      </div>
+
+      <div class="secure-badge">🔒 Pago seguro con cifrado SSL · Procesado por Stripe</div>
+      <div class="pb-20"></div>
+    </div>
+    <div class="sticky-cta">
+      <div class="price-info">
+        <span class="price" id="ck3-total">19,80 €</span>
+        <span class="price-label">cargo único</span>
+      </div>
+      <button class="btn-book" id="pay-btn" onclick="processPayment()">Pagar ahora 🔒</button>
+    </div>
+  </div>
+
+  <!-- ===================== CHECKOUT: CONFIRMACIÓN (US-017) ===================== -->
+  <div id="screen-confirmation" class="screen">
+    <div class="scroll-content">
+      <div class="confirm-hero">
+        <div class="confirm-check">✅</div>
+        <h2>¡Reserva confirmada!</h2>
+        <p>Te hemos enviado un email con todos los detalles</p>
+        <div class="booking-id" id="conf-booking-id">KDY-2026-00847</div>
+      </div>
+      <div style="padding:20px;">
+        <div class="confirm-card">
+          <div class="confirm-row"><span class="label">Actividad</span><span class="value" id="conf-activity">Natación bebés 0-3 años</span></div>
+          <div class="confirm-row"><span class="label">Fecha y hora</span><span class="value" id="conf-date">Lun 15 jun · 10:30h</span></div>
+          <div class="confirm-row"><span class="label">Participante</span><span class="value" id="conf-participant">Lucía, 6 años</span></div>
+          <div class="confirm-row"><span class="label">Proveedor</span><span class="value" id="conf-prov">Aqua Kids Madrid</span></div>
+          <div class="confirm-row"><span class="label">Importe</span><span class="value" id="conf-total" style="color:var(--brand);font-weight:800;">19,80 €</span></div>
+        </div>
+
+        <button class="cal-add-btn" onclick="showToast('📅 Añadido a tu calendario')">📅 Añadir al calendario</button>
+        <button class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:15px;margin-bottom:10px;" onclick="showScreen('screen-bookings')">Ver mis reservas</button>
+        <button class="btn-outline" style="width:100%;padding:14px;border-radius:12px;font-size:14px;" onclick="showScreen('screen-home')">Volver al inicio</button>
+
+        <!-- Recomendaciones (US-022 preview) -->
+        <div style="margin-top:24px;">
+          <div style="font-size:15px;font-weight:700;margin-bottom:12px;">También te puede interesar</div>
+          <div class="cards-scroll" style="padding:0;margin:0 -4px;">
+            <div class="card card-h" style="min-width:160px;" onclick="showDetail(1)">
+              <div class="card-img" style="height:90px;">⚽</div>
+              <div class="card-body"><div class="card-title" style="font-size:12px;">Fútbol sala 5-8 años</div><div class="card-bottom" style="margin-top:4px;"><span class="card-price" style="font-size:12px;">12 €</span><span class="card-rating" style="font-size:10px;">⭐ 4.7</span></div></div>
+            </div>
+            <div class="card card-h" style="min-width:160px;" onclick="showDetail(2)">
+              <div class="card-img" style="height:90px;">🎨</div>
+              <div class="card-body"><div class="card-title" style="font-size:12px;">Taller de pintura</div><div class="card-bottom" style="margin-top:4px;"><span class="card-price" style="font-size:12px;">15 €</span><span class="card-rating" style="font-size:10px;">⭐ 4.8</span></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pb-20"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: MIS RESERVAS (US-018) ===================== -->
+  <div id="screen-bookings" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+      <span class="topbar-title">Mis reservas</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="bookings-tabs">
+      <div class="bookings-tab active" id="tab-upcoming" onclick="switchTab('upcoming')">Próximas</div>
+      <div class="bookings-tab" id="tab-past" onclick="switchTab('past')">Pasadas</div>
+      <div class="bookings-tab" id="tab-cancelled" onclick="switchTab('cancelled')">Canceladas</div>
+    </div>
+    <div class="scroll-content" style="padding-top:16px;" id="bookings-content">
+      <!-- filled dynamically -->
+    </div>
+    <nav class="bottom-nav">
+      <button onclick="showScreen('screen-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Inicio</button>
+      <button onclick="doSearch('Todo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Explorar</button>
+      <button onclick="checkFavorites()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Favoritos</button>
+      <button onclick="goToProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+    </nav>
+  </div>
+
+  <!-- ===================== SCREEN: CANCELAR RESERVA (US-019) ===================== -->
+  <div id="screen-cancel" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-bookings')">←</button>
+      <span class="topbar-title">Cancelar reserva</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content" style="padding:20px;">
+      <div class="cancel-detail-card">
+        <div style="font-size:36px;" id="cancel-emoji">🏊</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;" id="cancel-title">Natación bebés 0-3 años</div>
+          <div style="font-size:12px;color:var(--gray-400);margin-top:3px;" id="cancel-date">Lun 15 jun · 10:30h</div>
+        </div>
+      </div>
+
+      <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Política de reembolso</div>
+      <div class="refund-breakdown">
+        <div class="refund-row"><span>Precio pagado</span><span id="cancel-paid">19,80 €</span></div>
+        <div class="refund-row green"><span>✓ Reembolso (100%)</span><span id="cancel-refund">19,80 €</span></div>
+        <div class="refund-row"><span style="font-weight:800;">Tu reembolso</span><span style="color:var(--green);" id="cancel-net">19,80 €</span></div>
+      </div>
+
+      <div class="cancel-policy" style="margin-bottom:20px;">
+        <span class="cp-icon">ℹ️</span>
+        <div>Cancelas con más de 24h de antelación. Recibirás el reembolso completo en 5-7 días hábiles en tu método de pago original.</div>
+      </div>
+
+      <button class="confirm-cancel-btn" onclick="confirmCancelBooking()">Confirmar cancelación</button>
+      <button class="btn-outline" style="width:100%;padding:14px;border-radius:12px;font-size:14px;margin-top:10px;" onclick="showScreen('screen-bookings')">Mantener reserva</button>
+      <div class="pb-20"></div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: RECORDATORIOS (US-020) ===================== -->
+  <div id="screen-reminder" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-profile')">←</button>
+      <span class="topbar-title">Recordatorios</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content" style="padding:20px;">
+      <div class="notif-banner">
+        <div class="notif-banner-icon">🔔</div>
+        <p>Activa los avisos para no perderte ninguna sesión. Te notificaremos con tiempo suficiente para que tus hijos lleguen preparados.</p>
+      </div>
+
+      <div class="profile-section-title" style="margin-bottom:12px;">Reservas y sesiones</div>
+      <div class="notif-row">
+        <div class="notif-icon">📧</div>
+        <div class="notif-text">
+          <div class="notif-label">Email 24h antes</div>
+          <div class="notif-sub">Dirección, horario y nombre de la actividad</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked onchange="notifChanged()"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="notif-row">
+        <div class="notif-icon">📱</div>
+        <div class="notif-text">
+          <div class="notif-label">Push 1h antes</div>
+          <div class="notif-sub">Recordatorio rápido en tu dispositivo</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked onchange="notifChanged()"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="notif-row">
+        <div class="notif-icon">📋</div>
+        <div class="notif-text">
+          <div class="notif-label">Resumen semanal</div>
+          <div class="notif-sub">Próximas reservas cada lunes</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked onchange="notifChanged()"><span class="toggle-slider"></span></label>
+      </div>
+
+      <div class="profile-section-title" style="margin:20px 0 12px;">Marketing</div>
+      <div class="notif-row">
+        <div class="notif-icon">🆕</div>
+        <div class="notif-text">
+          <div class="notif-label">Novedades y ofertas</div>
+          <div class="notif-sub">Actividades nuevas y descuentos especiales</div>
+        </div>
+        <label class="toggle"><input type="checkbox" onchange="notifChanged()"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="notif-row">
+        <div class="notif-icon">💬</div>
+        <div class="notif-text">
+          <div class="notif-label">Mensajes de proveedores</div>
+          <div class="notif-sub">Avisos sobre cambios o novedades</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked onchange="notifChanged()"><span class="toggle-slider"></span></label>
+      </div>
+
+      <button class="btn-primary" id="save-notif-btn" style="width:100%;padding:14px;border-radius:12px;font-size:15px;margin-top:24px;opacity:.5;cursor:default;" onclick="saveNotifications()" disabled>Guardar preferencias</button>
+      <div class="pb-20"></div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: VALORAR ACTIVIDAD (US-021) ===================== -->
+  <div id="screen-review" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-bookings')">←</button>
+      <span class="topbar-title">Valorar actividad</span>
+      <div style="width:32px"></div>
+    </div>
+
+    <!-- Form state -->
+    <div id="review-form-state" class="scroll-content" style="padding:20px;">
+      <div class="review-activity-card">
+        <div class="review-emoji" id="rv-emoji">🎨</div>
+        <div>
+          <div class="review-act-title" id="rv-title">Taller de pintura</div>
+          <div class="review-act-meta" id="rv-meta">📅 Mar 9 jun · 17:00h · Marcos</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-bottom:8px;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:4px;">¿Cómo fue la experiencia?</div>
+        <div style="font-size:13px;color:var(--gray-400);">Toca las estrellas para valorar</div>
+      </div>
+      <div class="stars-selector" id="stars-selector">
+        <button class="star-btn" onclick="setReviewStar(1)">⭐</button>
+        <button class="star-btn" onclick="setReviewStar(2)">⭐</button>
+        <button class="star-btn" onclick="setReviewStar(3)">⭐</button>
+        <button class="star-btn" onclick="setReviewStar(4)">⭐</button>
+        <button class="star-btn" onclick="setReviewStar(5)">⭐</button>
+      </div>
+      <div id="star-label" style="text-align:center;font-size:13px;color:var(--gray-400);margin-bottom:16px;height:18px;"></div>
+
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">¿Qué aspectos destacarías?</div>
+      <div class="review-tags" id="review-tags">
+        <div class="review-tag" onclick="toggleReviewTag(this)">👍 Monitor/a</div>
+        <div class="review-tag" onclick="toggleReviewTag(this)">📍 Instalaciones</div>
+        <div class="review-tag" onclick="toggleReviewTag(this)">⏰ Puntualidad</div>
+        <div class="review-tag" onclick="toggleReviewTag(this)">💰 Precio/calidad</div>
+        <div class="review-tag" onclick="toggleReviewTag(this)">🔒 Seguridad</div>
+        <div class="review-tag" onclick="toggleReviewTag(this)">🎯 Organización</div>
+      </div>
+
+      <label style="font-size:13px;font-weight:600;display:block;margin:16px 0 8px;">Comentario (opcional)</label>
+      <textarea class="obs-input" id="review-comment" rows="4" maxlength="500" placeholder="Cuéntanos más sobre la experiencia de tu hijo/a..." oninput="updateCharCount(this)"></textarea>
+      <div class="char-counter" id="char-count">0 / 500</div>
+
+      <button class="btn-primary" id="submit-review-btn" style="width:100%;padding:14px;border-radius:12px;font-size:15px;margin-top:20px;opacity:.5;cursor:default;" onclick="submitReview()" disabled>Enviar valoración</button>
+      <div class="pb-20"></div>
+    </div>
+
+    <!-- Success state -->
+    <div class="review-success" id="review-success-state">
+      <div style="font-size:72px;">⭐</div>
+      <h2 style="font-size:22px;font-weight:800;">¡Gracias por valorar!</h2>
+      <p style="font-size:14px;color:var(--gray-400);line-height:1.6;">Tu opinión ayuda a otras familias a elegir la mejor actividad para sus hijos.</p>
+      <div style="background:var(--brand-light);border-radius:12px;padding:14px 20px;font-size:13px;color:var(--brand);font-weight:600;text-align:center;">La valoración ya es visible en la ficha de la actividad</div>
+      <button class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:15px;" onclick="showScreen('screen-bookings')">Volver a mis reservas</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: INVITAR AMIGOS (US-023) ===================== -->
+  <div id="screen-referral" class="screen">
+    <div class="topbar" style="position:absolute;top:0;left:0;right:0;background:transparent;border:none;z-index:5;">
+      <button class="back-btn" style="background:rgba(255,255,255,.9);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;" onclick="showScreen('screen-profile')">←</button>
+      <div style="width:32px"></div>
+    </div>
+    <div class="scroll-content">
+      <div class="referral-hero" style="padding-top:64px;">
+        <div style="font-size:56px;margin-bottom:12px;">🎁</div>
+        <h2>Invita a tus amigos</h2>
+        <p>Comparte Kooday y gana crédito para tus próximas reservas</p>
+      </div>
+      <div style="padding:20px;">
+        <div style="font-size:13px;color:var(--gray-600);font-weight:600;margin-bottom:6px;">Tu código único</div>
+        <div class="referral-code-box">
+          <div class="referral-code">KOODAY-LUI5</div>
+          <button class="copy-btn" onclick="copyReferralCode()">Copiar</button>
+        </div>
+
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px;">¿Cómo funciona?</div>
+        <div class="benefit-row">
+          <div class="benefit-icon">👫</div>
+          <div class="benefit-text">
+            <div class="benefit-label">Tu amigo se registra con tu código</div>
+            <div class="benefit-sub">Y obtiene 5€ de descuento en su primera reserva</div>
+          </div>
+        </div>
+        <div class="benefit-row">
+          <div class="benefit-icon">💰</div>
+          <div class="benefit-text">
+            <div class="benefit-label">Tú ganas 10€ de crédito</div>
+            <div class="benefit-sub">Se aplica automáticamente cuando complete su primera reserva</div>
+          </div>
+        </div>
+        <div class="benefit-row">
+          <div class="benefit-icon">🔄</div>
+          <div class="benefit-text">
+            <div class="benefit-label">Sin límite de referidos</div>
+            <div class="benefit-sub">¡Cuantos más amigos invites, más crédito acumulas!</div>
+          </div>
+        </div>
+
+        <div style="font-size:14px;font-weight:700;margin:16px 0 10px;">Compartir con</div>
+        <div class="share-btns">
+          <button class="share-btn wa" onclick="showToast('Abriendo WhatsApp...')">💬 WhatsApp</button>
+          <button class="share-btn em" onclick="showToast('Abriendo email...')">✉️ Email</button>
+          <button class="share-btn cp" onclick="copyReferralCode()">🔗 Copiar</button>
+        </div>
+
+        <div style="font-size:14px;font-weight:700;margin:16px 0 10px;">Tu historial de referidos</div>
+        <div class="referral-stats">
+          <div class="ref-stat">
+            <div class="ref-stat-val">3</div>
+            <div class="ref-stat-label">Invitados</div>
+          </div>
+          <div class="ref-stat">
+            <div class="ref-stat-val">1</div>
+            <div class="ref-stat-label">Reservaron</div>
+          </div>
+          <div class="ref-stat">
+            <div class="ref-stat-val">10€</div>
+            <div class="ref-stat-label">Ganados</div>
+          </div>
+        </div>
+        <div class="pb-20"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: SOPORTE (US-024) ===================== -->
+  <div id="screen-support" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-profile')">←</button>
+      <span class="topbar-title">Centro de soporte</span>
+      <div style="width:32px"></div>
+    </div>
+
+    <!-- Main state -->
+    <div id="support-main-state" class="scroll-content" style="padding:20px;">
+      <div class="support-search">
+        <span>🔍</span>
+        <input type="text" placeholder="¿En qué podemos ayudarte?" oninput="filterFAQ(this.value)">
+      </div>
+
+      <div style="font-size:14px;font-weight:700;margin-bottom:14px;">Preguntas frecuentes</div>
+      <div id="faq-list">
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">¿Cómo cancelo una reserva? <span class="faq-arrow">⌄</span></div>
+          <div class="faq-answer">Ve a <strong>Mis reservas</strong>, abre la reserva que quieres cancelar y toca "Cancelar reserva". Revisa la política de reembolso antes de confirmar. Si cancelas con más de 24h de antelación recibirás el reembolso completo.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">¿Cuándo recibiré el reembolso? <span class="faq-arrow">⌄</span></div>
+          <div class="faq-answer">Los reembolsos se procesan en <strong>5–7 días hábiles</strong> al método de pago original. Si pagaste con tarjeta de crédito puede tardar hasta 10 días según el banco. Recibirás un email de confirmación con el importe.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">¿Puedo cambiar la fecha de mi reserva? <span class="faq-arrow">⌄</span></div>
+          <div class="faq-answer">Por el momento las reservas no pueden modificarse directamente. Si necesitas cambiar la fecha, cancela la reserva actual y realiza una nueva. Si la nueva actividad tiene diferente precio, abonarás o recibirás la diferencia.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">¿Qué ocurre si el proveedor cancela? <span class="faq-arrow">⌄</span></div>
+          <div class="faq-answer">Si el proveedor cancela la sesión, recibirás el <strong>reembolso completo</strong> de forma automática en 48h. Además te notificaremos por email y push para que puedas buscar otra actividad similar.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">¿Cómo contacto directamente con el proveedor? <span class="faq-arrow">⌄</span></div>
+          <div class="faq-answer">Desde la ficha de la actividad puedes ver el perfil del proveedor y sus datos de contacto. También puedes hacer preguntas antes de reservar usando el botón "Preguntar al proveedor".</div>
+        </div>
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">¿Cómo añado o cambio un método de pago? <span class="faq-arrow">⌄</span></div>
+          <div class="faq-answer">Ve a tu <strong>Perfil → Métodos de pago</strong>. Puedes añadir nuevas tarjetas, eliminar las existentes o establecer una por defecto. Aceptamos Visa, Mastercard, Apple Pay y Google Pay.</div>
+        </div>
+      </div>
+
+      <div class="support-divider">— ¿No encuentras respuesta? —</div>
+
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Crear incidencia</div>
+      <select class="ticket-select" id="ticket-type" onchange="onTicketTypeChange(this.value)">
+        <option value="">Selecciona el motivo</option>
+        <option value="reserva">Problema con una reserva</option>
+        <option value="pago">Problema de pago o reembolso</option>
+        <option value="cuenta">Mi cuenta o perfil</option>
+        <option value="otro">Otro</option>
+      </select>
+      <div id="ticket-booking-row" style="display:none;margin-bottom:12px;">
+        <select class="ticket-select" style="margin:0;">
+          <option>KDY-2026-00847 · Natación bebés · Lun 15 jun</option>
+          <option>KDY-2026-00741 · Taller pintura · Mar 9 jun</option>
+        </select>
+      </div>
+      <textarea class="obs-input" id="ticket-message" rows="4" placeholder="Describe tu problema con el mayor detalle posible..."></textarea>
+      <button class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:15px;margin-top:14px;" onclick="submitTicket()">Enviar incidencia</button>
+      <div class="pb-20"></div>
+    </div>
+
+    <!-- Submitted state -->
+    <div class="ticket-submitted" id="ticket-submitted-state">
+      <div style="font-size:64px;">✅</div>
+      <h2 style="font-size:20px;font-weight:800;">Incidencia enviada</h2>
+      <p style="font-size:13px;color:var(--gray-400);line-height:1.6;">Nuestro equipo la revisará en menos de 24h. Recibirás una respuesta en tu email.</p>
+      <div class="ticket-ref" id="ticket-ref-num">KDY-SUP-20260608-001</div>
+      <div style="font-size:12px;color:var(--gray-400);">Guarda este número de referencia</div>
+      <div style="background:#F0FDF4;border-radius:12px;padding:12px 16px;width:100%;">
+        <div style="font-size:13px;font-weight:600;color:#166534;">Estado: Recibida ✓</div>
+        <div style="font-size:12px;color:#166534;margin-top:4px;">Tiempo estimado de respuesta: &lt; 24h</div>
+      </div>
+      <button class="btn-outline" style="width:100%;padding:14px;border-radius:12px;font-size:14px;" onclick="resetSupport()">Volver al soporte</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: MAPA (US-025) ===================== -->
+  <div id="screen-map" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="showScreen('screen-results')">←</button>
+      <span class="topbar-title">Explorar en mapa</span>
+      <div class="map-view-toggle" style="margin-right:0;">
+        <button class="map-toggle-btn" onclick="showScreen('screen-results')">☰ Lista</button>
+        <button class="map-toggle-btn active">🗺 Mapa</button>
+      </div>
+    </div>
+
+    <div class="map-container" id="map-container" onclick="closeMapCard()">
+      <div class="map-bg"></div>
+      <!-- Roads -->
+      <div class="map-road-h" style="top:35%"></div>
+      <div class="map-road-h" style="top:62%"></div>
+      <div class="map-road-v" style="left:28%"></div>
+      <div class="map-road-v" style="left:65%"></div>
+
+      <!-- Pins -->
+      <div class="map-pin" style="left:38%;top:30%;" onclick="event.stopPropagation();selectPin(0)">
+        <div class="map-pin-bubble" id="pin-0"><span>🏊</span> 18€</div>
+        <div class="map-pin-tail"></div>
+      </div>
+      <div class="map-pin" style="left:62%;top:45%;" onclick="event.stopPropagation();selectPin(1)">
+        <div class="map-pin-bubble" id="pin-1"><span>⚽</span> 12€</div>
+        <div class="map-pin-tail"></div>
+      </div>
+      <div class="map-pin" style="left:25%;top:55%;" onclick="event.stopPropagation();selectPin(2)">
+        <div class="map-pin-bubble" id="pin-2"><span>🎨</span> 15€</div>
+        <div class="map-pin-tail"></div>
+      </div>
+      <div class="map-pin" style="left:72%;top:25%;" onclick="event.stopPropagation();selectPin(3)">
+        <div class="map-pin-bubble" id="pin-3"><span>🎵</span> 22€</div>
+        <div class="map-pin-tail"></div>
+      </div>
+      <div class="map-pin" style="left:50%;top:70%;" onclick="event.stopPropagation();selectPin(4)">
+        <div class="map-pin-bubble" id="pin-4"><span>🌿</span> 20€</div>
+        <div class="map-pin-tail"></div>
+      </div>
+
+      <!-- Mi ubicación -->
+      <div style="position:absolute;left:48%;top:50%;width:14px;height:14px;background:var(--blue);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 4px rgba(59,130,246,.25);transform:translate(-50%,-50%);z-index:3;"></div>
+
+      <!-- Mini card -->
+      <div class="map-mini-card" id="map-mini-card" onclick="event.stopPropagation()">
+        <div style="width:40px;height:4px;background:var(--gray-200);border-radius:2px;margin:0 auto 14px;"></div>
+        <div class="map-mini-card-inner">
+          <div class="map-mini-emoji" id="map-mini-emoji">🏊</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;" id="map-mini-title">Natación bebés 0-3 años</div>
+            <div style="font-size:12px;color:var(--gray-400);margin-top:3px;" id="map-mini-meta">📍 1.2 km · 0–3 años · ⭐ 4.9</div>
+            <div style="font-size:16px;font-weight:800;color:var(--brand);margin-top:4px;" id="map-mini-price">18 €/ses.</div>
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;padding:12px;border-radius:12px;font-size:14px;margin-top:12px;" id="map-mini-cta" onclick="">Ver detalle →</button>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button onclick="showScreen('screen-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Inicio</button>
+      <button class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Explorar</button>
+      <button onclick="checkFavorites()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Favoritos</button>
+      <button onclick="goToProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+    </nav>
   </div>
 
   <!-- ── Filter Drawer (US-003) ── -->
@@ -961,11 +2041,11 @@
 <script>
   // ─────────── Data ───────────
   const activities = [
-    { emoji:'🏊', title:'Natación bebés 0-3 años', cat:'Deportes Acuáticos', prov:'Aqua Kids Madrid', provAv:'🏫', edad:'0–3 años', dur:'45 min', loc:'1.2 km', price:'18 €', cancel:'Cancela 24h antes', rating:'4.9', reviews:32, desc:'Clases de natación adaptadas para bebés de 0 a 3 años junto a sus padres o cuidadores. Ambiente cálido, profesores titulados y grupos reducidos (máx. 6 bebés). Desarrollamos la confianza en el agua mediante juegos y rutinas seguras.' },
-    { emoji:'⚽', title:'Fútbol sala 5-8 años', cat:'Deportes', prov:'Madrid Sport Kids', provAv:'⚽', edad:'5–8 años', dur:'60 min', loc:'2.4 km', price:'12 €', cancel:'Cancela 48h antes', rating:'4.7', reviews:18, desc:'Iniciación al fútbol sala en formato lúdico. Los peques aprenden coordinación, trabajo en equipo y técnica básica en sesiones de 60 minutos. Entrenadores UEFA C.' },
-    { emoji:'🎨', title:'Taller de pintura 6-10 años', cat:'Arte', prov:'Taller Creativo BCN', provAv:'🎨', edad:'6–10 años', dur:'90 min', loc:'3.1 km', price:'15 €', cancel:'Cancela 24h antes', rating:'4.8', reviews:25, desc:'Talleres de expresión artística donde los niños exploran la pintura acrílica, acuarela y técnicas mixtas. Cada sesión termina con una obra para llevarse a casa.' },
-    { emoji:'🎵', title:'Piano para niños 7-12 años', cat:'Música', prov:'Escuela Musicalia', provAv:'🎹', edad:'7–12 años', dur:'45 min', loc:'1.8 km', price:'22 €', cancel:'Cancela 72h antes', rating:'5.0', reviews:11, desc:'Clases individuales de piano para niños desde nivel iniciación. Metodología moderna con repertorio actual y clásico. Alumnos han ganado concursos locales.' },
-    { emoji:'🌿', title:'Exploración naturaleza 8-12', cat:'Naturaleza', prov:'GreenKids Outdoor', provAv:'🌱', edad:'8–12 años', dur:'3 horas', loc:'5.0 km', price:'20 €', cancel:'Cancela 48h antes', rating:'4.6', reviews:9, desc:'Salidas de senderismo y observación de fauna y flora con guías naturalistas. Los niños aprenden a identificar plantas, insectos y aves del entorno madrileño.' },
+    { emoji:'🏊', title:'Natación bebés 0-3 años', cat:'Deportes Acuáticos', prov:'Aqua Kids Madrid', provAv:'🏫', edad:'0–3 años', dur:'45 min', loc:'1.2 km', price:'18 €', priceNum:18, cancel:'Cancela 24h antes', cancelDesc:'Cancela hasta 24h antes y recibe el 100% de reembolso.', rating:'4.9', reviews:32, provYears:'5 años', provActs:6, desc:'Clases de natación adaptadas para bebés de 0 a 3 años junto a sus padres o cuidadores. Ambiente cálido, profesores titulados y grupos reducidos (máx. 6 bebés). Desarrollamos la confianza en el agua mediante juegos y rutinas seguras.', provDesc:'Centro especializado en actividades acuáticas para bebés y niños. Contamos con instalaciones de primer nivel y monitores titulados con más de 5 años de experiencia.' },
+    { emoji:'⚽', title:'Fútbol sala 5-8 años', cat:'Deportes', prov:'Madrid Sport Kids', provAv:'⚽', edad:'5–8 años', dur:'60 min', loc:'2.4 km', price:'12 €', priceNum:12, cancel:'Cancela 48h antes', cancelDesc:'Cancela hasta 48h antes y recibe el 100% de reembolso.', rating:'4.7', reviews:18, provYears:'3 años', provActs:4, desc:'Iniciación al fútbol sala en formato lúdico. Los peques aprenden coordinación, trabajo en equipo y técnica básica en sesiones de 60 minutos. Entrenadores UEFA C.', provDesc:'Club deportivo especializado en iniciación al fútbol para niños. Metodología lúdica con entrenadores licenciados UEFA.' },
+    { emoji:'🎨', title:'Taller de pintura 6-10 años', cat:'Arte', prov:'Taller Creativo BCN', provAv:'🎨', edad:'6–10 años', dur:'90 min', loc:'3.1 km', price:'15 €', priceNum:15, cancel:'Cancela 24h antes', cancelDesc:'Cancela hasta 24h antes y recibe el 100% de reembolso.', rating:'4.8', reviews:25, provYears:'7 años', provActs:8, desc:'Talleres de expresión artística donde los niños exploran la pintura acrílica, acuarela y técnicas mixtas. Cada sesión termina con una obra para llevarse a casa.', provDesc:'Estudio de arte fundado en 2019, especializado en educación artística infantil. Más de 500 niños han pasado por nuestros talleres.' },
+    { emoji:'🎵', title:'Piano para niños 7-12 años', cat:'Música', prov:'Escuela Musicalia', provAv:'🎹', edad:'7–12 años', dur:'45 min', loc:'1.8 km', price:'22 €', priceNum:22, cancel:'Cancela 72h antes', cancelDesc:'Cancela hasta 72h antes y recibe el 100% de reembolso.', rating:'5.0', reviews:11, provYears:'10 años', provActs:5, desc:'Clases individuales de piano para niños desde nivel iniciación. Metodología moderna con repertorio actual y clásico. Alumnos han ganado concursos locales.', provDesc:'Escuela de música con más de 10 años de historia. Ofrecemos formación en piano, guitarra, violín y canto para todas las edades.' },
+    { emoji:'🌿', title:'Exploración naturaleza 8-12', cat:'Naturaleza', prov:'GreenKids Outdoor', provAv:'🌱', edad:'8–12 años', dur:'3 horas', loc:'5.0 km', price:'20 €', priceNum:20, cancel:'Cancela 48h antes', cancelDesc:'Cancela hasta 48h antes y recibe el 100% de reembolso. Cancelaciones por mal tiempo: reembolso completo.', rating:'4.6', reviews:9, provYears:'4 años', provActs:3, desc:'Salidas de senderismo y observación de fauna y flora con guías naturalistas. Los niños aprenden a identificar plantas, insectos y aves del entorno madrileño.', provDesc:'Empresa de educación ambiental outdoor. Guías naturalistas certificados y grupos reducidos para máximo aprendizaje.' },
   ];
 
   const favorites = new Set([3]); // piano starts as fav
@@ -979,12 +2059,25 @@
     'screen-results':    'US-003 / US-004 · Filtros + Listado',
     'screen-detail':     'US-004 · Ficha de actividad',
     'screen-favorites':  'US-005 · Favoritos',
+    'screen-availability':    'US-011 / US-012 · Disponibilidad y selector de sesión',
+    'screen-ck-participant':  'US-014 · Selección de participante',
+    'screen-ck-summary':      'US-015 · Resumen y precio',
+    'screen-ck-payment':      'US-016 · Pago seguro (Stripe)',
+    'screen-confirmation':    'US-017 · Confirmación de reserva',
+    'screen-bookings':        'US-018 · Mis reservas',
+    'screen-cancel':          'US-019 · Cancelar reserva',
+    'screen-provider':   'US-013 · Perfil del proveedor',
     'screen-register':   'US-006 · Registro con email/social',
     'screen-verify':     'US-006 · Verificación de email',
     'screen-login':      'US-007 · Inicio de sesión',
     'screen-forgot':     'US-007 · Recuperar contraseña',
     'screen-onboarding': 'US-008 · Onboarding perfil hijos',
     'screen-profile':    'US-009 · Perfil y datos personales',
+    'screen-reminder':   'US-020 · Recordatorios y notificaciones',
+    'screen-review':     'US-021 · Valorar actividad',
+    'screen-referral':   'US-023 · Invitar amigos (Referral)',
+    'screen-support':    'US-024 · Centro de soporte',
+    'screen-map':        'US-025 · Mapa de actividades',
   };
 
   // ─────────── Navigation ───────────
@@ -1026,12 +2119,19 @@
     updateFilterBadge();
   }
 
-  // ─────────── Detail (US-004) ───────────
+  // ─────────── Detail (US-010) ───────────
+  let galleryIdx = 0;
   function showDetail(idx) {
     prevScreen = document.querySelector('.screen.active').id;
     currentDetailIdx = idx;
     const a = activities[idx];
-    document.getElementById('detail-img').innerHTML = a.emoji + '<button class="fav-big" id="detail-fav" onclick="toggleDetailFav()">' + (favorites.has(idx) ? '❤️' : '🤍') + '</button>';
+    // Gallery
+    galleryIdx = 0;
+    const slides = document.getElementById('gallery-slides');
+    slides.innerHTML = `<div class="gallery-slide">${a.emoji}</div><div class="gallery-slide" style="background:#E8F5E9;">${a.emoji}</div><div class="gallery-slide" style="background:#FFF3E0;">📸</div>`;
+    updateGalleryDots();
+    slides.style.transform = 'translateX(0)';
+    // Content
     document.getElementById('detail-cat').textContent = a.cat;
     document.getElementById('detail-title').textContent = a.title;
     document.getElementById('detail-prov-av').textContent = a.provAv;
@@ -1039,10 +2139,171 @@
     document.getElementById('dc-edad').textContent = '👶 ' + a.edad;
     document.getElementById('dc-dur').textContent = '⏱ ' + a.dur;
     document.getElementById('dc-loc').textContent = '📍 ' + a.loc;
-    document.getElementById('dc-cancel').textContent = '🔄 ' + a.cancel;
+    document.getElementById('dc-cancel-block').innerHTML = `<span class="cp-icon">🔄</span><div><strong>${a.cancel}</strong> — ${a.cancelDesc}</div>`;
     document.getElementById('detail-desc').textContent = a.desc;
     document.getElementById('detail-price').textContent = a.price;
+    document.getElementById('detail-fav').textContent = favorites.has(idx) ? '❤️' : '🤍';
+    document.getElementById('detail-rating').textContent = a.rating;
+    document.getElementById('detail-stars').textContent = '⭐'.repeat(Math.round(parseFloat(a.rating)));
+    document.getElementById('detail-review-count').textContent = a.reviews + ' valoraciones';
+    document.getElementById('prov-rating-val').textContent = a.rating;
+    document.getElementById('prov-acts-val').textContent = a.provActs;
+    document.getElementById('prov-years-val').textContent = a.provYears;
     showScreen('screen-detail');
+  }
+
+  function galleryPrev() {
+    const slides = document.getElementById('gallery-slides');
+    const count = slides.children.length;
+    galleryIdx = (galleryIdx - 1 + count) % count;
+    slides.style.transform = `translateX(-${galleryIdx * 100}%)`;
+    updateGalleryDots();
+  }
+  function galleryNext() {
+    const slides = document.getElementById('gallery-slides');
+    const count = slides.children.length;
+    galleryIdx = (galleryIdx + 1) % count;
+    slides.style.transform = `translateX(-${galleryIdx * 100}%)`;
+    updateGalleryDots();
+  }
+  function updateGalleryDots() {
+    const dots = document.getElementById('gallery-dots');
+    const slides = document.getElementById('gallery-slides');
+    const count = slides.children.length;
+    dots.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement('div');
+      d.className = 'gdot' + (i === galleryIdx ? ' active' : '');
+      dots.appendChild(d);
+    }
+  }
+
+  // ─────────── Availability / Calendar (US-011) ───────────
+  let calYear = 2026, calMonth = 5; // June 2026 (0-indexed)
+  const availableDays = [8,9,11,13,15,16,18,20,22,23,25,27,29,30];
+  const fullDays = [10,17,24];
+  let selectedCalDay = null;
+
+  const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+  function goToAvailability() {
+    document.getElementById('avail-title').textContent = activities[currentDetailIdx].title;
+    document.getElementById('avail-price').textContent = activities[currentDetailIdx].price;
+    renderCalendar();
+    showScreen('screen-availability');
+  }
+
+  function renderCalendar() {
+    document.getElementById('cal-month-label').textContent = MONTHS[calMonth] + ' ' + calYear;
+    const grid = document.querySelector('.cal-grid');
+    // Remove day cells (keep labels = first 7 children)
+    while (grid.children.length > 7) grid.removeChild(grid.lastChild);
+    const firstDay = new Date(calYear, calMonth, 1).getDay(); // 0=Sun
+    const offset = firstDay === 0 ? 6 : firstDay - 1; // Mon-based
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const today = new Date(); const todayD = today.getDate(), todayM = today.getMonth(), todayY = today.getFullYear();
+    for (let i = 0; i < offset; i++) { const e = document.createElement('div'); e.className='cal-day empty'; grid.appendChild(e); }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement('div');
+      const isPast = (calYear < todayY) || (calYear === todayY && calMonth < todayM) || (calYear === todayY && calMonth === todayM && d < todayD);
+      let cls = 'cal-day';
+      if (isPast) cls += ' past';
+      else if (fullDays.includes(d)) cls += ' full';
+      else if (availableDays.includes(d)) cls += ' available';
+      else cls += ' past';
+      if (d === selectedCalDay) cls += ' selected';
+      el.className = cls;
+      el.textContent = d;
+      el.onclick = () => selectCalDay(d, el);
+      grid.appendChild(el);
+    }
+  }
+
+  function selectCalDay(d, el) {
+    if (el.classList.contains('past') || el.classList.contains('full')) return;
+    selectedCalDay = d;
+    renderCalendar();
+    renderSlots(d);
+  }
+
+  function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } selectedCalDay = null; renderCalendar(); document.getElementById('slots-section').style.display='none'; document.getElementById('slots-empty').style.display='block'; document.getElementById('avail-cta').style.display='none'; }
+  function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } selectedCalDay = null; renderCalendar(); document.getElementById('slots-section').style.display='none'; document.getElementById('slots-empty').style.display='block'; document.getElementById('avail-cta').style.display='none'; }
+
+  // ─────────── Session slots (US-012) ───────────
+  const slotTemplates = [
+    { time:'09:00', plazas:8, total:8 },
+    { time:'10:30', plazas:2, total:8 },
+    { time:'12:00', plazas:0, total:8 },
+    { time:'16:00', plazas:6, total:8 },
+    { time:'18:00', plazas:4, total:8 },
+  ];
+  let selectedSlot = null;
+
+  function renderSlots(day) {
+    const a = activities[currentDetailIdx];
+    const dayNames = ['dom','lun','mar','mié','jue','vie','sáb'];
+    const date = new Date(calYear, calMonth, day);
+    const dn = dayNames[date.getDay()];
+    document.getElementById('slots-date-title').textContent = `Sesiones del ${dn} ${day} ${MONTHS[calMonth].toLowerCase().slice(0,3)}`;
+    document.getElementById('slots-section').style.display = 'block';
+    document.getElementById('slots-empty').style.display = 'none';
+    const list = document.getElementById('slots-list');
+    list.innerHTML = '';
+    slotTemplates.forEach((s, i) => {
+      const isFull = s.plazas === 0;
+      const isPoca = s.plazas > 0 && s.plazas <= 3;
+      const div = document.createElement('div');
+      div.className = 'slot' + (isFull ? ' full' : '') + (selectedSlot === i ? ' selected' : '');
+      div.innerHTML = `
+        <div class="slot-time">${s.time}</div>
+        <div class="slot-info">
+          <div class="slot-plazas ${isFull?'completo':isPoca?'pocas':'disponible'}">${isFull?'Completa':''+s.plazas+'/'+s.total+' plazas'+(isPoca?' — ¡Últimas!':'')}</div>
+          <div class="slot-dur">${a.dur} · ${a.prov}</div>
+        </div>
+        <div class="slot-price">${a.price}</div>
+        <div class="slot-check">${selectedSlot===i?'✓':''}</div>`;
+      if (!isFull) div.onclick = () => selectSlot(i, day, s.time, a.price);
+      list.appendChild(div);
+    });
+  }
+
+  function selectSlot(i, day, time, price) {
+    selectedSlot = i;
+    renderSlots(day);
+    const dn = ['dom','lun','mar','mié','jue','vie','sáb'][new Date(calYear, calMonth, day).getDay()];
+    document.getElementById('avail-slot-label').textContent = `${dn} ${day} ${MONTHS[calMonth].slice(0,3)} · ${time}h`;
+    document.getElementById('avail-price').textContent = price;
+    document.getElementById('avail-cta').style.display = 'flex';
+  }
+
+  // ─────────── Provider screen (US-013) ───────────
+  function showProvider(idx) {
+    const a = activities[idx];
+    document.getElementById('ph-logo').textContent = a.provAv;
+    document.getElementById('ph-name').textContent = a.prov;
+    document.getElementById('ph-rating').textContent = a.rating + ' ⭐';
+    document.getElementById('ph-acts').textContent = a.provActs;
+    document.getElementById('ph-reviews').textContent = a.reviews;
+    document.getElementById('ph-years').textContent = a.provYears;
+    document.getElementById('ph-desc').textContent = a.provDesc;
+    // Other activities from same provider (show others)
+    const list = document.getElementById('provider-acts-list');
+    list.innerHTML = '';
+    activities.forEach((act, i) => {
+      const div = document.createElement('div');
+      div.className = 'act-mini-card';
+      const isActive = i === idx;
+      div.innerHTML = `
+        <div class="act-mini-emoji">${act.emoji}</div>
+        <div class="act-mini-info">
+          <div class="act-mini-title">${act.title}${isActive?' <span style="font-size:10px;background:var(--brand-light);color:var(--brand);padding:2px 6px;border-radius:10px;">Esta actividad</span>':''}</div>
+          <div class="act-mini-meta">📍 ${act.loc} · ${act.edad} · ⭐ ${act.rating}</div>
+        </div>
+        <div class="act-mini-price">${act.price}</div>`;
+      div.onclick = () => showDetail(i);
+      list.appendChild(div);
+    });
+    showScreen('screen-provider');
   }
 
   // ─────────── Favorites (US-005) ───────────
@@ -1339,6 +2600,308 @@
     toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
   }
 
+  // ─────────── Checkout state ───────────
+  const ckState = { activity: null, slot: null, participant: 0, coupon: null, total: 0 };
+  const participants = [
+    { name:'Lucía', age:6, emoji:'👧', interests:'Deportes, Música' },
+    { name:'Marcos', age:9, emoji:'👦', interests:'Naturaleza, Ciencia' },
+  ];
+  const bookings = [
+    { id:'KDY-2026-00847', actIdx:0, date:'Lun 15 jun · 10:30h', participant:'Lucía, 6 años', status:'confirmed', price:'19,80 €' },
+    { id:'KDY-2026-00741', actIdx:2, date:'Mar 9 jun · 17:00h',  participant:'Marcos, 9 años', status:'past',      price:'16,35 €' },
+    { id:'KDY-2026-00612', actIdx:1, date:'Sáb 1 jun · 10:00h',  participant:'Lucía, 6 años', status:'cancelled',  price:'13,08 €' },
+  ];
+
+  // ─── US-014: Participant ───
+  function selectParticipant(idx) {
+    ckState.participant = idx;
+    document.querySelectorAll('.participant-card').forEach((c,i) => {
+      c.classList.toggle('selected', i === idx);
+      c.querySelector('.p-check').textContent = i === idx ? '✓' : '';
+    });
+    const p = participants[idx], a = activities[currentDetailIdx];
+    const ageOk = a ? true : true; // simplified check
+    showToast('Participante: ' + p.name);
+  }
+
+  function goToSummary() {
+    if (!loggedIn) { openLogin(); return; }
+    const a = activities[currentDetailIdx];
+    const p = participants[ckState.participant];
+    const base = a.priceNum;
+    const fee = +(base * 0.1).toFixed(2);
+    ckState.total = base + fee;
+    ckState.activity = a;
+    document.getElementById('sum-emoji').textContent = a.emoji;
+    document.getElementById('sum-title').textContent = a.title;
+    document.getElementById('sum-date').textContent = '📅 ' + (document.getElementById('avail-slot-label').textContent || 'Lun 15 jun · 10:30h');
+    document.getElementById('sum-participant').textContent = '👤 ' + p.name + ', ' + p.age + ' años';
+    document.getElementById('sum-prov').textContent = '🏫 ' + a.prov;
+    document.getElementById('sum-base').textContent = base.toFixed(2).replace('.',',') + ' €';
+    document.getElementById('sum-total').textContent = ckState.total.toFixed(2).replace('.',',') + ' €';
+    document.getElementById('ck2-total').textContent = ckState.total.toFixed(2).replace('.',',') + ' €';
+    document.getElementById('sum-cancel-policy').textContent = a.cancelDesc;
+    document.getElementById('sum-discount-row').style.display = 'none';
+    document.getElementById('coupon-input').value = '';
+    document.getElementById('ck1-price').textContent = a.price;
+    document.getElementById('ck1-slot').textContent = document.getElementById('avail-slot-label').textContent || 'Sesión seleccionada';
+    showScreen('screen-ck-summary');
+  }
+
+  function applyCoupon() {
+    const code = document.getElementById('coupon-input').value.trim();
+    const a = activities[currentDetailIdx];
+    const base = a.priceNum;
+    const fee = +(base * 0.1).toFixed(2);
+    if (code === 'KOODAY10') {
+      const disc = +(base * 0.1).toFixed(2);
+      ckState.total = base + fee - disc;
+      document.getElementById('sum-discount').textContent = '-' + disc.toFixed(2).replace('.',',') + ' €';
+      document.getElementById('sum-discount-row').style.display = 'flex';
+      document.getElementById('sum-total').textContent = ckState.total.toFixed(2).replace('.',',') + ' €';
+      document.getElementById('ck2-total').textContent = ckState.total.toFixed(2).replace('.',',') + ' €';
+      showToast('🎟 Cupón aplicado: -10%');
+    } else if (code) {
+      showToast('❌ Cupón no válido');
+    }
+  }
+
+  // ─── US-016: Payment ───
+  function goToPayment() {
+    document.getElementById('ck3-total').textContent = ckState.total.toFixed(2).replace('.',',') + ' €';
+    showScreen('screen-ck-payment');
+  }
+
+  function setPayMethod(method) {
+    ['card','apple','google'].forEach(m => document.getElementById('pm-'+m).classList.toggle('active', m===method));
+    document.getElementById('card-form-section').style.display = method==='card' ? 'block' : 'none';
+    if (method !== 'card') showToast(method==='apple'?'🍎 Apple Pay seleccionado':'🔵 Google Pay seleccionado');
+  }
+
+  function formatCardNumber(el) {
+    let v = el.value.replace(/\D/g,'').slice(0,16);
+    el.value = v.replace(/(.{4})/g,'$1 ').trim();
+    const icon = document.getElementById('card-brand-icon');
+    icon.textContent = v.startsWith('4') ? '💙' : v.startsWith('5') ? '🔴' : '💳';
+  }
+
+  function formatExpiry(el) {
+    let v = el.value.replace(/\D/g,'');
+    if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2,4);
+    el.value = v;
+  }
+
+  function processPayment() {
+    const btn = document.getElementById('pay-btn');
+    btn.textContent = '⏳ Procesando...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Pagar ahora 🔒';
+      btn.disabled = false;
+      const a = activities[currentDetailIdx];
+      const p = participants[ckState.participant];
+      const slotLabel = document.getElementById('avail-slot-label').textContent || 'Lun 15 jun · 10:30h';
+      document.getElementById('conf-activity').textContent = a.title;
+      document.getElementById('conf-date').textContent = slotLabel;
+      document.getElementById('conf-participant').textContent = p.name + ', ' + p.age + ' años';
+      document.getElementById('conf-prov').textContent = a.prov;
+      document.getElementById('conf-total').textContent = ckState.total.toFixed(2).replace('.',',') + ' €';
+      document.getElementById('conf-booking-id').textContent = 'KDY-2026-0' + Math.floor(Math.random()*9000+1000);
+      showScreen('screen-confirmation');
+    }, 1800);
+  }
+
+  // ─── US-018: My Bookings ───
+  let currentTab = 'upcoming';
+  function switchTab(tab) {
+    currentTab = tab;
+    ['upcoming','past','cancelled'].forEach(t => {
+      document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    });
+    renderBookings();
+  }
+
+  function renderBookings() {
+    const cont = document.getElementById('bookings-content');
+    const filtered = bookings.filter(b =>
+      currentTab === 'upcoming' ? b.status === 'confirmed' :
+      currentTab === 'past' ? b.status === 'past' : b.status === 'cancelled'
+    );
+    if (filtered.length === 0) {
+      cont.innerHTML = `<div class="empty-state"><div class="empty-icon">${currentTab==='upcoming'?'📅':currentTab==='past'?'🕐':'🚫'}</div><h3>Sin reservas ${currentTab==='upcoming'?'próximas':currentTab==='past'?'pasadas':'canceladas'}</h3><p style="color:var(--gray-400);font-size:13px;margin-top:6px;">${currentTab==='upcoming'?'Cuando reserves una actividad aparecerá aquí':''}</p>${currentTab==='upcoming'?'<button class="btn-ghost" onclick="doSearch(\'Todo\')">Explorar actividades</button>':''}</div>`;
+      return;
+    }
+    cont.innerHTML = filtered.map(b => {
+      const a = activities[b.actIdx];
+      const statusLabel = b.status==='confirmed'?'Confirmada':b.status==='past'?'Completada':'Cancelada';
+      const statusClass = b.status==='confirmed'?'status-confirmed':b.status==='past'?'status-past':'status-cancelled';
+      return `<div class="booking-item" onclick="currentCancelBooking='${b.id}';showBookingDetail('${b.id}')">
+        <div class="booking-item-header">
+          <div class="booking-emoji">${a.emoji}</div>
+          <div class="booking-info">
+            <div class="booking-title">${a.title}</div>
+            <div class="booking-date">📅 ${b.date} · 👤 ${b.participant}</div>
+          </div>
+          <span class="booking-status ${statusClass}">${statusLabel}</span>
+        </div>
+        <div class="booking-item-footer">
+          <span class="booking-price">${b.price}</span>
+          ${b.status==='confirmed'?`<span class="booking-action" onclick="event.stopPropagation();openCancelFlow('${b.id}')">Cancelar →</span>`:b.status==='past'?`<span class="booking-action" style="color:var(--brand);" onclick="event.stopPropagation();openReview('${b.id}')">⭐ Valorar →</span>`:`<span class="booking-action" style="color:var(--gray-400);">Cancelada</span>`}
+        </div>
+      </div>`;
+    }).join('') + '<div class="pb-20"></div>';
+  }
+
+  function showBookingDetail(id) { showToast('Ver detalle: ' + id); }
+
+  let currentCancelBooking = null;
+  function openCancelFlow(id) {
+    currentCancelBooking = id;
+    const b = bookings.find(x => x.id === id);
+    const a = activities[b.actIdx];
+    document.getElementById('cancel-emoji').textContent = a.emoji;
+    document.getElementById('cancel-title').textContent = a.title;
+    document.getElementById('cancel-date').textContent = b.date;
+    document.getElementById('cancel-paid').textContent = b.price;
+    document.getElementById('cancel-refund').textContent = b.price;
+    document.getElementById('cancel-net').textContent = b.price;
+    showScreen('screen-cancel');
+  }
+
+  // ─── US-019: Cancel booking ───
+  function confirmCancelBooking() {
+    if (currentCancelBooking) {
+      const b = bookings.find(x => x.id === currentCancelBooking);
+      if (b) b.status = 'cancelled';
+    }
+    showToast('✓ Reserva cancelada · Reembolso en 5-7 días');
+    showScreen('screen-bookings');
+    renderBookings();
+  }
+
+  // ─── US-020: Reminders / Notifications ───
+  function notifChanged() {
+    const btn = document.getElementById('save-notif-btn');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  }
+  function saveNotifications() {
+    showToast('✓ Preferencias guardadas');
+    const btn = document.getElementById('save-notif-btn');
+    btn.disabled = true;
+    btn.style.opacity = '.5';
+    btn.style.cursor = 'default';
+  }
+
+  // ─── US-021: Review / Rating ───
+  let currentReviewStar = 0;
+  const starLabels = ['', 'Muy mejorable', 'Regular', 'Bien', 'Muy bien', '¡Excelente!'];
+
+  function openReview(bookingId) {
+    const b = bookings.find(x => x.id === bookingId);
+    if (!b) return;
+    const a = activities[b.actIdx];
+    document.getElementById('rv-emoji').textContent = a.emoji;
+    document.getElementById('rv-title').textContent = a.title;
+    document.getElementById('rv-meta').textContent = '📅 ' + b.date + ' · ' + b.participant;
+    currentReviewStar = 0;
+    document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('active'));
+    document.getElementById('star-label').textContent = '';
+    document.getElementById('review-comment').value = '';
+    document.getElementById('char-count').textContent = '0 / 500';
+    document.querySelectorAll('.review-tag').forEach(t => t.classList.remove('sel'));
+    const btn = document.getElementById('submit-review-btn');
+    btn.disabled = true; btn.style.opacity = '.5'; btn.style.cursor = 'default';
+    document.getElementById('review-form-state').style.display = 'block';
+    document.getElementById('review-success-state').classList.remove('show');
+    showScreen('screen-review');
+  }
+  function setReviewStar(n) {
+    currentReviewStar = n;
+    document.querySelectorAll('.star-btn').forEach((s, i) => s.classList.toggle('active', i < n));
+    document.getElementById('star-label').textContent = starLabels[n];
+    document.getElementById('star-label').style.color = n >= 4 ? 'var(--green)' : n >= 3 ? 'var(--yellow)' : 'var(--red)';
+    const btn = document.getElementById('submit-review-btn');
+    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
+  }
+  function toggleReviewTag(el) { el.classList.toggle('sel'); }
+  function updateCharCount(el) {
+    document.getElementById('char-count').textContent = el.value.length + ' / 500';
+  }
+  function submitReview() {
+    if (!currentReviewStar) return;
+    document.getElementById('review-form-state').style.display = 'none';
+    document.getElementById('review-success-state').classList.add('show');
+    showToast('⭐ Valoración publicada');
+  }
+
+  // ─── US-023: Referral ───
+  function copyReferralCode() {
+    showToast('📋 Código copiado: KOODAY-LUI5');
+    const btn = document.querySelector('.copy-btn');
+    if (btn) { btn.textContent = '¡Copiado!'; setTimeout(() => btn.textContent = 'Copiar', 1800); }
+  }
+
+  // ─── US-024: Support ───
+  function toggleFAQ(item) { item.classList.toggle('open'); }
+  function filterFAQ(val) {
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const q = item.querySelector('.faq-question').textContent.toLowerCase();
+      const a = item.querySelector('.faq-answer').textContent.toLowerCase();
+      item.style.display = (!val || q.includes(val.toLowerCase()) || a.includes(val.toLowerCase())) ? '' : 'none';
+    });
+  }
+  function onTicketTypeChange(val) {
+    document.getElementById('ticket-booking-row').style.display = val === 'reserva' ? 'block' : 'none';
+  }
+  function submitTicket() {
+    const msg = document.getElementById('ticket-message').value.trim();
+    const type = document.getElementById('ticket-type').value;
+    if (!type) { showToast('Selecciona el motivo primero'); return; }
+    if (msg.length < 10) { showToast('Describe el problema (mín. 10 caracteres)'); return; }
+    document.getElementById('support-main-state').style.display = 'none';
+    document.getElementById('ticket-submitted-state').classList.add('show');
+  }
+  function resetSupport() {
+    document.getElementById('support-main-state').style.display = 'flex';
+    document.getElementById('ticket-submitted-state').classList.remove('show');
+    document.getElementById('ticket-type').value = '';
+    document.getElementById('ticket-message').value = '';
+    document.getElementById('ticket-booking-row').style.display = 'none';
+  }
+
+  // ─── US-025: Map ───
+  function switchToMap() {
+    document.getElementById('toggle-list-btn').classList.remove('active');
+    document.getElementById('toggle-map-btn').classList.add('active');
+    showScreen('screen-map');
+  }
+  function switchToList() {
+    document.getElementById('toggle-list-btn').classList.add('active');
+    document.getElementById('toggle-map-btn').classList.remove('active');
+    showScreen('screen-results');
+  }
+  let selectedPin = null;
+  function selectPin(idx) {
+    const a = activities[idx];
+    // Reset previous
+    if (selectedPin !== null) document.getElementById('pin-' + selectedPin).classList.remove('sel');
+    selectedPin = idx;
+    document.getElementById('pin-' + idx).classList.add('sel');
+    document.getElementById('map-mini-emoji').textContent = a.emoji;
+    document.getElementById('map-mini-title').textContent = a.title;
+    document.getElementById('map-mini-meta').textContent = '📍 ' + a.loc.split(' ').slice(0,2).join(' ') + ' · ' + a.edad + ' · ⭐ ' + a.rating;
+    document.getElementById('map-mini-price').textContent = a.price;
+    document.getElementById('map-mini-cta').setAttribute('onclick', 'showDetail(' + idx + ')');
+    document.getElementById('map-mini-card').classList.add('open');
+  }
+  function closeMapCard() {
+    document.getElementById('map-mini-card').classList.remove('open');
+    if (selectedPin !== null) { document.getElementById('pin-' + selectedPin).classList.remove('sel'); selectedPin = null; }
+  }
+
+  // ─── Availability CTA updated ───
   function goToProfile() {
     if (!loggedIn) { showScreen('screen-login'); return; }
     showScreen('screen-profile');
