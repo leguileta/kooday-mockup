@@ -866,6 +866,61 @@
     .coming-soon .cs-title { font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
     .coming-soon .cs-sub   { font-size: 13px; }
 
+    /* ============================================================
+       PIPELINE (incident lifecycle)
+    ============================================================ */
+    .pipeline { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+    .pipe-step {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 11px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+      color: var(--text3);
+      white-space: nowrap;
+    }
+    .pipe-step.done    { background: var(--ok-bg);   color: #065F46; border-color: var(--ok-border); }
+    .pipe-step.current { background: var(--info-bg); color: #1E40AF; border-color: var(--info-border); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .pipe-arrow { color: var(--text3); font-size: 11px; margin: 0 2px; }
+
+    /* ============================================================
+       MESSAGES (incident communication)
+    ============================================================ */
+    .msg { display: flex; gap: 10px; margin-bottom: 14px; }
+    .msg:last-child { margin-bottom: 0; }
+    .msg-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .msg-body   { flex: 1; }
+    .msg-meta   { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+    .msg-meta strong { color: var(--text2); }
+    .msg-bubble {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .msg.admin .msg-bubble { background: var(--admin-light); border-color: var(--info-border); }
+
+    /* ============================================================
+       MONEY BREAKDOWN
+    ============================================================ */
+    .money-row {
+      display: flex; justify-content: space-between;
+      padding: 8px 0;
+      font-size: 13px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .money-row:last-child { border-bottom: none; }
+    .money-row.total { font-weight: 700; font-size: 15px; border-top: 2px solid var(--border); padding-top: 10px; }
+
   </style>
 </head>
 <body>
@@ -934,9 +989,29 @@
     </div>
 
     <div class="sb-section">
+      <div class="sb-section-title">É11 · Reservas y Pagos</div>
+      <div class="nav-item" id="nav-bookings" onclick="showSection('s-bookings')">
+        <span class="nav-icon">📅</span> Reservas
+      </div>
+      <div class="nav-item" id="nav-payments" onclick="showSection('s-payments')">
+        <span class="nav-icon">💳</span> Pagos y liquidaciones
+        <span class="nav-badge">1</span>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-title">É12 · Incidencias</div>
+      <div class="nav-item" id="nav-incidents" onclick="showSection('s-incidents')">
+        <span class="nav-icon">🎫</span> Cola incidencias
+        <span class="nav-badge">8</span>
+      </div>
+      <div class="nav-item" id="nav-support-kpis" onclick="showSection('s-support-kpis')">
+        <span class="nav-icon">📈</span> KPIs soporte
+      </div>
+    </div>
+
+    <div class="sb-section">
       <div class="sb-section-title">Próximas épicas</div>
-      <div class="nav-item muted"><span class="nav-icon">📅</span> Reservas y pagos <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É11</small></div>
-      <div class="nav-item muted"><span class="nav-icon">🎫</span> Incidencias <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É12</small></div>
       <div class="nav-item muted"><span class="nav-icon">⚙️</span> Configuración <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É13</small></div>
       <div class="nav-item muted"><span class="nav-icon">📊</span> Analítica <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É14</small></div>
     </div>
@@ -1001,10 +1076,10 @@
             <div class="stat-value">4</div>
             <div class="stat-sub">2 proveedores · 2 actividades</div>
           </div>
-          <div class="stat-card c-blue">
+          <div class="stat-card c-blue" style="cursor:pointer" onclick="showSection('s-incidents')">
             <div class="stat-label">Incidencias abiertas</div>
             <div class="stat-value">8</div>
-            <div class="stat-sub">Disponible en É12</div>
+            <div class="stat-sub" style="color:var(--err);font-weight:600">⚠ 2 con SLA en riesgo</div>
           </div>
         </div>
 
@@ -1597,6 +1672,728 @@
         </div>
       </div><!-- /s-activity-detail -->
 
+
+      <!-- ============================================================
+           S-BOOKINGS (AD-011)
+      ============================================================ -->
+      <div id="s-bookings" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div>
+            <div class="page-title">Panel de reservas</div>
+            <div class="page-sub">É11 · AD-011 — Todas las reservas de la plataforma con búsqueda, filtros y exportación</div>
+          </div>
+          <button class="btn btn-ghost" onclick="showToast('⬇ Exportando 1.248 reservas a CSV…', '#2563EB')">⬇ Exportar CSV</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card c-blue">
+            <div class="stat-label">Reservas este mes</div>
+            <div class="stat-value">1.248</div>
+            <div class="stat-sub">+18% vs. mayo</div>
+          </div>
+          <div class="stat-card c-ok">
+            <div class="stat-label">Confirmadas</div>
+            <div class="stat-value">1.094</div>
+            <div class="stat-sub">87,7% del total</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">Canceladas</div>
+            <div class="stat-value">112</div>
+            <div class="stat-sub">9% · dentro de la media</div>
+          </div>
+          <div class="stat-card c-err">
+            <div class="stat-label">Reembolsadas</div>
+            <div class="stat-value">42</div>
+            <div class="stat-sub">3,4% · 1.276 € devueltos</div>
+          </div>
+        </div>
+
+        <div class="filters-bar">
+          <input class="fi fi-search" placeholder="🔍  Buscar por ID reserva, email usuario o actividad…">
+          <select class="fi">
+            <option>Estado: Todos</option>
+            <option>Confirmada</option>
+            <option>Completada</option>
+            <option>Cancelada</option>
+            <option>Reembolsada</option>
+            <option>Pendiente de pago</option>
+          </select>
+          <select class="fi">
+            <option>Fecha: Junio 2026</option>
+            <option>Mayo 2026</option>
+            <option>Últimos 7 días</option>
+            <option>Rango personalizado…</option>
+          </select>
+          <select class="fi">
+            <option>Ciudad: Todas</option>
+            <option>Madrid</option>
+            <option>Barcelona</option>
+            <option>Sevilla</option>
+          </select>
+          <div class="fi-count">Mostrando 6 de 1.248</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Usuario</th>
+                  <th>Actividad</th>
+                  <th>Proveedor</th>
+                  <th>Importe</th>
+                  <th>Fecha sesión</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="openBookingDetail()">
+                  <td><strong>#KB-4521</strong></td>
+                  <td><div class="td-name">Laura Martínez</div><div class="td-sub">laura.mtz@gmail.com</div></td>
+                  <td><div class="td-name">Fútbol sala 6-9 años</div><div class="td-sub">Leo, 7 años</div></td>
+                  <td>Fútbol Base Sevilla</td>
+                  <td><strong>48 €</strong><div class="td-sub">4 sesiones</div></td>
+                  <td>13/06/2026</td>
+                  <td><span class="badge badge-rejected">⚠ Incidencia</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openBookingDetail()">Ver →</button></td>
+                </tr>
+                <tr onclick="openBookingDetail()">
+                  <td><strong>#KB-4520</strong></td>
+                  <td><div class="td-name">Carlos Ruiz</div><div class="td-sub">cruiz84@hotmail.com</div></td>
+                  <td><div class="td-name">Taller robótica 8-12 años</div><div class="td-sub">Vega, 9 años</div></td>
+                  <td>Tech4Kids</td>
+                  <td><strong>30 €</strong><div class="td-sub">1 sesión</div></td>
+                  <td>14/06/2026</td>
+                  <td><span class="badge badge-approved">Confirmada</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openBookingDetail()">Ver →</button></td>
+                </tr>
+                <tr onclick="openBookingDetail()">
+                  <td><strong>#KB-4519</strong></td>
+                  <td><div class="td-name">María Fernández</div><div class="td-sub">mfdez@gmail.com</div></td>
+                  <td><div class="td-name">Piano infantil 5-10 años</div><div class="td-sub">Hugo, 6 años</div></td>
+                  <td>Academia Musical Rivas</td>
+                  <td><strong>100 €</strong><div class="td-sub">4 sesiones</div></td>
+                  <td>12/06/2026</td>
+                  <td><span class="badge badge-approved">Confirmada</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openBookingDetail()">Ver →</button></td>
+                </tr>
+                <tr onclick="openBookingDetail()">
+                  <td><strong>#KB-4516</strong></td>
+                  <td><div class="td-name">Ana Belén Soto</div><div class="td-sub">absoto@yahoo.es</div></td>
+                  <td><div class="td-name">Natación iniciación</div><div class="td-sub">Mar, 5 años</div></td>
+                  <td>Aqua Kids BCN</td>
+                  <td><strong>64 €</strong><div class="td-sub">4 sesiones</div></td>
+                  <td>10/06/2026</td>
+                  <td><span class="badge badge-review">Completada</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openBookingDetail()">Ver →</button></td>
+                </tr>
+                <tr onclick="openBookingDetail()">
+                  <td><strong>#KB-4512</strong></td>
+                  <td><div class="td-name">Jorge Peña</div><div class="td-sub">jpena@gmail.com</div></td>
+                  <td><div class="td-name">Teatro infantil</div><div class="td-sub">Olivia, 8 años</div></td>
+                  <td>Escuela Telón Madrid</td>
+                  <td><strong>22 €</strong><div class="td-sub">1 sesión</div></td>
+                  <td>09/06/2026</td>
+                  <td><span class="badge badge-suspended">Cancelada</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openBookingDetail()">Ver →</button></td>
+                </tr>
+                <tr onclick="openBookingDetail()">
+                  <td><strong>#KB-4508</strong></td>
+                  <td><div class="td-name">Sandra Vidal</div><div class="td-sub">svidal@outlook.com</div></td>
+                  <td><div class="td-name">Ajedrez para peques</div><div class="td-sub">Dani, 7 años</div></td>
+                  <td>Club 64 Madrid</td>
+                  <td><strong>15 €</strong><div class="td-sub">1 sesión</div></td>
+                  <td>08/06/2026</td>
+                  <td><span class="badge badge-changes">Reembolsada</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openBookingDetail()">Ver →</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /s-bookings -->
+
+
+      <!-- ============================================================
+           S-BOOKING-DETAIL (AD-012)
+      ============================================================ -->
+      <div id="s-booking-detail" class="section">
+        <div class="back-link" onclick="showSection('s-bookings')">← Panel de reservas</div>
+
+        <div class="detail-title-row mb16">
+          <div class="page-title" style="margin-bottom:0">Reserva #KB-4521</div>
+          <span class="badge badge-rejected">⚠ Incidencia abierta</span>
+          <span class="badge badge-approved">Pago capturado</span>
+        </div>
+        <div class="page-sub">É11 · AD-012 · Creada 05/06/2026 · Vinculada a incidencia #INC-208</div>
+
+        <div class="detail-grid">
+
+          <!-- LEFT -->
+          <div>
+            <div class="card mb16">
+              <div class="card-header"><span>📅</span><div class="card-title">Detalle de la reserva</div></div>
+              <div class="card-body">
+                <div class="detail-row"><span class="detail-label">Usuario</span><span class="detail-val">Laura Martínez · laura.mtz@gmail.com</span></div>
+                <div class="detail-row"><span class="detail-label">Participante</span><span class="detail-val">Leo, 7 años</span></div>
+                <div class="detail-row"><span class="detail-label">Actividad</span><span class="detail-val">Fútbol sala 6-9 años</span></div>
+                <div class="detail-row"><span class="detail-label">Proveedor</span><span class="detail-val">Fútbol Base Sevilla</span></div>
+                <div class="detail-row"><span class="detail-label">Sesiones</span><span class="detail-val">4 (sáb 13, 20, 27 jun y 4 jul · 10:00h)</span></div>
+                <div class="detail-row"><span class="detail-label">Sesiones disfrutadas</span><span class="detail-val">1 de 4</span></div>
+                <div class="detail-row"><span class="detail-label">Política cancelación</span><span class="detail-val">24h → 100% reembolso</span></div>
+              </div>
+            </div>
+
+            <div class="card mb16">
+              <div class="card-header"><span>💳</span><div class="card-title">Pago — Stripe</div></div>
+              <div class="card-body">
+                <div class="detail-row"><span class="detail-label">Payment Intent</span><span class="detail-val" style="font-family:monospace">pi_3PXk21LkQd0942j1</span></div>
+                <div class="detail-row"><span class="detail-label">Método</span><span class="detail-val">Visa ···· 4242</span></div>
+                <div class="detail-row"><span class="detail-label">Capturado</span><span class="detail-val">05/06/2026 · 18:32h</span></div>
+                <div style="margin-top:14px">
+                  <div class="sec-title">Desglose</div>
+                  <div class="money-row"><span>Importe reserva (4 × 12 €)</span><span>48,00 €</span></div>
+                  <div class="money-row"><span>Comisión Kooday (15%)</span><span>7,20 €</span></div>
+                  <div class="money-row"><span>Neto proveedor</span><span>40,80 €</span></div>
+                  <div class="money-row total"><span>Total cobrado al usuario</span><span>48,00 €</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><span>🕐</span><div class="card-title">Historial</div></div>
+              <div class="card-body">
+                <div class="timeline">
+                  <div class="tl-item">
+                    <div class="tl-dot info">📅</div>
+                    <div class="tl-body"><div class="tl-action">Reserva creada y pago capturado</div><div class="tl-meta">05/06/2026 · 18:32h · Usuario</div></div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot ok">✓</div>
+                    <div class="tl-body"><div class="tl-action">Sesión 1 completada (asistencia confirmada)</div><div class="tl-meta">06/06/2026 · 11:05h · Proveedor</div></div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot err">🎫</div>
+                    <div class="tl-body"><div class="tl-action">Incidencia #INC-208 abierta — no-show del proveedor en sesión 2</div><div class="tl-meta">09/06/2026 · 12:40h · Usuario</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /left -->
+
+          <!-- RIGHT -->
+          <div>
+            <div class="actions-panel">
+              <div class="actions-title">Acciones — AD-012</div>
+              <div class="actions-stack">
+                <button class="btn btn-warn btn-lg btn-block" onclick="openModal('m-refund')">💸 Procesar reembolso</button>
+                <button class="btn btn-ghost btn-lg btn-block" onclick="openIncidentDetail()">🎫 Ver incidencia #INC-208</button>
+                <button class="btn btn-ghost btn-lg btn-block" onclick="showToast('✉ Email abierto en plantilla de contacto', '#2563EB')">✉ Contactar usuario</button>
+              </div>
+            </div>
+
+            <div class="alert alert-warn">
+              <span class="alert-icon">⚠️</span>
+              <div><strong>Incidencia vinculada:</strong> el usuario reporta que el proveedor no se presentó a la sesión 2. Reembolso parcial sugerido: <strong>36 € (3 sesiones)</strong>.</div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><span>💸</span><div class="card-title">Reembolsos previos</div></div>
+              <div class="card-body">
+                <div style="font-size:13px;color:var(--text3);text-align:center;padding:12px 0">Sin reembolsos en esta reserva</div>
+              </div>
+            </div>
+          </div><!-- /right -->
+        </div>
+      </div><!-- /s-booking-detail -->
+
+
+      <!-- ============================================================
+           S-PAYMENTS (AD-013)
+      ============================================================ -->
+      <div id="s-payments" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div class="page-title">Pagos y liquidaciones</div>
+        <div class="page-sub">É11 · AD-013 — GMV, comisiones y payouts a proveedores · Período: junio 2026</div>
+
+        <div class="stats-grid">
+          <div class="stat-card c-blue">
+            <div class="stat-label">GMV junio</div>
+            <div class="stat-value">38.4k €</div>
+            <div class="stat-sub">+22% vs. mayo</div>
+          </div>
+          <div class="stat-card c-ok">
+            <div class="stat-label">Comisiones Kooday (15%)</div>
+            <div class="stat-value">5.760 €</div>
+            <div class="stat-sub">Ingreso neto plataforma</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">Payouts pendientes</div>
+            <div class="stat-value">12.3k €</div>
+            <div class="stat-sub">14 proveedores · próximo ciclo 15/06</div>
+          </div>
+          <div class="stat-card c-err">
+            <div class="stat-label">Payouts fallidos</div>
+            <div class="stat-value">1</div>
+            <div class="stat-sub" style="color:var(--err);font-weight:600">⚠ Requiere reintento</div>
+          </div>
+        </div>
+
+        <div class="alert alert-err">
+          <span class="alert-icon">⚠️</span>
+          <div><strong>1 liquidación fallida:</strong> el payout de Escuela Telón Madrid (842,35 €) falló por IBAN inválido. Verifica los datos bancarios y reintenta.</div>
+        </div>
+
+        <div class="filters-bar">
+          <input class="fi fi-search" placeholder="🔍  Buscar proveedor…">
+          <select class="fi">
+            <option>Período: Junio 2026</option>
+            <option>Mayo 2026</option>
+            <option>Abril 2026</option>
+          </select>
+          <select class="fi">
+            <option>Estado: Todos</option>
+            <option>Pendiente</option>
+            <option>Procesada</option>
+            <option>Fallida</option>
+          </select>
+          <div class="fi-count">5 liquidaciones</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Proveedor</th>
+                  <th>Período</th>
+                  <th>Reservas</th>
+                  <th>GMV</th>
+                  <th>Comisión</th>
+                  <th>Payout neto</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="td-name">Escuela Telón Madrid</div><div class="td-sub">ES91 ···· 0421</div></td>
+                  <td>1–15 jun</td>
+                  <td>38</td>
+                  <td>991,00 €</td>
+                  <td>148,65 €</td>
+                  <td><strong>842,35 €</strong></td>
+                  <td><span class="badge badge-rejected">✗ Fallida</span><div class="td-sub" style="color:var(--err)">IBAN inválido</div></td>
+                  <td><button class="btn btn-danger btn-sm" onclick="openModal('m-retry-payout')">↻ Reintentar</button></td>
+                </tr>
+                <tr>
+                  <td><div class="td-name">Aqua Kids BCN</div><div class="td-sub">ES76 ···· 1183</div></td>
+                  <td>1–15 jun</td>
+                  <td>112</td>
+                  <td>4.480,00 €</td>
+                  <td>672,00 €</td>
+                  <td><strong>3.808,00 €</strong></td>
+                  <td><span class="badge badge-pending">Pendiente</span><div class="td-sub">Ciclo 15/06</div></td>
+                  <td><button class="btn btn-ghost btn-sm">Detalle</button></td>
+                </tr>
+                <tr>
+                  <td><div class="td-name">Tech4Kids</div><div class="td-sub">ES12 ···· 9035</div></td>
+                  <td>1–15 jun</td>
+                  <td>64</td>
+                  <td>1.920,00 €</td>
+                  <td>288,00 €</td>
+                  <td><strong>1.632,00 €</strong></td>
+                  <td><span class="badge badge-pending">Pendiente</span><div class="td-sub">Ciclo 15/06</div></td>
+                  <td><button class="btn btn-ghost btn-sm">Detalle</button></td>
+                </tr>
+                <tr>
+                  <td><div class="td-name">Club 64 Madrid</div><div class="td-sub">ES89 ···· 2210</div></td>
+                  <td>16–31 may</td>
+                  <td>41</td>
+                  <td>615,00 €</td>
+                  <td>92,25 €</td>
+                  <td><strong>522,75 €</strong></td>
+                  <td><span class="badge badge-approved">✓ Procesada</span><div class="td-sub">01/06/2026</div></td>
+                  <td><button class="btn btn-ghost btn-sm">Recibo</button></td>
+                </tr>
+                <tr>
+                  <td><div class="td-name">Fútbol Base Sevilla</div><div class="td-sub">ES45 ···· 7764</div></td>
+                  <td>16–31 may</td>
+                  <td>96</td>
+                  <td>1.152,00 €</td>
+                  <td>172,80 €</td>
+                  <td><strong>979,20 €</strong></td>
+                  <td><span class="badge badge-approved">✓ Procesada</span><div class="td-sub">01/06/2026</div></td>
+                  <td><button class="btn btn-ghost btn-sm">Recibo</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /s-payments -->
+
+
+      <!-- ============================================================
+           S-INCIDENTS (AD-014)
+      ============================================================ -->
+      <div id="s-incidents" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div class="page-title">Cola de incidencias</div>
+        <div class="page-sub">É12 · AD-014 — SLA primera respuesta: 4h · SLA resolución: 24h (alta) / 48h (media-baja)</div>
+
+        <div class="alert alert-err">
+          <span class="alert-icon">⚠️</span>
+          <div><strong>2 incidencias con SLA en riesgo</strong> (#INC-208 y #INC-205). Prioriza su resolución.</div>
+        </div>
+
+        <div class="filters-bar">
+          <input class="fi fi-search" placeholder="🔍  Buscar por ID, usuario o proveedor…">
+          <select class="fi">
+            <option>Tipo: Todos</option>
+            <option>Pago</option>
+            <option>Cancelación</option>
+            <option>No-show</option>
+            <option>Mala experiencia</option>
+            <option>Técnica</option>
+          </select>
+          <select class="fi">
+            <option>Estado: Abiertas</option>
+            <option>Nueva</option>
+            <option>En revisión</option>
+            <option>Pendiente usuario/proveedor</option>
+            <option>Resuelta</option>
+            <option>Cerrada</option>
+          </select>
+          <select class="fi">
+            <option>Prioridad: Todas</option>
+            <option>Alta</option>
+            <option>Media</option>
+            <option>Baja</option>
+          </select>
+          <select class="fi">
+            <option>Agente: Todos</option>
+            <option>Ana García</option>
+            <option>David López</option>
+            <option>Sin asignar</option>
+          </select>
+          <div class="fi-count">8 abiertas</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Usuario</th>
+                  <th>Proveedor</th>
+                  <th>Prioridad</th>
+                  <th>SLA restante</th>
+                  <th>Estado</th>
+                  <th>Agente</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="openIncidentDetail()">
+                  <td><strong>#INC-208</strong></td>
+                  <td>🚫 No-show</td>
+                  <td><div class="td-name">Laura Martínez</div><div class="td-sub">Reserva #KB-4521</div></td>
+                  <td>Fútbol Base Sevilla</td>
+                  <td><span class="sla sla-err">Alta</span></td>
+                  <td><span class="sla sla-err">2h ⚠</span></td>
+                  <td><span class="badge badge-review">En revisión</span></td>
+                  <td>Ana García</td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openIncidentDetail()">Gestionar →</button></td>
+                </tr>
+                <tr onclick="openIncidentDetail()">
+                  <td><strong>#INC-205</strong></td>
+                  <td>💳 Pago</td>
+                  <td><div class="td-name">Pedro Salas</div><div class="td-sub">Reserva #KB-4498</div></td>
+                  <td>Aqua Kids BCN</td>
+                  <td><span class="sla sla-err">Alta</span></td>
+                  <td><span class="sla sla-err">5h ⚠</span></td>
+                  <td><span class="badge badge-pending">Nueva</span></td>
+                  <td><em style="color:var(--text3)">Sin asignar</em></td>
+                  <td><button class="btn btn-warn btn-sm" onclick="event.stopPropagation();openModal('m-assign')">Asignar</button></td>
+                </tr>
+                <tr onclick="openIncidentDetail()">
+                  <td><strong>#INC-204</strong></td>
+                  <td>↩ Cancelación</td>
+                  <td><div class="td-name">Jorge Peña</div><div class="td-sub">Reserva #KB-4512</div></td>
+                  <td>Escuela Telón Madrid</td>
+                  <td><span class="sla sla-warn">Media</span></td>
+                  <td><span class="sla sla-warn">14h</span></td>
+                  <td><span class="badge badge-changes">Pendiente proveedor</span></td>
+                  <td>David López</td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openIncidentDetail()">Ver →</button></td>
+                </tr>
+                <tr onclick="openIncidentDetail()">
+                  <td><strong>#INC-202</strong></td>
+                  <td>😞 Mala experiencia</td>
+                  <td><div class="td-name">Sandra Vidal</div><div class="td-sub">Reserva #KB-4508</div></td>
+                  <td>Club 64 Madrid</td>
+                  <td><span class="sla sla-warn">Media</span></td>
+                  <td><span class="sla sla-ok">31h</span></td>
+                  <td><span class="badge badge-review">En revisión</span></td>
+                  <td>Ana García</td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openIncidentDetail()">Ver →</button></td>
+                </tr>
+                <tr onclick="openIncidentDetail()">
+                  <td><strong>#INC-199</strong></td>
+                  <td>🐛 Técnica</td>
+                  <td><div class="td-name">Marc Soler</div><div class="td-sub">App iOS · v1.4.2</div></td>
+                  <td>—</td>
+                  <td><span class="sla sla-ok">Baja</span></td>
+                  <td><span class="sla sla-ok">40h</span></td>
+                  <td><span class="badge badge-changes">Pendiente usuario</span></td>
+                  <td>David López</td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openIncidentDetail()">Ver →</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer" style="font-size:12px;color:var(--text2)">Mostrando 5 de 8 abiertas · 3 más con SLA > 40h</div>
+        </div>
+      </div><!-- /s-incidents -->
+
+
+      <!-- ============================================================
+           S-INCIDENT-DETAIL (AD-015)
+      ============================================================ -->
+      <div id="s-incident-detail" class="section">
+        <div class="back-link" onclick="showSection('s-incidents')">← Cola de incidencias</div>
+
+        <div class="detail-title-row mb16">
+          <div class="page-title" style="margin-bottom:0">#INC-208 · No-show del proveedor</div>
+          <span class="badge badge-review">En revisión</span>
+          <span class="sla sla-err">SLA: 2h restantes ⚠</span>
+        </div>
+        <div class="page-sub">É12 · AD-015 · Abierta 09/06/2026 12:40h · Reserva #KB-4521 · Agente: Ana García</div>
+
+        <!-- Lifecycle pipeline -->
+        <div class="card mb16" style="padding:14px 18px">
+          <div class="pipeline">
+            <span class="pipe-step done">✓ Nueva</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step current">● En revisión</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step">Pendiente usuario/proveedor</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step">Resuelta</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step">Cerrada</span>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+
+          <!-- LEFT -->
+          <div>
+            <div class="card mb16">
+              <div class="card-header"><span>🎫</span><div class="card-title">Detalle de la incidencia</div></div>
+              <div class="card-body">
+                <div class="detail-row"><span class="detail-label">Tipo</span><span class="detail-val">🚫 No-show del proveedor</span></div>
+                <div class="detail-row"><span class="detail-label">Usuario</span><span class="detail-val">Laura Martínez · laura.mtz@gmail.com</span></div>
+                <div class="detail-row"><span class="detail-label">Proveedor</span><span class="detail-val">Fútbol Base Sevilla</span></div>
+                <div class="detail-row"><span class="detail-label">Reserva vinculada</span><span class="detail-val"><a onclick="openBookingDetail()" style="cursor:pointer">#KB-4521 →</a></span></div>
+                <div class="detail-row"><span class="detail-label">Prioridad</span><span class="detail-val"><span class="sla sla-err">Alta</span></span></div>
+                <div class="detail-row"><span class="detail-label">Primera respuesta</span><span class="detail-val">09/06/2026 · 13:15h (35 min ✓)</span></div>
+              </div>
+            </div>
+
+            <!-- Communication -->
+            <div class="card mb16">
+              <div class="card-header"><span>💬</span><div class="card-title">Comunicación con las partes</div></div>
+              <div class="card-body">
+                <div class="msg">
+                  <div class="msg-avatar" style="background:#FF6B35">LM</div>
+                  <div class="msg-body">
+                    <div class="msg-meta"><strong>Laura Martínez</strong> (usuario) · 09/06 12:40h</div>
+                    <div class="msg-bubble">Llevamos 20 minutos esperando en el polideportivo y no ha venido nadie de la organización. Hay más familias en la misma situación. Quiero el reembolso de las sesiones restantes.</div>
+                  </div>
+                </div>
+                <div class="msg admin">
+                  <div class="msg-avatar" style="background:var(--admin)">AG</div>
+                  <div class="msg-body">
+                    <div class="msg-meta"><strong>Ana García</strong> (soporte Kooday) · 09/06 13:15h</div>
+                    <div class="msg-bubble">Hola Laura, sentimos mucho lo ocurrido. Estamos contactando con el proveedor para verificar lo sucedido. Te responderemos hoy mismo con la solución.</div>
+                  </div>
+                </div>
+                <div class="msg">
+                  <div class="msg-avatar" style="background:#0D1F3C">FB</div>
+                  <div class="msg-body">
+                    <div class="msg-meta"><strong>Fútbol Base Sevilla</strong> (proveedor) · 09/06 16:02h</div>
+                    <div class="msg-bubble">Tuvimos una urgencia médica con el monitor y no pudimos avisar a tiempo. Asumimos el error, de acuerdo con el reembolso de las sesiones restantes.</div>
+                  </div>
+                </div>
+                <div style="margin-top:14px;display:flex;gap:8px">
+                  <input class="fi" style="flex:1" placeholder="Escribir mensaje a usuario o proveedor…">
+                  <select class="fi" style="width:130px"><option>→ Usuario</option><option>→ Proveedor</option><option>→ Ambos</option></select>
+                  <button class="btn btn-primary" onclick="showToast('✉ Mensaje enviado', '#2563EB')">Enviar</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Internal notes -->
+            <div class="card">
+              <div class="card-header"><span>📝</span><div class="card-title">Notas internas</div></div>
+              <div class="card-body">
+                <textarea class="notes-ta">Proveedor reconoce el no-show. Procede reembolso parcial de 36 € (3 sesiones restantes). Es el primer no-show de este proveedor — sin patrón de reincidencia.</textarea>
+                <div style="margin-top:8px;display:flex;justify-content:flex-end">
+                  <button class="btn btn-ghost btn-sm">💾 Guardar nota</button>
+                </div>
+              </div>
+            </div>
+          </div><!-- /left -->
+
+          <!-- RIGHT -->
+          <div>
+            <div class="actions-panel">
+              <div class="actions-title">Acciones — AD-015</div>
+              <div class="actions-stack">
+                <button class="btn btn-primary btn-lg btn-block" onclick="openModal('m-status')">⇄ Cambiar estado</button>
+                <button class="btn btn-warn btn-lg btn-block" onclick="openModal('m-refund')">💸 Procesar reembolso (36 €)</button>
+                <button class="btn btn-ghost btn-lg btn-block" onclick="openModal('m-assign')">👤 Reasignar agente</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><span>🕐</span><div class="card-title">Historial de estados</div></div>
+              <div class="card-body">
+                <div class="timeline">
+                  <div class="tl-item">
+                    <div class="tl-dot warn">🎫</div>
+                    <div class="tl-body"><div class="tl-action">Incidencia creada — estado "Nueva"</div><div class="tl-meta">09/06/2026 · 12:40h · Laura Martínez</div></div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot info">👤</div>
+                    <div class="tl-body"><div class="tl-action">Asignada a Ana García</div><div class="tl-meta">09/06/2026 · 13:02h · Auto-asignación</div></div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot info">⇄</div>
+                    <div class="tl-body"><div class="tl-action">Estado: Nueva → En revisión</div><div class="tl-meta">09/06/2026 · 13:15h · Ana García</div></div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot err">⚠️</div>
+                    <div class="tl-body"><div class="tl-action">Alerta: SLA de resolución en riesgo (&lt;4h)</div><div class="tl-meta">10/06/2026 · 08:40h · Sistema</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /right -->
+        </div>
+      </div><!-- /s-incident-detail -->
+
+
+      <!-- ============================================================
+           S-SUPPORT-KPIS (AD-016)
+      ============================================================ -->
+      <div id="s-support-kpis" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div class="page-title">KPIs de soporte</div>
+        <div class="page-sub">É12 · AD-016 — Calidad del servicio de soporte · Período: junio 2026 (1–10 jun)</div>
+
+        <div class="stats-grid" style="grid-template-columns:repeat(5,1fr)">
+          <div class="stat-card c-ok">
+            <div class="stat-label">T. medio 1ª respuesta</div>
+            <div class="stat-value">2,4h</div>
+            <div class="stat-sub">Objetivo: &lt;4h ✓</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">T. medio resolución</div>
+            <div class="stat-value">19h</div>
+            <div class="stat-sub">Objetivo: &lt;24h ✓ (ajustado)</div>
+          </div>
+          <div class="stat-card c-ok">
+            <div class="stat-label">Incidencias / 100 reservas</div>
+            <div class="stat-value">3,2</div>
+            <div class="stat-sub">Objetivo: &lt;5 ✓</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">% resueltas en SLA</div>
+            <div class="stat-value">87%</div>
+            <div class="stat-sub" style="color:var(--warn);font-weight:600">Objetivo: 90% — por debajo</div>
+          </div>
+          <div class="stat-card c-blue">
+            <div class="stat-label">Rating post-incidencia</div>
+            <div class="stat-value">4,2★</div>
+            <div class="stat-sub">128 valoraciones</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+          <!-- By type -->
+          <div class="card">
+            <div class="card-header"><span>📊</span><div class="card-title">Incidencias por tipo — junio</div></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>↩ Cancelación</span><strong>14 (35%)</strong></div>
+                  <div style="height:8px;background:var(--bg);border-radius:4px"><div style="width:35%;height:100%;background:var(--admin);border-radius:4px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>💳 Pago</span><strong>10 (25%)</strong></div>
+                  <div style="height:8px;background:var(--bg);border-radius:4px"><div style="width:25%;height:100%;background:var(--admin);border-radius:4px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>🚫 No-show</span><strong>7 (17%)</strong></div>
+                  <div style="height:8px;background:var(--bg);border-radius:4px"><div style="width:17%;height:100%;background:var(--warn);border-radius:4px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>😞 Mala experiencia</span><strong>6 (15%)</strong></div>
+                  <div style="height:8px;background:var(--bg);border-radius:4px"><div style="width:15%;height:100%;background:var(--warn);border-radius:4px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>🐛 Técnica</span><strong>3 (8%)</strong></div>
+                  <div style="height:8px;background:var(--bg);border-radius:4px"><div style="width:8%;height:100%;background:var(--text3);border-radius:4px"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- By agent -->
+          <div class="card">
+            <div class="card-header"><span>👥</span><div class="card-title">Rendimiento por agente — junio</div></div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Agente</th><th>Resueltas</th><th>T. medio</th><th>% en SLA</th><th>Rating</th></tr>
+                </thead>
+                <tbody>
+                  <tr style="cursor:default">
+                    <td><div class="td-name">Ana García</div></td>
+                    <td>18</td>
+                    <td>16h</td>
+                    <td><span class="sla sla-ok">92%</span></td>
+                    <td>4,5★</td>
+                  </tr>
+                  <tr style="cursor:default">
+                    <td><div class="td-name">David López</div></td>
+                    <td>14</td>
+                    <td>23h</td>
+                    <td><span class="sla sla-warn">81%</span></td>
+                    <td>3,9★</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-body" style="border-top:1px solid var(--border)">
+              <div class="alert alert-info" style="margin-bottom:0">
+                <span class="alert-icon">💡</span>
+                <div>El % en SLA global (87%) está por debajo del objetivo (90%). Las incidencias de tipo <strong>pago</strong> son las que más tardan en resolverse (28h de media).</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /s-support-kpis -->
+
     </div><!-- /content-area -->
   </div><!-- /main-area -->
 </div><!-- /admin-shell -->
@@ -1787,6 +2584,144 @@
 </div>
 
 
+<!-- REFUND (AD-012) -->
+<div class="modal-overlay" id="m-refund">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">💸</div>
+      <div>
+        <div class="modal-title">Procesar reembolso manual</div>
+        <div class="modal-sub">Reserva #KB-4521 · Laura Martínez · Total cobrado: 48,00 €</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">Motivo del reembolso</label>
+        <select class="mf-select">
+          <option>No-show del proveedor</option>
+          <option>Cancelación dentro de política</option>
+          <option>Actividad no conforme a lo anunciado</option>
+          <option>Error de cobro / duplicado</option>
+          <option>Decisión de soporte (goodwill)</option>
+          <option>Otro motivo</option>
+        </select>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Tipo de reembolso</label>
+        <select class="mf-select" id="refund-type">
+          <option>Parcial — sesiones restantes (3 × 12 € = 36,00 €)</option>
+          <option>Total — 48,00 €</option>
+          <option>Importe personalizado…</option>
+        </select>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Importe a reembolsar</label>
+        <input class="fi" style="width:100%" value="36,00 €">
+      </div>
+      <div class="alert alert-info" style="margin-bottom:0">
+        <span class="alert-icon">💳</span>
+        <div>El reembolso se ejecutará vía <strong>Stripe</strong> sobre <code style="background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px">pi_3PXk21LkQd0942j1</code> (Visa ···· 4242). Usuario y proveedor recibirán notificación. Queda registrado en auditoría.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-refund')">Cancelar</button>
+      <button class="btn btn-warn" onclick="doAction('refund')">💸 Confirmar reembolso de 36,00 €</button>
+    </div>
+  </div>
+</div>
+
+<!-- RETRY PAYOUT (AD-013) -->
+<div class="modal-overlay" id="m-retry-payout">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">↻</div>
+      <div>
+        <div class="modal-title">Reintentar liquidación fallida</div>
+        <div class="modal-sub">Escuela Telón Madrid · 842,35 € · Período 1–15 jun</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-err mb16">
+        <span class="alert-icon">✗</span>
+        <div><strong>Motivo del fallo:</strong> IBAN inválido (ES91 ···· 0421 rechazado por la entidad). Intento anterior: 01/06/2026.</div>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">IBAN actualizado del proveedor</label>
+        <input class="fi" style="width:100%;font-family:monospace" value="ES91 2100 0418 4502 0005 1332">
+      </div>
+      <div style="font-size:12px;color:var(--text3)">El proveedor actualizó sus datos bancarios el 08/06/2026. Verifica el IBAN antes de reintentar.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-retry-payout')">Cancelar</button>
+      <button class="btn btn-primary" onclick="doAction('retry-payout')">↻ Reintentar payout de 842,35 €</button>
+    </div>
+  </div>
+</div>
+
+<!-- ASSIGN AGENT (AD-014) -->
+<div class="modal-overlay" id="m-assign">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">👤</div>
+      <div>
+        <div class="modal-title">Asignar agente de soporte</div>
+        <div class="modal-sub">La incidencia pasará a la bandeja del agente seleccionado</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">Agente</label>
+        <select class="mf-select">
+          <option>Ana García — 3 incidencias activas</option>
+          <option>David López — 5 incidencias activas</option>
+        </select>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Nota para el agente <span style="font-weight:400">(opcional)</span></label>
+        <textarea class="mf-ta" placeholder="Contexto o instrucciones…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-assign')">Cancelar</button>
+      <button class="btn btn-primary" onclick="doAction('assign')">👤 Asignar incidencia</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHANGE STATUS (AD-015) -->
+<div class="modal-overlay" id="m-status">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">⇄</div>
+      <div>
+        <div class="modal-title">Cambiar estado de la incidencia</div>
+        <div class="modal-sub">#INC-208 · Estado actual: En revisión</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">Nuevo estado</label>
+        <select class="mf-select">
+          <option>Pendiente usuario/proveedor</option>
+          <option selected>Resuelta</option>
+          <option>Cerrada</option>
+          <option>Nueva (reabrir)</option>
+        </select>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Comentario de resolución</label>
+        <textarea class="mf-ta">Proveedor reconoce el no-show por urgencia médica. Reembolso parcial de 36 € procesado vía Stripe. Usuario informado y conforme con la solución.</textarea>
+      </div>
+      <div style="font-size:12px;color:var(--text3)">El cambio se registra en el historial. Al marcar "Resuelta" se enviará al usuario la encuesta de satisfacción post-incidencia.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-status')">Cancelar</button>
+      <button class="btn btn-ok" onclick="doAction('status')">✓ Marcar como resuelta</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- ================================================================
      JAVASCRIPT
 ================================================================ -->
@@ -1798,7 +2733,13 @@
     's-providers':       { label: 'AD-001 · Cola proveedores É9', bc: 'É9 Proveedores <span class="bc-sep">›</span> <strong>Cola de validación</strong>', nav: 'nav-providers'  },
     's-provider-detail': { label: 'AD-002–006 · Detalle KYC',    bc: 'É9 Proveedores <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>Academia Musical Rivas</strong>', nav: 'nav-providers' },
     's-activities':      { label: 'AD-007 · Cola actividades É10', bc: 'É10 Actividades <span class="bc-sep">›</span> <strong>Cola de moderación</strong>', nav: 'nav-activities' },
-    's-activity-detail': { label: 'AD-008–010 · Moderación',      bc: 'É10 Actividades <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>Fútbol sala 6-9 años</strong>', nav: 'nav-activities' }
+    's-activity-detail': { label: 'AD-008–010 · Moderación',      bc: 'É10 Actividades <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>Fútbol sala 6-9 años</strong>', nav: 'nav-activities' },
+    's-bookings':        { label: 'AD-011 · Reservas É11',         bc: 'É11 Reservas y Pagos <span class="bc-sep">›</span> <strong>Panel de reservas</strong>', nav: 'nav-bookings' },
+    's-booking-detail':  { label: 'AD-012 · Reembolso',            bc: 'É11 Reservas y Pagos <span class="bc-sep">›</span> Reservas <span class="bc-sep">›</span> <strong>#KB-4521</strong>', nav: 'nav-bookings' },
+    's-payments':        { label: 'AD-013 · Pagos É11',            bc: 'É11 Reservas y Pagos <span class="bc-sep">›</span> <strong>Pagos y liquidaciones</strong>', nav: 'nav-payments' },
+    's-incidents':       { label: 'AD-014 · Incidencias É12',      bc: 'É12 Incidencias <span class="bc-sep">›</span> <strong>Cola de incidencias</strong>', nav: 'nav-incidents' },
+    's-incident-detail': { label: 'AD-015 · Ciclo de vida',        bc: 'É12 Incidencias <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>#INC-208</strong>', nav: 'nav-incidents' },
+    's-support-kpis':    { label: 'AD-016 · KPIs soporte É12',     bc: 'É12 Incidencias <span class="bc-sep">›</span> <strong>KPIs de soporte</strong>', nav: 'nav-support-kpis' }
   };
 
   /* ── ACTIVITY DATA ── */
@@ -1904,6 +2845,15 @@
     showSection('s-provider-detail');
   }
 
+  /* ── BOOKING / INCIDENT DETAIL ── */
+  function openBookingDetail() {
+    showSection('s-booking-detail');
+  }
+
+  function openIncidentDetail() {
+    showSection('s-incident-detail');
+  }
+
   /* ── ACTIVITY DETAIL ── */
   function openActivityDetail(id) {
     const d = activities[id];
@@ -1986,18 +2936,24 @@
     reject:     { msg: '✗ Proveedor rechazado — Email de notificación enviado',                           color: '#DC2626', back: 's-providers' },
     suspend:    { msg: '🚫 Cuenta suspendida — Actividades desactivadas y usuarios notificados',           color: '#DC2626', back: 's-providers' },
     publish:    { msg: '🚀 Actividad publicada — Ya aparece en la plataforma',                            color: '#059669', back: 's-activities' },
-    'reject-act':{ msg: '✗ Actividad rechazada — Email con instrucciones enviado a Fútbol Base Sevilla', color: '#DC2626', back: 's-activities' }
+    'reject-act':{ msg: '✗ Actividad rechazada — Email con instrucciones enviado a Fútbol Base Sevilla', color: '#DC2626', back: 's-activities' },
+    refund:        { msg: '💸 Reembolso de 36,00 € procesado vía Stripe — Usuario y proveedor notificados', color: '#D97706', back: null },
+    'retry-payout':{ msg: '↻ Payout de 842,35 € reenviado a Escuela Telón Madrid — En proceso',            color: '#2563EB', back: null },
+    assign:        { msg: '👤 Incidencia asignada — Notificación enviada al agente',                       color: '#2563EB', back: null },
+    status:        { msg: '✓ Incidencia #INC-208 marcada como resuelta — Encuesta enviada al usuario',     color: '#059669', back: 's-incidents' }
   };
 
   function doAction(type) {
     const map = {
       approve: 'm-approve', changes: 'm-changes', reject: 'm-reject',
-      suspend: 'm-suspend', publish: 'm-publish', 'reject-act': 'm-reject-act'
+      suspend: 'm-suspend', publish: 'm-publish', 'reject-act': 'm-reject-act',
+      refund: 'm-refund', 'retry-payout': 'm-retry-payout',
+      assign: 'm-assign', status: 'm-status'
     };
     closeModal(map[type]);
     const cfg = actionMessages[type];
     showToast(cfg.msg, cfg.color);
-    setTimeout(() => showSection(cfg.back), 600);
+    if (cfg.back) setTimeout(() => showSection(cfg.back), 600);
   }
 
   /* ── ROLE SWITCHER ── */
