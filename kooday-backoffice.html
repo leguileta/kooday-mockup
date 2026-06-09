@@ -1106,6 +1106,14 @@
       </div>
     </div>
 
+    <div class="sb-section">
+      <div class="sb-section-title">É15 · Sistema 24x7</div>
+      <div class="nav-item" id="nav-system" onclick="showSection('s-system')">
+        <span class="nav-icon">🤖</span> Automatizaciones
+        <span class="nav-badge" style="background:var(--warn)">2</span>
+      </div>
+    </div>
+
     <div class="sb-bottom">
       <div class="nav-item" onclick="doLogout()">
         <span class="nav-icon">↩</span> Cerrar sesión
@@ -2939,18 +2947,55 @@
                   <td>0,90 €</td>
                 </tr>
                 <tr style="cursor:default">
-                  <td><div class="td-name">programa-invita-amigo</div><div class="td-sub">referral</div></td>
+                  <td><div class="td-name">programa-invita-amigo</div><div class="td-sub">referral · puntos</div></td>
                   <td>referral / in-app</td>
                   <td>3.890</td>
                   <td>200</td>
                   <td><span class="sla sla-ok">5,1%</span></td>
                   <td>6.160 €</td>
-                  <td>5,00 € (cupón)</td>
+                  <td>3,54 € (puntos)</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="card-footer" style="font-size:12px;color:var(--text2)">💡 El programa de referidos tiene la mejor conversión (5,1%) y el segundo mejor CAC. Candidato a más inversión.</div>
+          <div class="card-footer" style="font-size:12px;color:var(--text2)">💡 El programa de referidos tiene la mejor conversión (5,1%) y el mejor CAC tras email. Candidato a más inversión.</div>
+        </div>
+
+        <!-- Programa de referidos — coste asumido por Kooday -->
+        <div class="card" style="margin-top:16px">
+          <div class="card-header">
+            <span>🎁</span>
+            <div class="card-title">Programa de referidos — puntos y clases gratis</div>
+            <span class="badge badge-changes" style="margin-left:auto">Coste asumido por Kooday</span>
+          </div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+              <div>
+                <div class="stat-label">Puntos otorgados (jun)</div>
+                <div style="font-size:24px;font-weight:800">200</div>
+                <div class="stat-sub">1 punto = 1 amigo con reserva</div>
+              </div>
+              <div>
+                <div class="stat-label">Clases gratis canjeadas</div>
+                <div style="font-size:24px;font-weight:800;color:var(--orange)">23</div>
+                <div class="stat-sub">5 puntos = 1 clase</div>
+              </div>
+              <div>
+                <div class="stat-label">Coste del mes</div>
+                <div style="font-size:24px;font-weight:800;color:var(--err)">708 €</div>
+                <div class="stat-sub">23 clases × 30,8 € ticket medio</div>
+              </div>
+              <div>
+                <div class="stat-label">Provisión pendiente</div>
+                <div style="font-size:24px;font-weight:800;color:var(--warn)">2.957 €</div>
+                <div class="stat-sub">480 puntos en circulación ≈ 96 clases</div>
+              </div>
+            </div>
+            <div class="alert alert-warn" style="margin-bottom:0">
+              <span class="alert-icon">⚠️</span>
+              <div><strong>La clase gratis la paga Kooday:</strong> al canjearse, el proveedor cobra su tarifa íntegra y el coste se imputa a marketing (CAC efectivo del canal: 708 € / 200 reservas = <strong>3,54 €</strong>). Vigilar la provisión de puntos en circulación — cada punto emitido es un pasivo de ~6,16 €.</div>
+            </div>
+          </div>
         </div>
       </div><!-- /s-channels -->
 
@@ -3144,6 +3189,181 @@
           </div>
         </div>
       </div><!-- /s-audit -->
+
+
+      <!-- ============================================================
+           S-SYSTEM (SYS-001–008 · É15)
+      ============================================================ -->
+      <div id="s-system" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div class="page-title">Automatizaciones y operaciones 24x7</div>
+        <div class="page-sub">É15 · SYS-001–008 — Jobs, webhooks y monitores que operan sin intervención humana</div>
+
+        <div class="stats-grid">
+          <div class="stat-card c-ok">
+            <div class="stat-label">Automatizaciones activas</div>
+            <div class="stat-value">8</div>
+            <div class="stat-sub">6 operativas · 2 con avisos</div>
+          </div>
+          <div class="stat-card c-blue">
+            <div class="stat-label">Ejecuciones hoy</div>
+            <div class="stat-value">2.412</div>
+            <div class="stat-sub">Jobs + webhooks + monitores</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">Avisos últimas 24h</div>
+            <div class="stat-value">2</div>
+            <div class="stat-sub">1 escalado P1 · 1 payout en reintento</div>
+          </div>
+          <div class="stat-card c-ok">
+            <div class="stat-label">Uptime del sistema</div>
+            <div class="stat-value">99,97%</div>
+            <div class="stat-sub">Últimos 30 días</div>
+          </div>
+        </div>
+
+        <div class="card mb16">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Automatización</th>
+                  <th>Tipo</th>
+                  <th>Frecuencia</th>
+                  <th>Última ejecución</th>
+                  <th>Actividad hoy</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:default">
+                  <td><strong>SYS-001</strong></td>
+                  <td><div class="td-name">Liberación de plazas bloqueadas</div><div class="td-sub">Checkout abandonado &gt;15 min → plaza disponible</div></td>
+                  <td>⏰ Job</td>
+                  <td>Cada 1 min</td>
+                  <td><div>Hace 32 s</div></td>
+                  <td>1.440 ejecuciones · <strong>12 plazas liberadas</strong></td>
+                  <td><span class="badge badge-approved">✓ Operativo</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>SYS-002</strong></td>
+                  <td><div class="td-name">Reintentos de cobro (PSP)</div><div class="td-sub">Backoff 5/15/30 min ante fallo transitorio de Stripe</div></td>
+                  <td>🔗 Webhook</td>
+                  <td>Tiempo real</td>
+                  <td><div>Hace 2 h</div></td>
+                  <td>7 reintentos · <strong>1 agotado → email enviado</strong></td>
+                  <td><span class="badge badge-approved">✓ Operativo</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>SYS-003</strong></td>
+                  <td><div class="td-name">Cancelación proveedor → reembolsos</div><div class="td-sub">Notifica participantes y reembolsa según política</div></td>
+                  <td>⚡ Evento</td>
+                  <td>Tiempo real</td>
+                  <td><div>Hace 4 h</div></td>
+                  <td>1 sesión cancelada · <strong>9 emails &lt; 5 min · 9 reembolsos</strong></td>
+                  <td><span class="badge badge-approved">✓ Operativo</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>SYS-004</strong></td>
+                  <td><div class="td-name">Health monitor de Stripe</div><div class="td-sub">Banner de mantenimiento en checkout si el PSP degrada</div></td>
+                  <td>📡 Monitor</td>
+                  <td>Cada 2 min</td>
+                  <td><div>Hace 1 min</div></td>
+                  <td>720 checks · <strong>status: operational</strong></td>
+                  <td><span class="badge badge-approved">✓ Operativo</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>SYS-005</strong></td>
+                  <td><div class="td-name">Detector de contacto externo</div><div class="td-sub">Regex tel/email/URL al enviar actividad a revisión</div></td>
+                  <td>⚡ Síncrono</td>
+                  <td>Tiempo real</td>
+                  <td><div>Hace 18 min</div></td>
+                  <td>9 análisis · <strong>1 rechazo auto (teléfono)</strong></td>
+                  <td><span class="badge badge-approved">✓ Operativo</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>SYS-006</strong></td>
+                  <td><div class="td-name">Escalado de incidencias P1</div><div class="td-sub">Sin respuesta en 30 min → alerta al canal de guardia</div></td>
+                  <td>⏰ Job</td>
+                  <td>Cada 5 min</td>
+                  <td><div>Hace 3 min</div></td>
+                  <td>288 revisiones · <strong>1 escalado (#INC-205)</strong></td>
+                  <td><span class="badge badge-pending">⚠ 1 alerta activa</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>SYS-007</strong></td>
+                  <td><div class="td-name">Pre-screening KYC</div><div class="td-sub">Formato, campos y duplicados antes de cola humana</div></td>
+                  <td>⚡ Síncrono</td>
+                  <td>Tiempo real</td>
+                  <td><div>Hace 1 h</div></td>
+                  <td>4 validaciones · <strong>1 rechazo (NIF duplicado)</strong></td>
+                  <td><span class="badge badge-approved">✓ Operativo</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>SYS-008</strong></td>
+                  <td><div class="td-name">Reintento de payout fallido</div><div class="td-sub">D+1 misma hora · 2º fallo → alerta a operaciones</div></td>
+                  <td>🔗 Webhook</td>
+                  <td>payout.failed</td>
+                  <td><div>08/06 · 09:00h</div></td>
+                  <td><strong>1 reintento programado: mañana 09:00 (Escuela Telón)</strong></td>
+                  <td><span class="badge badge-pending">⚠ Reintento pendiente</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span>📜</span><div class="card-title">Registro de eventos del sistema — últimas 24h</div></div>
+          <div class="card-body">
+            <div class="timeline">
+              <div class="tl-item">
+                <div class="tl-dot warn">⏰</div>
+                <div class="tl-body">
+                  <div class="tl-action"><code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">incident_escalated</code> — #INC-205 (pago, P1) sin asignar 30 min → alerta enviada al canal de guardia</div>
+                  <div class="tl-meta">Hoy · 09:05h · SYS-006</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot info">⏰</div>
+                <div class="tl-body">
+                  <div class="tl-action"><code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">slot_released_timeout</code> — 3 plazas liberadas (checkouts abandonados &gt;15 min)</div>
+                  <div class="tl-meta">Hoy · 08:47h · SYS-001</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot err">🔗</div>
+                <div class="tl-body">
+                  <div class="tl-action"><code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">payment_retry_exhausted</code> — Reserva #KB-4530: 3 reintentos fallidos → plaza liberada, email con métodos alternativos</div>
+                  <div class="tl-meta">Hoy · 07:12h · SYS-002</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot err">⚡</div>
+                <div class="tl-body">
+                  <div class="tl-action"><code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">activity_rejected_auto</code> — "Fútbol sala 6-9 años": teléfono detectado en descripción → estado rechazada_auto</div>
+                  <div class="tl-meta">Ayer · 17:21h · SYS-005</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot ok">⚡</div>
+                <div class="tl-body">
+                  <div class="tl-action"><code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">session_cancelled_by_provider</code> — Aqua Kids BCN canceló sesión del 09/06 → 9 reembolsos automáticos iniciados</div>
+                  <div class="tl-meta">Ayer · 14:30h · SYS-003</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot warn">🔗</div>
+                <div class="tl-body">
+                  <div class="tl-action"><code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">payout_retry_scheduled</code> — Escuela Telón Madrid (842,35 €): reintento D+1 programado · importe retenido en custodia</div>
+                  <div class="tl-meta">08/06 · 09:01h · SYS-008</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /s-system -->
 
     </div><!-- /content-area -->
   </div><!-- /main-area -->
@@ -3593,7 +3813,8 @@
     's-funnel':          { label: 'AD-021 · Funnel É14',           bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Funnel de conversión</strong>', nav: 'nav-funnel' },
     's-channels':        { label: 'AD-022 · Canales É14',          bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Canales de captación</strong>', nav: 'nav-channels' },
     's-searches':        { label: 'AD-023 · Búsquedas 0 results',  bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Búsquedas sin resultados</strong>', nav: 'nav-searches' },
-    's-audit':           { label: 'AD-024 · Auditoría É14',        bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Registro de auditoría</strong>', nav: 'nav-audit' }
+    's-audit':           { label: 'AD-024 · Auditoría É14',        bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Registro de auditoría</strong>', nav: 'nav-audit' },
+    's-system':          { label: 'SYS-001–008 · Sistema É15',     bc: 'É15 Sistema 24x7 <span class="bc-sep">›</span> <strong>Automatizaciones</strong>', nav: 'nav-system' }
   };
 
   /* ── ACTIVITY DATA ── */
