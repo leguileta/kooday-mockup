@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200, initial-scale=1">
+  <title>Kooday · Backoffice Interno</title>
+  <style>
+    /* ============================================================
+       VARIABLES
+    ============================================================ */
+    :root {
+      --admin:       #2563EB;
+      --admin-dark:  #1D4ED8;
+      --admin-light: #EFF6FF;
+      --sidebar-bg:  #0D1F3C;
+      --sidebar-hov: #162F54;
+      --sidebar-act: rgba(37,99,235,.18);
+      --topbar-h:    60px;
+      --sidebar-w:   228px;
+      --bg:          #F1F5F9;
+      --card:        #ffffff;
+      --border:      #E2E8F0;
+      --text:        #1E293B;
+      --text2:       #475569;
+      --text3:       #94A3B8;
+      --ok:          #059669;
+      --ok-bg:       #D1FAE5;
+      --ok-border:   #6EE7B7;
+      --warn:        #D97706;
+      --warn-bg:     #FEF3C7;
+      --warn-border: #FCD34D;
+      --err:         #DC2626;
+      --err-bg:      #FEE2E2;
+      --err-border:  #FCA5A5;
+      --info:        #2563EB;
+      --info-bg:     #DBEAFE;
+      --info-border: #93C5FD;
+      --orange:      #EA580C;
+      --orange-bg:   #FFF7ED;
+      --r:           8px;
+      --r-lg:        12px;
+      --sh:          0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+      --sh-md:       0 4px 12px rgba(0,0,0,.08);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+      overflow: hidden;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    input, select, textarea { font-family: inherit; }
+    a { color: var(--admin); text-decoration: none; }
+
+    /* ============================================================
+       LOGIN
+    ============================================================ */
+    #screen-login {
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #060f1e 0%, #0D1F3C 45%, #14336b 100%);
+    }
+    #screen-login.hidden { display: none; }
+
+    .login-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 44px;
+      width: 400px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.45);
+    }
+    .login-logo {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--admin);
+      letter-spacing: -1.5px;
+      margin-bottom: 6px;
+    }
+    .login-logo em { color: #FF6B35; font-style: normal; }
+    .login-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--info-bg);
+      color: var(--info);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      margin-bottom: 28px;
+    }
+    .login-title  { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .login-sub    { font-size: 13px; color: var(--text2); margin-bottom: 28px; }
+    .lform-group  { margin-bottom: 18px; }
+    .lform-label  { display: block; font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+    .lform-input  {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      font-size: 14px;
+      outline: none;
+      transition: border-color .15s;
+      color: var(--text);
+    }
+    .lform-input:focus { border-color: var(--admin); }
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--admin);
+      color: #fff;
+      border: none;
+      border-radius: var(--r);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+      margin-top: 6px;
+    }
+    .login-btn:hover { background: var(--admin-dark); }
+    .login-notice {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-radius: var(--r);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #92400E;
+    }
+
+    /* ============================================================
+       ADMIN SHELL
+    ============================================================ */
+    #admin-shell {
+      display: none;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #admin-shell.visible { display: flex; }
+
+    /* ---- SIDEBAR ---- */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+    .sidebar::-webkit-scrollbar { width: 0; }
+
+    .sb-logo {
+      padding: 20px 18px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .sb-logo-text {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .sb-logo-text em { color: #FF6B35; font-style: normal; }
+    .sb-logo-tag {
+      background: var(--admin);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .sb-section { padding: 10px 0 4px; }
+    .sb-section-title {
+      padding: 5px 18px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,.28);
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 18px;
+      color: rgba(255,255,255,.52);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all .15s;
+      font-size: 13.5px;
+      user-select: none;
+    }
+    .nav-item:hover { background: rgba(255,255,255,.055); color: rgba(255,255,255,.85); }
+    .nav-item.active {
+      background: var(--sidebar-act);
+      color: #fff;
+      border-left-color: var(--admin);
+      font-weight: 600;
+    }
+    .nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+    .nav-badge {
+      margin-left: auto;
+      background: var(--err);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 10px;
+      min-width: 20px;
+      text-align: center;
+    }
+    .nav-item.muted { opacity: .35; pointer-events: none; }
+
+    .sb-bottom {
+      margin-top: auto;
+      padding: 10px 0;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+
+    /* ---- MAIN AREA ---- */
+    .main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+    /* ---- TOPBAR ---- */
+    .topbar {
+      height: var(--topbar-h);
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 12px;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+    .topbar-bc {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text2);
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .topbar-bc strong { color: var(--text); font-weight: 600; }
+    .topbar-bc .bc-sep { margin: 0 6px; color: var(--text3); }
+
+    .hu-chip {
+      background: var(--sidebar-bg);
+      color: rgba(255,255,255,.85);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 20px;
+      white-space: nowrap;
+      letter-spacing: .3px;
+      flex-shrink: 0;
+    }
+
+    .role-pill {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--admin-light);
+      border: 1.5px solid var(--info-border);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--admin);
+      cursor: pointer;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .role-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: var(--sh-md);
+      min-width: 190px;
+      display: none;
+      z-index: 200;
+      overflow: hidden;
+    }
+    .role-dropdown.open { display: block; }
+    .role-option {
+      padding: 10px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background .1s;
+    }
+    .role-option:hover { background: var(--bg); }
+    .role-option.active { font-weight: 600; color: var(--admin); background: var(--admin-light); }
+
+    .tb-icon-btn {
+      width: 34px; height: 34px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: background .1s;
+    }
+    .tb-icon-btn:hover { background: var(--admin-light); }
+    .tb-icon-btn.has-dot::after {
+      content: '';
+      position: absolute;
+      top: 5px; right: 5px;
+      width: 8px; height: 8px;
+      background: var(--err);
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+    .tb-avatar {
+      width: 34px; height: 34px;
+      background: var(--admin);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ---- CONTENT ---- */
+    .content-area { flex: 1; overflow-y: auto; padding: 24px; }
+    .content-area::-webkit-scrollbar { width: 6px; }
+    .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ============================================================
+       TYPOGRAPHY HELPERS
+    ============================================================ */
+    .page-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .page-sub   { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+    .sec-title  { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--text3); margin-bottom: 10px; }
+
+    /* ============================================================
+       BADGES & SLA
+    ============================================================ */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+    }
+    .badge-pending   { background: var(--warn-bg);  color: #92400E; }
+    .badge-approved  { background: var(--ok-bg);    color: #065F46; }
+    .badge-rejected  { background: var(--err-bg);   color: #991B1B; }
+    .badge-changes   { background: var(--orange-bg);color: var(--orange); }
+    .badge-suspended { background: #F3F4F6;          color: #374151; }
+    .badge-review    { background: var(--info-bg);   color: #1E40AF; }
+    .badge-published { background: var(--ok-bg);     color: #065F46; }
+    .badge-draft     { background: #F3F4F6;           color: #374151; }
+
+    .sla {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px; font-weight: 700;
+    }
+    .sla-ok   { background: var(--ok-bg);   color: var(--ok);   }
+    .sla-warn { background: var(--warn-bg); color: var(--warn); }
+    .sla-err  { background: var(--err-bg);  color: var(--err);  }
+
+    /* ============================================================
+       CARDS
+    ============================================================ */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: var(--sh);
+    }
+    .card-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title  { font-size: 14px; font-weight: 600; }
+    .card-body   { padding: 20px; }
+    .card-footer { padding: 12px 16px; border-top: 1px solid var(--border); background: #FAFAFA; border-radius: 0 0 var(--r) var(--r); }
+
+    /* ============================================================
+       STATS GRID
+    ============================================================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px 20px;
+      box-shadow: var(--sh);
+    }
+    .stat-label { font-size: 12px; color: var(--text2); font-weight: 500; margin-bottom: 6px; }
+    .stat-value { font-size: 30px; font-weight: 800; line-height: 1; margin-bottom: 5px; }
+    .stat-sub   { font-size: 11px; color: var(--text3); }
+    .stat-card.c-err  .stat-value { color: var(--err); }
+    .stat-card.c-warn .stat-value { color: var(--warn); }
+    .stat-card.c-ok   .stat-value { color: var(--ok); }
+    .stat-card.c-blue .stat-value { color: var(--admin); }
+    .stat-card.c-err  { border-top: 3px solid var(--err); }
+    .stat-card.c-warn { border-top: 3px solid var(--warn); }
+    .stat-card.c-ok   { border-top: 3px solid var(--ok); }
+    .stat-card.c-blue { border-top: 3px solid var(--admin); }
+
+    /* ============================================================
+       TABLES
+    ============================================================ */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px;
+      color: var(--text2);
+      background: #F8FAFC;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; }
+    tbody tr:hover { background: var(--admin-light); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 13px 14px; font-size: 13px; vertical-align: middle; }
+    .td-name { font-weight: 500; margin-bottom: 2px; }
+    .td-sub  { font-size: 11px; color: var(--text2); }
+
+    /* ============================================================
+       FILTERS BAR
+    ============================================================ */
+    .filters-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .fi { /* filter input */
+      padding: 7px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      font-size: 13px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+    .fi:focus { border-color: var(--admin); }
+    .fi-search { flex: 1; min-width: 200px; }
+    .fi-count  { margin-left: auto; font-size: 13px; color: var(--text2); padding-right: 4px; }
+
+    /* ============================================================
+       ALERTS
+    ============================================================ */
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: var(--r);
+      font-size: 13px;
+      margin-bottom: 16px;
+      border: 1px solid;
+    }
+    .alert-warn { background: var(--warn-bg); color: #92400E; border-color: var(--warn-border); }
+    .alert-err  { background: var(--err-bg);  color: #991B1B; border-color: var(--err-border); }
+    .alert-info { background: var(--info-bg); color: #1E40AF; border-color: var(--info-border); }
+    .alert-ok   { background: var(--ok-bg);   color: #065F46; border-color: var(--ok-border); }
+    .alert-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--r);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; border: none;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--admin);  color: #fff; }
+    .btn-primary:hover { background: var(--admin-dark); }
+    .btn-ok      { background: var(--ok);    color: #fff; }
+    .btn-ok:hover { background: #047857; }
+    .btn-warn    { background: var(--warn);  color: #fff; }
+    .btn-warn:hover { background: #B45309; }
+    .btn-danger  { background: var(--err);   color: #fff; }
+    .btn-danger:hover { background: #B91C1C; }
+    .btn-ghost   { background: transparent;  color: var(--text2); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+    .btn-ghost-danger { background: transparent; color: var(--err); border: 1.5px solid var(--err-border); }
+    .btn-ghost-danger:hover { background: var(--err-bg); }
+    .btn-sm  { padding: 5px 10px; font-size: 12px; }
+    .btn-lg  { padding: 11px 20px; font-size: 14px; }
+    .btn-block { justify-content: center; width: 100%; }
+    .btn:disabled, .btn.disabled { opacity: .45; pointer-events: none; }
+
+    /* ============================================================
+       BACK LINK
+    ============================================================ */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 13px; color: var(--text2);
+      cursor: pointer; margin-bottom: 14px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--admin); }
+
+    /* ============================================================
+       DETAIL GRID LAYOUT
+    ============================================================ */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      align-items: start;
+    }
+    .detail-title-row {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 4px;
+    }
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 13px; color: var(--text2); flex-shrink: 0; }
+    .detail-val   { font-size: 13px; font-weight: 500; text-align: right; }
+    .mb16 { margin-bottom: 16px; }
+
+    /* ============================================================
+       PROVIDER MINI CARD
+    ============================================================ */
+    .prov-mini {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .prov-avatar {
+      width: 46px; height: 46px;
+      background: var(--admin);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 16px; font-weight: 800;
+      flex-shrink: 0;
+    }
+    .prov-name { font-weight: 600; font-size: 15px; }
+    .prov-email { font-size: 12px; color: var(--text2); }
+
+    /* ============================================================
+       DOCUMENT CARDS
+    ============================================================ */
+    .doc-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin-bottom: 8px;
+    }
+    .doc-icon { font-size: 22px; }
+    .doc-info { flex: 1; }
+    .doc-name { font-size: 13px; font-weight: 500; }
+    .doc-meta { font-size: 11px; color: var(--text3); }
+    .doc-actions { display: flex; gap: 6px; }
+
+    /* ============================================================
+       NOTES TEXTAREA
+    ============================================================ */
+    .notes-ta {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      font-size: 13px;
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      line-height: 1.5;
+    }
+    .notes-ta:focus { border-color: var(--admin); }
+
+    /* ============================================================
+       TIMELINE
+    ============================================================ */
+    .timeline { position: relative; }
+    .tl-item {
+      display: flex; gap: 12px;
+      padding-bottom: 16px;
+      position: relative;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: 14px; top: 28px; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .tl-item:last-child::before { display: none; }
+    .tl-dot {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .tl-dot.ok   { background: var(--ok-bg); }
+    .tl-dot.warn { background: var(--warn-bg); }
+    .tl-dot.info { background: var(--info-bg); }
+    .tl-dot.err  { background: var(--err-bg); }
+    .tl-body { flex: 1; padding-top: 4px; }
+    .tl-action { font-size: 13px; font-weight: 500; }
+    .tl-meta   { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+    /* ============================================================
+       ACTIONS PANEL (right column)
+    ============================================================ */
+    .actions-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--sh);
+    }
+    .actions-title {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .7px;
+      color: var(--text3);
+      margin-bottom: 12px;
+    }
+    .actions-stack { display: flex; flex-direction: column; gap: 8px; }
+
+    /* ============================================================
+       ACTIVITY PREVIEW (left column of activity detail)
+    ============================================================ */
+    .act-preview {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: var(--sh);
+    }
+    .act-preview-img {
+      height: 160px;
+      background: linear-gradient(135deg, #BFDBFE, #93C5FD);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px;
+      position: relative;
+    }
+    .act-preview-body { padding: 16px; }
+    .act-preview-cat {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px;
+      color: #FF6B35;
+      margin-bottom: 6px;
+    }
+    .act-preview-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .act-preview-tags  { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .act-preview-tag   {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 12px;
+      color: var(--text2);
+    }
+    .act-preview-desc  { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+    .act-preview-price { font-size: 20px; font-weight: 800; color: #FF6B35; }
+
+    /* ============================================================
+       CHECKLIST
+    ============================================================ */
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 9px 0;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .chk-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .chk-ok   .chk-icon { color: var(--ok); }
+    .chk-fail .chk-icon { color: var(--err); }
+    .chk-warn .chk-icon { color: var(--warn); }
+    .chk-text { flex: 1; }
+    .chk-note { font-size: 11px; color: var(--err); margin-top: 2px; }
+
+    /* ============================================================
+       QUEUE ROWS (dashboard)
+    ============================================================ */
+    .q-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background .1s;
+    }
+    .q-row:hover { background: var(--admin-light); }
+    .q-row:last-child { border-bottom: none; }
+    .q-icon { font-size: 18px; width: 30px; text-align: center; }
+    .q-text  { flex: 1; }
+    .q-name  { font-size: 13px; font-weight: 500; }
+    .q-meta  { font-size: 11px; color: var(--text2); }
+
+    /* ============================================================
+       MODAL
+    ============================================================ */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.48);
+      display: none;
+      align-items: center; justify-content: center;
+      z-index: 999;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: var(--r-lg);
+      width: 480px;
+      max-width: 94vw;
+      box-shadow: 0 24px 56px rgba(0,0,0,.22);
+      animation: fadeUp .18s ease;
+    }
+    @keyframes fadeUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .modal-hicon { font-size: 26px; flex-shrink: 0; }
+    .modal-title { font-size: 16px; font-weight: 700; }
+    .modal-sub   { font-size: 13px; color: var(--text2); margin-top: 3px; }
+    .modal-body  { padding: 20px 24px; }
+    .modal-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: flex-end; gap: 10px;
+      background: #FAFAFA;
+      border-radius: 0 0 var(--r-lg) var(--r-lg);
+    }
+
+    .mf-group  { margin-bottom: 16px; }
+    .mf-label  { display: block; font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+    .mf-select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      font-size: 13px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+    }
+    .mf-select:focus { border-color: var(--admin); }
+    .mf-ta {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      font-size: 13px;
+      resize: vertical;
+      min-height: 88px;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+    }
+    .mf-ta:focus { border-color: var(--admin); }
+
+    /* ============================================================
+       TOAST
+    ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      z-index: 9999;
+      display: flex; align-items: center; gap: 10px;
+      color: #fff;
+      padding: 13px 20px;
+      border-radius: var(--r);
+      font-size: 13px; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      animation: fadeUp .2s ease;
+      max-width: 420px;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       CONTACT ALERT (activity detail)
+    ============================================================ */
+    .contact-alert {
+      display: flex; gap: 10px; align-items: flex-start;
+      background: var(--err-bg);
+      border: 1px solid var(--err-border);
+      border-radius: var(--r);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #991B1B;
+      margin-bottom: 12px;
+    }
+
+    /* ============================================================
+       PLACEHOLDER (coming soon sections)
+    ============================================================ */
+    .coming-soon {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 80px 20px; text-align: center; color: var(--text3);
+    }
+    .coming-soon .cs-icon  { font-size: 48px; margin-bottom: 12px; }
+    .coming-soon .cs-title { font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+    .coming-soon .cs-sub   { font-size: 13px; }
+
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     LOGIN
+================================================================ -->
+<div id="screen-login">
+  <div class="login-card">
+    <div class="login-logo">K<em>oo</em>day</div>
+    <div class="login-badge">🔐 Acceso Interno</div>
+    <div class="login-title">Panel de administración</div>
+    <div class="login-sub">Módulo exclusivo para el equipo Kooday</div>
+
+    <div class="lform-group">
+      <label class="lform-label">Correo corporativo</label>
+      <input class="lform-input" type="email" value="ana.garcia@kooday.com" placeholder="nombre@kooday.com">
+    </div>
+    <div class="lform-group">
+      <label class="lform-label">Contraseña</label>
+      <input class="lform-input" type="password" value="••••••••••" placeholder="Contraseña">
+    </div>
+
+    <button class="login-btn" onclick="doLogin()">Acceder al backoffice →</button>
+
+    <div class="login-notice">
+      🔒 Acceso restringido. Si no eres parte del equipo Kooday, abandona esta página.
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================================
+     ADMIN SHELL
+================================================================ -->
+<div id="admin-shell" class="admin-shell">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-text">K<em>oo</em>day</div>
+      <div class="sb-logo-tag">Admin</div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-title">General</div>
+      <div class="nav-item active" id="nav-dashboard" onclick="showSection('s-dashboard')">
+        <span class="nav-icon">🏠</span> Dashboard
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-title">É9 · Validación Proveedores</div>
+      <div class="nav-item" id="nav-providers" onclick="showSection('s-providers')">
+        <span class="nav-icon">🏫</span> Cola validación
+        <span class="nav-badge" id="badge-prov">5</span>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-title">É10 · Moderación Actividades</div>
+      <div class="nav-item" id="nav-activities" onclick="showSection('s-activities')">
+        <span class="nav-icon">📋</span> Cola moderación
+        <span class="nav-badge" id="badge-act">3</span>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-title">Próximas épicas</div>
+      <div class="nav-item muted"><span class="nav-icon">📅</span> Reservas y pagos <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É11</small></div>
+      <div class="nav-item muted"><span class="nav-icon">🎫</span> Incidencias <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É12</small></div>
+      <div class="nav-item muted"><span class="nav-icon">⚙️</span> Configuración <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É13</small></div>
+      <div class="nav-item muted"><span class="nav-icon">📊</span> Analítica <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É14</small></div>
+    </div>
+
+    <div class="sb-bottom">
+      <div class="nav-item" onclick="doLogout()">
+        <span class="nav-icon">↩</span> Cerrar sesión
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN AREA ── -->
+  <div class="main-area">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-bc" id="topbar-bc">
+        <strong>Dashboard</strong>
+      </div>
+
+      <div class="hu-chip" id="hu-chip">BO · Dashboard</div>
+
+      <!-- Role switcher (Opción B) -->
+      <div class="role-pill" onclick="toggleRole(event)">
+        👤 <span id="role-label">Superadmin</span> ▾
+        <div class="role-dropdown" id="role-dd">
+          <div class="role-option active" onclick="setRole('Superadmin','🔑',event)">🔑 Superadmin</div>
+          <div class="role-option" onclick="setRole('Operaciones','⚙️',event)">⚙️ Operaciones</div>
+          <div class="role-option" onclick="setRole('Finanzas','💰',event)">💰 Finanzas</div>
+          <div class="role-option" onclick="setRole('Moderación','🛡️',event)">🛡️ Moderación</div>
+          <div class="role-option" onclick="setRole('Soporte','🎧',event)">🎧 Soporte</div>
+        </div>
+      </div>
+
+      <div class="tb-icon-btn has-dot" title="Notificaciones">🔔</div>
+      <div class="tb-avatar" title="Ana García">AG</div>
+    </div>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- ============================================================
+           S-DASHBOARD
+      ============================================================ -->
+      <div id="s-dashboard" class="section active">
+        <div class="page-title">Buenos días, Ana 👋</div>
+        <div class="page-sub" id="dash-sub">Vista: Superadmin · Martes 9 de junio de 2026</div>
+
+        <div class="stats-grid">
+          <div class="stat-card c-err">
+            <div class="stat-label">Proveedores pendientes</div>
+            <div class="stat-value">5</div>
+            <div class="stat-sub" style="color:var(--err);font-weight:600">⚠ 2 superan SLA de 48h</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">Actividades en revisión</div>
+            <div class="stat-value">3</div>
+            <div class="stat-sub" style="color:var(--warn);font-weight:600">⚠ 1 supera SLA de 24h</div>
+          </div>
+          <div class="stat-card c-ok">
+            <div class="stat-label">Aprobados hoy</div>
+            <div class="stat-value">4</div>
+            <div class="stat-sub">2 proveedores · 2 actividades</div>
+          </div>
+          <div class="stat-card c-blue">
+            <div class="stat-label">Incidencias abiertas</div>
+            <div class="stat-value">8</div>
+            <div class="stat-sub">Disponible en É12</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+          <!-- Queue card: Proveedores -->
+          <div class="card">
+            <div class="card-header">
+              <span>🏫</span>
+              <div class="card-title">Proveedores · Cola É9</div>
+              <span class="badge badge-pending" style="margin-left:auto">5 pendientes</span>
+            </div>
+
+            <div class="q-row" onclick="showSection('s-providers')">
+              <div class="q-icon">⚠️</div>
+              <div class="q-text">
+                <div class="q-name">Aqua Kids BCN</div>
+                <div class="q-meta">Empresa · Barcelona · 3 días en cola</div>
+              </div>
+              <span class="sla sla-err">72h</span>
+            </div>
+            <div class="q-row" onclick="showSection('s-providers')">
+              <div class="q-icon">⚠️</div>
+              <div class="q-text">
+                <div class="q-name">Academia Musical Rivas</div>
+                <div class="q-meta">Autónomo · Madrid · 2 días en cola</div>
+              </div>
+              <span class="sla sla-err">51h</span>
+            </div>
+            <div class="q-row" onclick="showSection('s-providers')">
+              <div class="q-icon">🕐</div>
+              <div class="q-text">
+                <div class="q-name">Fútbol Base Sevilla</div>
+                <div class="q-meta">Empresa · Sevilla · 1 día en cola</div>
+              </div>
+              <span class="sla sla-warn">28h</span>
+            </div>
+
+            <div class="card-footer">
+              <button class="btn btn-ghost btn-sm" onclick="showSection('s-providers')">Ver cola completa (5) →</button>
+            </div>
+          </div>
+
+          <!-- Queue card: Actividades -->
+          <div class="card">
+            <div class="card-header">
+              <span>📋</span>
+              <div class="card-title">Actividades · Cola É10</div>
+              <span class="badge badge-review" style="margin-left:auto">3 en revisión</span>
+            </div>
+
+            <div class="q-row" onclick="showSection('s-activities')">
+              <div class="q-icon">⚠️</div>
+              <div class="q-text">
+                <div class="q-name">Fútbol sala 6-9 años</div>
+                <div class="q-meta">Deportes · Fútbol Base Sevilla · 30h</div>
+              </div>
+              <span class="sla sla-err">30h</span>
+            </div>
+            <div class="q-row" onclick="showSection('s-activities')">
+              <div class="q-icon">📄</div>
+              <div class="q-text">
+                <div class="q-name">Piano infantil 5-10 años</div>
+                <div class="q-meta">Música · Academia Musical Rivas · 18h</div>
+              </div>
+              <span class="sla sla-warn">18h</span>
+            </div>
+            <div class="q-row" onclick="showSection('s-activities')">
+              <div class="q-icon">📄</div>
+              <div class="q-text">
+                <div class="q-name">Taller robótica 8-12 años</div>
+                <div class="q-meta">Ciencia · Tech4Kids · 6h</div>
+              </div>
+              <span class="sla sla-ok">6h</span>
+            </div>
+
+            <div class="card-footer">
+              <button class="btn btn-ghost btn-sm" onclick="showSection('s-activities')">Ver cola completa (3) →</button>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /s-dashboard -->
+
+
+      <!-- ============================================================
+           S-PROVIDERS (AD-001)
+      ============================================================ -->
+      <div id="s-providers" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div class="page-title">Cola de validación de proveedores</div>
+        <div class="page-sub">É9 · AD-001 — SLA objetivo: revisión completa en menos de 48h desde la solicitud</div>
+
+        <div class="alert alert-err">
+          <span class="alert-icon">⚠️</span>
+          <div><strong>2 proveedores superan el SLA de 48h</strong> (Aqua Kids BCN y Academia Musical Rivas). Requieren atención inmediata.</div>
+        </div>
+
+        <div class="filters-bar">
+          <input class="fi fi-search" placeholder="🔍  Buscar proveedor o email…">
+          <select class="fi">
+            <option>Tipo: Todos</option>
+            <option>Autónomo</option>
+            <option>Empresa</option>
+          </select>
+          <select class="fi">
+            <option>Ciudad: Todas</option>
+            <option>Madrid</option>
+            <option>Barcelona</option>
+            <option>Sevilla</option>
+          </select>
+          <select class="fi">
+            <option>Estado: Todos</option>
+            <option>Pendiente</option>
+            <option>Cambios solicitados</option>
+          </select>
+          <div class="fi-count">5 resultados</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Proveedor</th>
+                  <th>Tipo</th>
+                  <th>Ciudad</th>
+                  <th>Solicitud</th>
+                  <th>Documentación</th>
+                  <th>SLA</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="openProviderDetail('aquakids')">
+                  <td>
+                    <div class="td-name">Aqua Kids BCN</div>
+                    <div class="td-sub">info@aquakidsbcn.com</div>
+                  </td>
+                  <td>Empresa</td>
+                  <td>Barcelona</td>
+                  <td><div>06/06/2026</div><div class="td-sub">3 días</div></td>
+                  <td><span style="color:var(--err);font-weight:500;font-size:12px">⚠ CIF pendiente</span></td>
+                  <td><span class="sla sla-err">72h ⚠</span></td>
+                  <td><span class="badge badge-pending">Pendiente</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openProviderDetail('aquakids')">Revisar →</button></td>
+                </tr>
+                <tr onclick="openProviderDetail('academia')">
+                  <td>
+                    <div class="td-name">Academia Musical Rivas</div>
+                    <div class="td-sub">contacto@academiamrivas.es</div>
+                  </td>
+                  <td>Autónomo</td>
+                  <td>Madrid</td>
+                  <td><div>07/06/2026</div><div class="td-sub">2 días</div></td>
+                  <td><span style="color:var(--ok);font-weight:500;font-size:12px">✓ Completo</span></td>
+                  <td><span class="sla sla-err">51h ⚠</span></td>
+                  <td><span class="badge badge-pending">Pendiente</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openProviderDetail('academia')">Revisar →</button></td>
+                </tr>
+                <tr onclick="openProviderDetail('futbolbase')">
+                  <td>
+                    <div class="td-name">Fútbol Base Sevilla</div>
+                    <div class="td-sub">admin@futbolbase.com</div>
+                  </td>
+                  <td>Empresa</td>
+                  <td>Sevilla</td>
+                  <td><div>08/06/2026</div><div class="td-sub">1 día</div></td>
+                  <td><span style="color:var(--ok);font-weight:500;font-size:12px">✓ Completo</span></td>
+                  <td><span class="sla sla-warn">28h</span></td>
+                  <td><span class="badge badge-pending">Pendiente</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openProviderDetail('futbolbase')">Revisar →</button></td>
+                </tr>
+                <tr onclick="openProviderDetail('natura')">
+                  <td>
+                    <div class="td-name">Taller Natura Madrid</div>
+                    <div class="td-sub">info@tallernatura.com</div>
+                  </td>
+                  <td>Autónomo</td>
+                  <td>Madrid</td>
+                  <td><div>08/06/2026</div><div class="td-sub">1 día</div></td>
+                  <td><span style="color:var(--ok);font-weight:500;font-size:12px">✓ Completo</span></td>
+                  <td><span class="sla sla-ok">12h</span></td>
+                  <td><span class="badge badge-changes">Cambios solicitados</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openProviderDetail('natura')">Ver →</button></td>
+                </tr>
+                <tr onclick="openProviderDetail('tech4kids')">
+                  <td>
+                    <div class="td-name">Tech4Kids</div>
+                    <div class="td-sub">hello@tech4kids.es</div>
+                  </td>
+                  <td>Empresa</td>
+                  <td>Madrid</td>
+                  <td><div>09/06/2026</div><div class="td-sub">Hoy</div></td>
+                  <td><span style="color:var(--ok);font-weight:500;font-size:12px">✓ Completo</span></td>
+                  <td><span class="sla sla-ok">4h</span></td>
+                  <td><span class="badge badge-pending">Pendiente</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openProviderDetail('tech4kids')">Revisar →</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /s-providers -->
+
+
+      <!-- ============================================================
+           S-PROVIDER-DETAIL (AD-002 + 003 + 004 + 005 + 006)
+      ============================================================ -->
+      <div id="s-provider-detail" class="section">
+        <div class="back-link" onclick="showSection('s-providers')">← Cola de validación</div>
+
+        <div class="detail-title-row mb16">
+          <div class="page-title" style="margin-bottom:0">Academia Musical Rivas</div>
+          <span class="badge badge-pending">Pendiente</span>
+          <span class="sla sla-err">51h en cola ⚠</span>
+        </div>
+        <div class="page-sub">É9 · AD-002–006 · Solicitud: 07/06/2026 · Autónomo · Madrid</div>
+
+        <div class="detail-grid">
+
+          <!-- LEFT COLUMN -->
+          <div>
+
+            <!-- Provider info -->
+            <div class="card mb16">
+              <div class="card-header">
+                <span>🏢</span>
+                <div class="card-title">Datos del proveedor</div>
+              </div>
+              <div class="card-body">
+                <div class="prov-mini">
+                  <div class="prov-avatar">AM</div>
+                  <div style="flex:1">
+                    <div class="prov-name">Academia Musical Rivas</div>
+                    <div class="prov-email">contacto@academiamrivas.es · +34 917 234 567</div>
+                  </div>
+                  <span class="badge badge-pending">Pendiente</span>
+                </div>
+
+                <div class="sec-title">Información general</div>
+                <div class="detail-row"><span class="detail-label">Tipo entidad</span><span class="detail-val">Autónomo (persona física)</span></div>
+                <div class="detail-row"><span class="detail-label">Nombre comercial</span><span class="detail-val">Academia Musical Rivas</span></div>
+                <div class="detail-row"><span class="detail-label">Titular</span><span class="detail-val">Marta Rivas González</span></div>
+                <div class="detail-row"><span class="detail-label">NIF</span><span class="detail-val">48291754X</span></div>
+                <div class="detail-row"><span class="detail-label">Ciudad</span><span class="detail-val">Madrid (Rivas-Vaciamadrid)</span></div>
+                <div class="detail-row"><span class="detail-label">Registro</span><span class="detail-val">07/06/2026 · 09:14h</span></div>
+                <div class="detail-row"><span class="detail-label">Actividades previstas</span><span class="detail-val">Piano · Guitarra · Canto</span></div>
+              </div>
+            </div>
+
+            <!-- KYC Docs -->
+            <div class="card mb16">
+              <div class="card-header">
+                <span>📂</span>
+                <div class="card-title">Documentación KYC</div>
+                <span class="badge badge-approved" style="margin-left:auto">✓ Completo</span>
+              </div>
+              <div class="card-body">
+                <div class="doc-card">
+                  <div class="doc-icon">📄</div>
+                  <div class="doc-info">
+                    <div class="doc-name">NIF_48291754X_Rivas.pdf</div>
+                    <div class="doc-meta">Subido 07/06/2026 · 1.2 MB · PDF</div>
+                  </div>
+                  <div class="doc-actions">
+                    <button class="btn btn-ghost btn-sm">👁 Ver</button>
+                    <button class="btn btn-ghost btn-sm">⬇</button>
+                  </div>
+                </div>
+                <div class="doc-card">
+                  <div class="doc-icon">📄</div>
+                  <div class="doc-info">
+                    <div class="doc-name">Alta_autonomo_RETA.pdf</div>
+                    <div class="doc-meta">Subido 07/06/2026 · 856 KB · PDF</div>
+                  </div>
+                  <div class="doc-actions">
+                    <button class="btn btn-ghost btn-sm">👁 Ver</button>
+                    <button class="btn btn-ghost btn-sm">⬇</button>
+                  </div>
+                </div>
+                <div class="alert alert-ok" style="margin-bottom:0;margin-top:10px">
+                  <span class="alert-icon">✓</span>
+                  <div>Documentos verificados automáticamente. Sin inconsistencias detectadas.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Internal notes -->
+            <div class="card">
+              <div class="card-header"><span>📝</span><div class="card-title">Notas internas del equipo</div></div>
+              <div class="card-body">
+                <textarea class="notes-ta">Marta lleva 8 años como profesora de piano. Referenciada por Aqua Kids. Verificar que la dirección en el NIF coincide con la sede declarada en el perfil.</textarea>
+                <div style="margin-top:8px;display:flex;justify-content:flex-end">
+                  <button class="btn btn-ghost btn-sm">💾 Guardar nota</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /left column -->
+
+          <!-- RIGHT COLUMN -->
+          <div>
+
+            <!-- Actions panel (AD-003 / 004 / 005 / 006) -->
+            <div class="actions-panel">
+              <div class="actions-title">Acciones disponibles — AD-003–006</div>
+              <div class="actions-stack">
+                <button class="btn btn-ok btn-lg btn-block" onclick="openModal('m-approve')">✓ Aprobar proveedor</button>
+                <button class="btn btn-warn btn-lg btn-block" onclick="openModal('m-changes')">✎ Solicitar cambios</button>
+                <button class="btn btn-danger btn-lg btn-block" onclick="openModal('m-reject')">✗ Rechazar solicitud</button>
+                <button class="btn btn-ghost-danger btn-lg btn-block" onclick="openModal('m-suspend')">🚫 Suspender cuenta</button>
+              </div>
+            </div>
+
+            <!-- Status history (timeline) -->
+            <div class="card">
+              <div class="card-header"><span>🕐</span><div class="card-title">Historial de acciones</div></div>
+              <div class="card-body">
+                <div class="timeline">
+                  <div class="tl-item">
+                    <div class="tl-dot info">📋</div>
+                    <div class="tl-body">
+                      <div class="tl-action">Solicitud de registro recibida</div>
+                      <div class="tl-meta">07/06/2026 · 09:14h · Sistema automático</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot info">📂</div>
+                    <div class="tl-body">
+                      <div class="tl-action">Documentación KYC completada</div>
+                      <div class="tl-meta">07/06/2026 · 09:21h · Proveedor</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot info">🔔</div>
+                    <div class="tl-body">
+                      <div class="tl-action">Alerta SLA — Supera 24h sin revisión</div>
+                      <div class="tl-meta">08/06/2026 · 09:14h · Sistema</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot warn">⚠️</div>
+                    <div class="tl-body">
+                      <div class="tl-action">Alerta SLA — Supera 48h sin revisión</div>
+                      <div class="tl-meta">09/06/2026 · 09:14h · Sistema ⚠</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /right column -->
+        </div>
+      </div><!-- /s-provider-detail -->
+
+
+      <!-- ============================================================
+           S-ACTIVITIES (AD-007)
+      ============================================================ -->
+      <div id="s-activities" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div class="page-title">Cola de moderación de actividades</div>
+        <div class="page-sub">É10 · AD-007 — SLA objetivo: revisión completa en menos de 24h desde el envío</div>
+
+        <div class="alert alert-err">
+          <span class="alert-icon">⚠️</span>
+          <div><strong>1 actividad supera el SLA de 24h</strong> (Fútbol sala 6-9 años). Requiere atención inmediata.</div>
+        </div>
+
+        <div class="filters-bar">
+          <input class="fi fi-search" placeholder="🔍  Buscar actividad, proveedor…">
+          <select class="fi">
+            <option>Categoría: Todas</option>
+            <option>Deportes</option>
+            <option>Música</option>
+            <option>Ciencia</option>
+            <option>Arte</option>
+          </select>
+          <select class="fi">
+            <option>Proveedor: Todos</option>
+            <option>Fútbol Base Sevilla</option>
+            <option>Academia Musical Rivas</option>
+            <option>Tech4Kids</option>
+          </select>
+          <select class="fi">
+            <option>Ciudad: Todas</option>
+            <option>Madrid</option>
+            <option>Sevilla</option>
+          </select>
+          <div class="fi-count">3 resultados</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Actividad</th>
+                  <th>Proveedor</th>
+                  <th>Categoría</th>
+                  <th>Enviada</th>
+                  <th>Checklist</th>
+                  <th>SLA</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="openActivityDetail('futbol')">
+                  <td>
+                    <div class="td-name">Fútbol sala 6-9 años</div>
+                    <div class="td-sub">4 fotos · 6-9 años · 12 €/ses.</div>
+                  </td>
+                  <td>
+                    <div>Fútbol Base Sevilla</div>
+                    <div class="td-sub">Empresa · Sevilla</div>
+                  </td>
+                  <td>⚽ Deportes</td>
+                  <td><div>08/06/2026</div><div class="td-sub">30h</div></td>
+                  <td>
+                    <span style="color:var(--err);font-weight:600">6/7 ⚠</span>
+                    <div class="td-sub" style="color:var(--err)">Contacto externo</div>
+                  </td>
+                  <td><span class="sla sla-err">30h ⚠</span></td>
+                  <td><span class="badge badge-review">En revisión</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openActivityDetail('futbol')">Revisar →</button></td>
+                </tr>
+                <tr onclick="openActivityDetail('piano')">
+                  <td>
+                    <div class="td-name">Piano infantil 5-10 años</div>
+                    <div class="td-sub">2 fotos · 5-10 años · 25 €/ses.</div>
+                  </td>
+                  <td>
+                    <div>Academia Musical Rivas</div>
+                    <div class="td-sub">Autónomo · Madrid</div>
+                  </td>
+                  <td>🎹 Música</td>
+                  <td><div>09/06/2026</div><div class="td-sub">18h</div></td>
+                  <td>
+                    <span style="color:var(--warn);font-weight:600">5/7 ⚠</span>
+                    <div class="td-sub" style="color:var(--warn)">Fotos mínimas</div>
+                  </td>
+                  <td><span class="sla sla-warn">18h</span></td>
+                  <td><span class="badge badge-review">En revisión</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openActivityDetail('piano')">Revisar →</button></td>
+                </tr>
+                <tr onclick="openActivityDetail('robotica')">
+                  <td>
+                    <div class="td-name">Taller robótica 8-12 años</div>
+                    <div class="td-sub">5 fotos · 8-12 años · 30 €/ses.</div>
+                  </td>
+                  <td>
+                    <div>Tech4Kids</div>
+                    <div class="td-sub">Empresa · Madrid</div>
+                  </td>
+                  <td>🔬 Ciencia</td>
+                  <td><div>09/06/2026</div><div class="td-sub">6h</div></td>
+                  <td>
+                    <span style="color:var(--ok);font-weight:600">7/7 ✓</span>
+                  </td>
+                  <td><span class="sla sla-ok">6h</span></td>
+                  <td><span class="badge badge-review">En revisión</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openActivityDetail('robotica')">Revisar →</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /s-activities -->
+
+
+      <!-- ============================================================
+           S-ACTIVITY-DETAIL (AD-008 + 009 + 010)
+      ============================================================ -->
+      <div id="s-activity-detail" class="section">
+        <div class="back-link" onclick="showSection('s-activities')">← Cola de moderación</div>
+
+        <div class="detail-title-row mb16">
+          <div class="page-title" style="margin-bottom:0" id="act-det-title">Fútbol sala 6-9 años</div>
+          <span class="badge badge-review">En revisión</span>
+          <span class="sla sla-err" id="act-det-sla">SLA 30h ⚠</span>
+        </div>
+        <div class="page-sub" id="act-det-sub">É10 · AD-008–010 · Enviada por Fútbol Base Sevilla · 08/06/2026</div>
+
+        <div class="detail-grid">
+
+          <!-- LEFT: PREVIEW + RAW DATA -->
+          <div>
+            <div class="sec-title">Vista previa — como la verá el usuario final</div>
+
+            <div class="act-preview">
+              <div class="act-preview-img" id="act-prev-img">⚽</div>
+              <div class="act-preview-body">
+                <div class="act-preview-cat" id="act-prev-cat">Deportes · Fútbol</div>
+                <div class="act-preview-title" id="act-prev-title">Fútbol sala 6-9 años</div>
+                <div class="act-preview-tags" id="act-prev-tags">
+                  <span class="act-preview-tag">⏱ 60 min</span>
+                  <span class="act-preview-tag">👶 6–9 años</span>
+                  <span class="act-preview-tag">📍 Sevilla</span>
+                  <span class="act-preview-tag">📅 Sáb y Dom</span>
+                </div>
+                <div class="act-preview-desc" id="act-prev-desc">
+                  Entrenamiento de fútbol sala para niños de 6 a 9 años. Desarrollamos habilidades técnicas, trabajo en equipo y valores. Grupos reducidos de máximo 10 niños. <strong style="background:#FEE2E2;color:#991B1B;padding:1px 3px;border-radius:3px">Llámanos al 666 777 888</strong> para más info.
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div class="act-preview-price" id="act-prev-price">12 €/ses.</div>
+                  <span style="font-size:12px;color:var(--text2)">📍 Polideportivo Municipal, Sevilla</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><span>📊</span><div class="card-title">Datos de la actividad</div></div>
+              <div class="card-body">
+                <div class="detail-row"><span class="detail-label">Proveedor</span><span class="detail-val" id="act-data-prov">Fútbol Base Sevilla</span></div>
+                <div class="detail-row"><span class="detail-label">Categoría</span><span class="detail-val" id="act-data-cat">Deportes · Fútbol</span></div>
+                <div class="detail-row"><span class="detail-label">Rango de edad</span><span class="detail-val" id="act-data-age">6–9 años</span></div>
+                <div class="detail-row"><span class="detail-label">Duración</span><span class="detail-val">60 minutos</span></div>
+                <div class="detail-row"><span class="detail-label">Precio</span><span class="detail-val" id="act-data-price">12 €/sesión</span></div>
+                <div class="detail-row"><span class="detail-label">Aforo máximo</span><span class="detail-val">10 participantes</span></div>
+                <div class="detail-row"><span class="detail-label">Horarios</span><span class="detail-val">Sáb y Dom 10:00–11:00h</span></div>
+                <div class="detail-row"><span class="detail-label">Política cancelación</span><span class="detail-val">24h → 100% reembolso</span></div>
+                <div class="detail-row"><span class="detail-label">Nº fotos subidas</span><span class="detail-val" id="act-data-photos">4 fotos</span></div>
+              </div>
+            </div>
+          </div><!-- /left -->
+
+          <!-- RIGHT: MODERATION -->
+          <div>
+
+            <!-- External contact alert (shown only for futbol) -->
+            <div class="contact-alert" id="contact-alert">
+              <span style="font-size:18px;flex-shrink:0">⚠️</span>
+              <div>
+                <strong>Contacto externo detectado automáticamente</strong><br>
+                Número de teléfono "<code style="background:rgba(0,0,0,.08);padding:1px 4px;border-radius:3px">666 777 888</code>" encontrado en la descripción. Viola la política de la plataforma.
+              </div>
+            </div>
+
+            <!-- Checklist (AD-008) -->
+            <div class="card mb16">
+              <div class="card-header">
+                <span>✅</span>
+                <div class="card-title">Checklist de moderación</div>
+                <span style="margin-left:auto;font-size:13px;font-weight:700;color:var(--err)" id="chk-score">6/7 ⚠</span>
+              </div>
+              <div class="card-body" style="padding:14px 20px">
+                <ul class="checklist" id="chk-list">
+                  <li class="chk-ok"><span class="chk-icon">✅</span><div class="chk-text">Mínimo 1 foto adjunta <span style="color:var(--text3)">(4 fotos)</span></div></li>
+                  <li class="chk-ok"><span class="chk-icon">✅</span><div class="chk-text">Descripción ≥ 50 caracteres</div></li>
+                  <li class="chk-ok"><span class="chk-icon">✅</span><div class="chk-text">Precio por sesión definido</div></li>
+                  <li class="chk-ok"><span class="chk-icon">✅</span><div class="chk-text">Horarios y días configurados</div></li>
+                  <li class="chk-ok"><span class="chk-icon">✅</span><div class="chk-text">Política de cancelación definida</div></li>
+                  <li class="chk-ok"><span class="chk-icon">✅</span><div class="chk-text">Rango de edad configurado</div></li>
+                  <li class="chk-fail"><span class="chk-icon">❌</span><div class="chk-text">Sin datos de contacto externos<div class="chk-note">Teléfono "666 777 888" detectado en descripción</div></div></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Internal notes -->
+            <div class="card mb16">
+              <div class="card-header"><span>📝</span><div class="card-title">Notas de moderación</div></div>
+              <div class="card-body">
+                <textarea class="notes-ta" id="act-notes">Contacto externo detectado: teléfono en descripción. Rechazar y solicitar que eliminen el número y usen exclusivamente la mensajería interna de Kooday.</textarea>
+                <div style="margin-top:8px;display:flex;justify-content:flex-end">
+                  <button class="btn btn-ghost btn-sm">💾 Guardar</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions (AD-009 / AD-010) -->
+            <div class="actions-panel">
+              <div class="actions-title">Decisión de moderación — AD-009 / AD-010</div>
+              <div class="actions-stack">
+                <button class="btn btn-ok btn-lg btn-block disabled" id="btn-publish" onclick="openModal('m-publish')">
+                  🚀 Publicar actividad
+                </button>
+                <button class="btn btn-danger btn-lg btn-block" id="btn-reject-act" onclick="openModal('m-reject-act')">
+                  ✗ Rechazar actividad
+                </button>
+              </div>
+              <div style="margin-top:10px;font-size:11px;color:var(--text3);text-align:center" id="publish-hint">
+                ⓘ Publicar deshabilitado: checklist incompleto (6/7)
+              </div>
+            </div>
+
+          </div><!-- /right -->
+        </div>
+      </div><!-- /s-activity-detail -->
+
+    </div><!-- /content-area -->
+  </div><!-- /main-area -->
+</div><!-- /admin-shell -->
+
+
+<!-- ================================================================
+     MODALS
+================================================================ -->
+
+<!-- APPROVE PROVIDER (AD-003) -->
+<div class="modal-overlay" id="m-approve">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">✅</div>
+      <div>
+        <div class="modal-title">Aprobar proveedor</div>
+        <div class="modal-sub">Academia Musical Rivas · Autónomo · Madrid</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Al aprobar, el proveedor recibirá un email de confirmación y podrá publicar actividades de inmediato. Esta acción quedará registrada en el log de auditoría con tu usuario y timestamp.</p>
+      <div class="alert alert-ok" style="margin-bottom:0">
+        <span class="alert-icon">✓</span>
+        <div>Documentación KYC verificada — NIF válido · Alta de autónomo confirmada · Sin inconsistencias</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-approve')">Cancelar</button>
+      <button class="btn btn-ok" onclick="doAction('approve')">✓ Confirmar aprobación</button>
+    </div>
+  </div>
+</div>
+
+<!-- REQUEST CHANGES (AD-005) -->
+<div class="modal-overlay" id="m-changes">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">✎</div>
+      <div>
+        <div class="modal-title">Solicitar cambios</div>
+        <div class="modal-sub">El proveedor recibirá un email con las instrucciones</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">¿Qué debe corregir el proveedor?</label>
+        <textarea class="mf-ta">El documento NIF enviado parece tener una fecha de emisión superior a 5 años. Por favor, sube una copia actualizada del DNI/NIF con fecha de emisión reciente.</textarea>
+      </div>
+      <div style="font-size:12px;color:var(--text3)">El proveedor recibirá este texto por email. El estado cambiará a "Cambios solicitados" hasta que reenvíe la documentación correcta.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-changes')">Cancelar</button>
+      <button class="btn btn-warn" onclick="doAction('changes')">✉ Enviar solicitud de cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- REJECT PROVIDER (AD-004) -->
+<div class="modal-overlay" id="m-reject">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">✗</div>
+      <div>
+        <div class="modal-title">Rechazar solicitud de proveedor</div>
+        <div class="modal-sub">El proveedor podrá reabrir una nueva solicitud con documentación correcta</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">Motivo del rechazo</label>
+        <select class="mf-select">
+          <option>Documentación inválida o caducada</option>
+          <option>Documentación incompleta</option>
+          <option>Información del perfil inadecuada</option>
+          <option>Actividades fuera del scope de la plataforma</option>
+          <option>Datos inconsistentes o sospechosos de fraude</option>
+          <option>Otro motivo (especificar abajo)</option>
+        </select>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Mensaje adicional para el proveedor <span style="font-weight:400">(opcional)</span></label>
+        <textarea class="mf-ta" placeholder="Añade contexto o instrucciones adicionales…"></textarea>
+      </div>
+      <div style="font-size:12px;color:var(--text3)">Esta acción queda registrada en el log de auditoría.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-reject')">Cancelar</button>
+      <button class="btn btn-danger" onclick="doAction('reject')">✗ Confirmar rechazo</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUSPEND PROVIDER (AD-006) -->
+<div class="modal-overlay" id="m-suspend">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">🚫</div>
+      <div>
+        <div class="modal-title">Suspender cuenta de proveedor</div>
+        <div class="modal-sub" style="color:var(--err);font-weight:500">⚠ Acción grave e inmediata</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-err mb16">
+        <span class="alert-icon">⚠️</span>
+        <div>Esta acción <strong>desactivará inmediatamente</strong> todas las actividades del proveedor y enviará notificaciones a los usuarios con reservas activas.</div>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Motivo de la suspensión</label>
+        <select class="mf-select">
+          <option>Fraude o actividad sospechosa detectada</option>
+          <option>Múltiples quejas graves de usuarios</option>
+          <option>Incumplimiento reiterado de las normas</option>
+          <option>Actividad potencialmente ilegal o peligrosa</option>
+          <option>No-show recurrente sin justificación</option>
+          <option>Otro motivo</option>
+        </select>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Descripción detallada <span style="font-weight:400">(para registro interno)</span></label>
+        <textarea class="mf-ta" placeholder="Describe los hechos que justifican la suspensión…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-suspend')">Cancelar</button>
+      <button class="btn btn-danger" onclick="doAction('suspend')">🚫 Suspender cuenta</button>
+    </div>
+  </div>
+</div>
+
+<!-- PUBLISH ACTIVITY (AD-009) -->
+<div class="modal-overlay" id="m-publish">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">🚀</div>
+      <div>
+        <div class="modal-title">Publicar actividad</div>
+        <div class="modal-sub">La actividad será visible para familias de forma inmediata</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">El proveedor recibirá confirmación por email. La actividad aparecerá en los resultados de búsqueda y en las recomendaciones.</p>
+      <div class="alert alert-ok" style="margin-bottom:0">
+        <span class="alert-icon">✓</span>
+        <div>7/7 verificaciones completadas. Listo para publicar.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-publish')">Cancelar</button>
+      <button class="btn btn-ok" onclick="doAction('publish')">🚀 Publicar ahora</button>
+    </div>
+  </div>
+</div>
+
+<!-- REJECT ACTIVITY (AD-010) -->
+<div class="modal-overlay" id="m-reject-act">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">✗</div>
+      <div>
+        <div class="modal-title">Rechazar actividad</div>
+        <div class="modal-sub">La actividad volverá a estado Borrador para que el proveedor la corrija</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">Motivo del rechazo</label>
+        <select class="mf-select">
+          <option>Contacto externo detectado (teléfono / email / WhatsApp)</option>
+          <option>Fotos insuficientes o de baja calidad</option>
+          <option>Descripción incompleta (menos de 50 caracteres)</option>
+          <option>Contenido inapropiado para el público infantil</option>
+          <option>Precio o condiciones incorrectos o engañosos</option>
+          <option>Rango de edad no definido o inconsistente</option>
+          <option>Otro motivo</option>
+        </select>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Instrucciones para el proveedor</label>
+        <textarea class="mf-ta">Se ha detectado un número de teléfono en la descripción ("666 777 888"). Debes eliminar cualquier dato de contacto externo del texto de la actividad. Las familias deben comunicarse con los proveedores exclusivamente a través de la mensajería interna de Kooday.</textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-reject-act')">Cancelar</button>
+      <button class="btn btn-danger" onclick="doAction('reject-act')">✗ Rechazar y notificar al proveedor</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================================
+     JAVASCRIPT
+================================================================ -->
+<script>
+
+  /* ── SECTION CONFIG ── */
+  const sections = {
+    's-dashboard':       { label: 'BO · Dashboard',             bc: '<strong>Dashboard</strong>',                                                nav: 'nav-dashboard'  },
+    's-providers':       { label: 'AD-001 · Cola proveedores É9', bc: 'É9 Proveedores <span class="bc-sep">›</span> <strong>Cola de validación</strong>', nav: 'nav-providers'  },
+    's-provider-detail': { label: 'AD-002–006 · Detalle KYC',    bc: 'É9 Proveedores <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>Academia Musical Rivas</strong>', nav: 'nav-providers' },
+    's-activities':      { label: 'AD-007 · Cola actividades É10', bc: 'É10 Actividades <span class="bc-sep">›</span> <strong>Cola de moderación</strong>', nav: 'nav-activities' },
+    's-activity-detail': { label: 'AD-008–010 · Moderación',      bc: 'É10 Actividades <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>Fútbol sala 6-9 años</strong>', nav: 'nav-activities' }
+  };
+
+  /* ── ACTIVITY DATA ── */
+  const activities = {
+    futbol: {
+      title: 'Fútbol sala 6-9 años', cat: 'Deportes · Fútbol', icon: '⚽',
+      tags: ['⏱ 60 min','👶 6–9 años','📍 Sevilla','📅 Sáb y Dom'],
+      desc: 'Entrenamiento de fútbol sala para niños de 6 a 9 años. Desarrollamos habilidades técnicas, trabajo en equipo y valores. Grupos reducidos de máximo 10 niños. <strong style="background:#FEE2E2;color:#991B1B;padding:1px 3px;border-radius:3px">Llámanos al 666 777 888</strong> para más info.',
+      price: '12 €/ses.', sla: 'SLA 30h ⚠', slaClass: 'sla-err',
+      prov: 'Fútbol Base Sevilla', provCat: 'Deportes · Fútbol',
+      age: '6–9 años', priceRaw: '12 €/sesión', photos: '4 fotos',
+      sub: 'É10 · AD-008–010 · Enviada por Fútbol Base Sevilla · 08/06/2026',
+      contactAlert: true, chkScore: '6/7 ⚠', chkScoreColor: 'var(--err)',
+      chkList: [
+        {ok:true,  text:'Mínimo 1 foto adjunta', note:'(4 fotos)'},
+        {ok:true,  text:'Descripción ≥ 50 caracteres'},
+        {ok:true,  text:'Precio por sesión definido'},
+        {ok:true,  text:'Horarios y días configurados'},
+        {ok:true,  text:'Política de cancelación definida'},
+        {ok:true,  text:'Rango de edad configurado'},
+        {ok:false, text:'Sin datos de contacto externos', note:'Teléfono "666 777 888" detectado en descripción'}
+      ],
+      notes: 'Contacto externo detectado: teléfono en descripción. Rechazar y solicitar que eliminen el número y usen exclusivamente la mensajería interna de Kooday.',
+      publishDisabled: true, publishHint: 'ⓘ Publicar deshabilitado: checklist incompleto (6/7)'
+    },
+    piano: {
+      title: 'Piano infantil 5-10 años', cat: 'Música', icon: '🎹',
+      tags: ['⏱ 45 min','👶 5–10 años','📍 Madrid','📅 Mié y Vie'],
+      desc: 'Clases de piano para niños de 5 a 10 años. Metodología Suzuki adaptada para los más pequeños. Aprenden a leer música y a tocar con dos manos desde la primera clase.',
+      price: '25 €/ses.', sla: 'SLA 18h', slaClass: 'sla-warn',
+      prov: 'Academia Musical Rivas', provCat: 'Música',
+      age: '5–10 años', priceRaw: '25 €/sesión', photos: '2 fotos',
+      sub: 'É10 · AD-008–010 · Enviada por Academia Musical Rivas · 09/06/2026',
+      contactAlert: false, chkScore: '5/7 ⚠', chkScoreColor: 'var(--warn)',
+      chkList: [
+        {ok:false, text:'Mínimo 3 fotos adjuntas', note:'Solo 2 fotos (mínimo recomendado: 3)'},
+        {ok:true,  text:'Descripción ≥ 50 caracteres'},
+        {ok:true,  text:'Precio por sesión definido'},
+        {ok:false, text:'Horarios con plazas configuradas', note:'No se han definido las plazas por sesión'},
+        {ok:true,  text:'Política de cancelación definida'},
+        {ok:true,  text:'Rango de edad configurado'},
+        {ok:true,  text:'Sin datos de contacto externos'}
+      ],
+      notes: 'Solo 2 fotos subidas y no se han configurado las plazas por sesión. Solicitar que complete antes de publicar.',
+      publishDisabled: true, publishHint: 'ⓘ Publicar deshabilitado: checklist incompleto (5/7)'
+    },
+    robotica: {
+      title: 'Taller robótica 8-12 años', cat: 'Ciencia · Robótica', icon: '🤖',
+      tags: ['⏱ 90 min','👶 8–12 años','📍 Madrid','📅 Sábados'],
+      desc: 'Introducción a la robótica y programación para niños. Construyen y programan robots con LEGO Mindstorms. Pensamiento computacional, resolución de problemas y trabajo en equipo.',
+      price: '30 €/ses.', sla: 'SLA 6h', slaClass: 'sla-ok',
+      prov: 'Tech4Kids', provCat: 'Ciencia · Robótica',
+      age: '8–12 años', priceRaw: '30 €/sesión', photos: '5 fotos',
+      sub: 'É10 · AD-008–010 · Enviada por Tech4Kids · 09/06/2026',
+      contactAlert: false, chkScore: '7/7 ✓', chkScoreColor: 'var(--ok)',
+      chkList: [
+        {ok:true, text:'Mínimo 1 foto adjunta', note:'(5 fotos)'},
+        {ok:true, text:'Descripción ≥ 50 caracteres'},
+        {ok:true, text:'Precio por sesión definido'},
+        {ok:true, text:'Horarios y días configurados'},
+        {ok:true, text:'Política de cancelación definida'},
+        {ok:true, text:'Rango de edad configurado'},
+        {ok:true, text:'Sin datos de contacto externos'}
+      ],
+      notes: '',
+      publishDisabled: false, publishHint: '✓ Checklist completo — listo para publicar'
+    }
+  };
+
+  /* ── LOGIN / LOGOUT ── */
+  function doLogin() {
+    document.getElementById('screen-login').classList.add('hidden');
+    document.getElementById('admin-shell').classList.add('visible');
+    showSection('s-dashboard');
+  }
+
+  function doLogout() {
+    document.getElementById('admin-shell').classList.remove('visible');
+    document.getElementById('screen-login').classList.remove('hidden');
+  }
+
+  /* ── SECTION NAVIGATION ── */
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const sec = document.getElementById(id);
+    if (sec) sec.classList.add('active');
+
+    const cfg = sections[id] || {};
+    document.getElementById('hu-chip').textContent   = cfg.label || '';
+    document.getElementById('topbar-bc').innerHTML   = cfg.bc    || '';
+
+    document.querySelectorAll('.nav-item:not(.muted)').forEach(n => n.classList.remove('active'));
+    if (cfg.nav) {
+      const navEl = document.getElementById(cfg.nav);
+      if (navEl) navEl.classList.add('active');
+    }
+
+    try { document.querySelector('.content-area').scrollTop = 0; } catch(e) {}
+  }
+
+  /* ── PROVIDER DETAIL ── */
+  function openProviderDetail(id) {
+    showSection('s-provider-detail');
+  }
+
+  /* ── ACTIVITY DETAIL ── */
+  function openActivityDetail(id) {
+    const d = activities[id];
+    if (!d) return;
+
+    // Update title/sub/sla
+    document.getElementById('act-det-title').textContent = d.title;
+    document.getElementById('act-det-sub').textContent   = d.sub;
+    const slaEl = document.getElementById('act-det-sla');
+    slaEl.textContent  = d.sla;
+    slaEl.className    = 'sla ' + d.slaClass;
+
+    // Preview
+    document.getElementById('act-prev-img').textContent   = d.icon;
+    document.getElementById('act-prev-cat').textContent   = d.cat;
+    document.getElementById('act-prev-title').textContent = d.title;
+    document.getElementById('act-prev-desc').innerHTML    = d.desc;
+    document.getElementById('act-prev-price').textContent = d.price;
+    const tagsEl = document.getElementById('act-prev-tags');
+    tagsEl.innerHTML = d.tags.map(t => `<span class="act-preview-tag">${t}</span>`).join('');
+
+    // Raw data
+    document.getElementById('act-data-prov').textContent  = d.prov;
+    document.getElementById('act-data-cat').textContent   = d.provCat;
+    document.getElementById('act-data-age').textContent   = d.age;
+    document.getElementById('act-data-price').textContent = d.priceRaw;
+    document.getElementById('act-data-photos').textContent = d.photos;
+
+    // Contact alert
+    document.getElementById('contact-alert').style.display = d.contactAlert ? 'flex' : 'none';
+
+    // Checklist
+    const scoreEl = document.getElementById('chk-score');
+    scoreEl.textContent = d.chkScore;
+    scoreEl.style.color = d.chkScoreColor;
+
+    const chkListEl = document.getElementById('chk-list');
+    chkListEl.innerHTML = d.chkList.map(item => `
+      <li class="${item.ok ? 'chk-ok' : 'chk-fail'}">
+        <span class="chk-icon">${item.ok ? '✅' : '❌'}</span>
+        <div class="chk-text">
+          ${item.text}
+          ${item.note ? `<div class="chk-note">${item.note}</div>` : ''}
+        </div>
+      </li>
+    `).join('');
+
+    // Notes
+    document.getElementById('act-notes').value = d.notes;
+
+    // Publish button
+    const pubBtn = document.getElementById('btn-publish');
+    if (d.publishDisabled) {
+      pubBtn.classList.add('disabled');
+    } else {
+      pubBtn.classList.remove('disabled');
+    }
+    document.getElementById('publish-hint').textContent = d.publishHint;
+
+    // Breadcrumb with activity name
+    sections['s-activity-detail'].bc = `É10 Actividades <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>${d.title}</strong>`;
+
+    showSection('s-activity-detail');
+  }
+
+  /* ── MODALS ── */
+  function openModal(id)  { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+      e.target.classList.remove('open');
+    }
+  });
+
+  /* ── ACTIONS ── */
+  const actionMessages = {
+    approve:    { msg: '✓ Proveedor aprobado — Email de confirmación enviado a Academia Musical Rivas',    color: '#059669', back: 's-providers' },
+    changes:    { msg: '✉ Solicitud enviada — Estado cambiado a "Cambios solicitados"',                    color: '#D97706', back: 's-providers' },
+    reject:     { msg: '✗ Proveedor rechazado — Email de notificación enviado',                           color: '#DC2626', back: 's-providers' },
+    suspend:    { msg: '🚫 Cuenta suspendida — Actividades desactivadas y usuarios notificados',           color: '#DC2626', back: 's-providers' },
+    publish:    { msg: '🚀 Actividad publicada — Ya aparece en la plataforma',                            color: '#059669', back: 's-activities' },
+    'reject-act':{ msg: '✗ Actividad rechazada — Email con instrucciones enviado a Fútbol Base Sevilla', color: '#DC2626', back: 's-activities' }
+  };
+
+  function doAction(type) {
+    const map = {
+      approve: 'm-approve', changes: 'm-changes', reject: 'm-reject',
+      suspend: 'm-suspend', publish: 'm-publish', 'reject-act': 'm-reject-act'
+    };
+    closeModal(map[type]);
+    const cfg = actionMessages[type];
+    showToast(cfg.msg, cfg.color);
+    setTimeout(() => showSection(cfg.back), 600);
+  }
+
+  /* ── ROLE SWITCHER ── */
+  function toggleRole(e) {
+    e.stopPropagation();
+    document.getElementById('role-dd').classList.toggle('open');
+  }
+
+  function setRole(name, icon, e) {
+    e.stopPropagation();
+    document.getElementById('role-label').textContent = name;
+    document.getElementById('dash-sub').textContent   = `Vista: ${name} · Martes 9 de junio de 2026`;
+    document.getElementById('role-dd').classList.remove('open');
+    document.querySelectorAll('.role-option').forEach(o => {
+      o.classList.toggle('active', o.textContent.trim().includes(name));
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.role-pill')) {
+      document.getElementById('role-dd').classList.remove('open');
+    }
+  });
+
+  /* ── TOAST ── */
+  function showToast(msg, color) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.style.background = color || '#1E293B';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; }, 3000);
+    setTimeout(() => t.remove(), 3400);
+  }
+
+</script>
+</body>
+</html>
