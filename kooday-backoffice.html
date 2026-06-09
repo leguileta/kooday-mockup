@@ -921,6 +921,70 @@
     .money-row:last-child { border-bottom: none; }
     .money-row.total { font-weight: 700; font-size: 15px; border-top: 2px solid var(--border); padding-top: 10px; }
 
+    /* ============================================================
+       SWITCH TOGGLE (cities, coupons, categories)
+    ============================================================ */
+    .switch {
+      position: relative;
+      width: 38px; height: 22px;
+      background: #CBD5E1;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background .15s;
+      flex-shrink: 0;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 16px; height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: left .15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,.25);
+    }
+    .switch.on { background: var(--ok); }
+    .switch.on::after { left: 19px; }
+
+    /* ============================================================
+       FUNNEL
+    ============================================================ */
+    .funnel-step { display: grid; grid-template-columns: 150px 1fr 110px; gap: 12px; align-items: center; margin-bottom: 9px; }
+    .funnel-label { font-size: 13px; font-weight: 500; text-align: right; }
+    .funnel-bar-wrap { height: 30px; background: var(--bg); border-radius: 6px; overflow: hidden; }
+    .funnel-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--admin), #3B82F6);
+      border-radius: 6px;
+      display: flex; align-items: center;
+      padding: 0 10px;
+      color: #fff;
+      font-size: 11px; font-weight: 700;
+      min-width: max-content;
+      white-space: nowrap;
+    }
+    .funnel-drop { font-size: 11px; color: var(--err); font-weight: 600; }
+
+    /* ============================================================
+       CATEGORY DOT
+    ============================================================ */
+    .cat-dot { width: 13px; height: 13px; border-radius: 4px; display: inline-block; flex-shrink: 0; }
+
+    /* ============================================================
+       CODE / COUPON CHIP
+    ============================================================ */
+    .code-chip {
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 12px; font-weight: 700;
+      background: var(--sidebar-bg);
+      color: #fff;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: .5px;
+    }
+
   </style>
 </head>
 <body>
@@ -1011,9 +1075,35 @@
     </div>
 
     <div class="sb-section">
-      <div class="sb-section-title">Próximas épicas</div>
-      <div class="nav-item muted"><span class="nav-icon">⚙️</span> Configuración <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É13</small></div>
-      <div class="nav-item muted"><span class="nav-icon">📊</span> Analítica <small style="font-size:10px;margin-left:auto;color:rgba(255,255,255,.25)">É14</small></div>
+      <div class="sb-section-title">É13 · Configuración</div>
+      <div class="nav-item" id="nav-categories" onclick="showSection('s-categories')">
+        <span class="nav-icon">🗂</span> Categorías
+      </div>
+      <div class="nav-item" id="nav-cities" onclick="showSection('s-cities')">
+        <span class="nav-icon">🌆</span> Ciudades
+      </div>
+      <div class="nav-item" id="nav-coupons" onclick="showSection('s-coupons')">
+        <span class="nav-icon">🏷</span> Cupones
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-title">É14 · Analítica</div>
+      <div class="nav-item" id="nav-analytics" onclick="showSection('s-analytics')">
+        <span class="nav-icon">📊</span> Dashboard ejecutivo
+      </div>
+      <div class="nav-item" id="nav-funnel" onclick="showSection('s-funnel')">
+        <span class="nav-icon">⏬</span> Funnel conversión
+      </div>
+      <div class="nav-item" id="nav-channels" onclick="showSection('s-channels')">
+        <span class="nav-icon">📣</span> Canales captación
+      </div>
+      <div class="nav-item" id="nav-searches" onclick="showSection('s-searches')">
+        <span class="nav-icon">🔍</span> Búsquedas sin resultado
+      </div>
+      <div class="nav-item" id="nav-audit" onclick="showSection('s-audit')">
+        <span class="nav-icon">🛡</span> Auditoría
+      </div>
     </div>
 
     <div class="sb-bottom">
@@ -2394,6 +2484,667 @@
         </div>
       </div><!-- /s-support-kpis -->
 
+
+      <!-- ============================================================
+           S-CATEGORIES (AD-017)
+      ============================================================ -->
+      <div id="s-categories" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div>
+            <div class="page-title">Categorías de actividades</div>
+            <div class="page-sub">É13 · AD-017 — Jerarquía padre/hijo (máx. 2 niveles), icono y color por categoría</div>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('m-category')">+ Nueva categoría</button>
+        </div>
+
+        <div class="alert alert-warn">
+          <span class="alert-icon">⚠️</span>
+          <div>Cambiar la categoría de una actividad publicada requiere <strong>re-aprobación</strong> de las actividades afectadas en la cola de moderación.</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Categoría</th>
+                  <th>Subcategorías</th>
+                  <th>Icono / Color</th>
+                  <th>Actividades</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:default">
+                  <td><div class="td-name">⚽ Deportes</div><div class="td-sub">Nivel 1</div></td>
+                  <td><div class="td-sub">Fútbol · Natación · Baloncesto · Patinaje · Judo</div></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:6px">⚽ <span class="cat-dot" style="background:#059669"></span></span></td>
+                  <td><strong>86</strong></td>
+                  <td><span class="badge badge-approved">Activa</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="openModal('m-category')">✎ Editar</button> <span class="switch on" onclick="toggleSwitch(this,'Deportes')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">🎵 Música</div><div class="td-sub">Nivel 1</div></td>
+                  <td><div class="td-sub">Piano · Guitarra · Canto · Batería</div></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:6px">🎵 <span class="cat-dot" style="background:#7C3AED"></span></span></td>
+                  <td><strong>34</strong></td>
+                  <td><span class="badge badge-approved">Activa</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="openModal('m-category')">✎ Editar</button> <span class="switch on" onclick="toggleSwitch(this,'Música')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">🔬 Ciencia y Tecnología</div><div class="td-sub">Nivel 1</div></td>
+                  <td><div class="td-sub">Robótica · Programación · Experimentos</div></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:6px">🔬 <span class="cat-dot" style="background:#2563EB"></span></span></td>
+                  <td><strong>28</strong></td>
+                  <td><span class="badge badge-approved">Activa</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="openModal('m-category')">✎ Editar</button> <span class="switch on" onclick="toggleSwitch(this,'Ciencia')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">🎨 Arte y Creatividad</div><div class="td-sub">Nivel 1</div></td>
+                  <td><div class="td-sub">Pintura · Teatro · Manualidades · Cerámica</div></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:6px">🎨 <span class="cat-dot" style="background:#EA580C"></span></span></td>
+                  <td><strong>41</strong></td>
+                  <td><span class="badge badge-approved">Activa</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="openModal('m-category')">✎ Editar</button> <span class="switch on" onclick="toggleSwitch(this,'Arte')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">🗣 Idiomas</div><div class="td-sub">Nivel 1</div></td>
+                  <td><div class="td-sub">Inglés · Francés · Chino</div></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:6px">🗣 <span class="cat-dot" style="background:#DC2626"></span></span></td>
+                  <td><strong>0</strong></td>
+                  <td><span class="badge badge-suspended">Desactivada</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="openModal('m-category')">✎ Editar</button> <span class="switch" onclick="toggleSwitch(this,'Idiomas')"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /s-categories -->
+
+
+      <!-- ============================================================
+           S-CITIES (AD-018)
+      ============================================================ -->
+      <div id="s-cities" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div>
+            <div class="page-title">Ciudades y zonas geográficas</div>
+            <div class="page-sub">É13 · AD-018 — Activación de ciudades, radio de búsqueda y métricas de supply/demanda</div>
+          </div>
+          <button class="btn btn-primary" onclick="showToast('🌆 Asistente de nueva ciudad (próximamente)', '#2563EB')">+ Añadir ciudad</button>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ciudad</th>
+                  <th>Radio búsqueda</th>
+                  <th>Actividades publicadas</th>
+                  <th>Proveedores activos</th>
+                  <th>Usuarios activos</th>
+                  <th>Ratio S/D</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:default">
+                  <td><div class="td-name">Madrid</div><div class="td-sub">Lanzada 01/2026</div></td>
+                  <td>15 km</td>
+                  <td><strong>112</strong></td>
+                  <td>38</td>
+                  <td>1.840</td>
+                  <td><span class="sla sla-ok">Saludable</span></td>
+                  <td><span class="badge badge-approved">Activa</span></td>
+                  <td><span class="switch on" onclick="toggleSwitch(this,'Madrid')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">Barcelona</div><div class="td-sub">Lanzada 02/2026</div></td>
+                  <td>12 km</td>
+                  <td><strong>64</strong></td>
+                  <td>22</td>
+                  <td>1.120</td>
+                  <td><span class="sla sla-ok">Saludable</span></td>
+                  <td><span class="badge badge-approved">Activa</span></td>
+                  <td><span class="switch on" onclick="toggleSwitch(this,'Barcelona')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">Sevilla</div><div class="td-sub">Lanzada 04/2026</div></td>
+                  <td>10 km</td>
+                  <td><strong>13</strong></td>
+                  <td>6</td>
+                  <td>410</td>
+                  <td><span class="sla sla-warn">Poca oferta</span></td>
+                  <td><span class="badge badge-approved">Activa</span></td>
+                  <td><span class="switch on" onclick="toggleSwitch(this,'Sevilla')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">Valencia</div><div class="td-sub">En preparación</div></td>
+                  <td>12 km</td>
+                  <td><strong>4</strong></td>
+                  <td>3</td>
+                  <td>—</td>
+                  <td><span class="sla sla-err">Insuficiente</span></td>
+                  <td><span class="badge badge-pending">Inactiva</span></td>
+                  <td><span class="switch" onclick="toggleSwitch(this,'Valencia')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">Bilbao</div><div class="td-sub">En estudio</div></td>
+                  <td>—</td>
+                  <td><strong>0</strong></td>
+                  <td>0</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td><span class="badge badge-suspended">Sin configurar</span></td>
+                  <td><span class="switch" onclick="toggleSwitch(this,'Bilbao')"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer" style="font-size:12px;color:var(--text2)">ⓘ Desactivar una ciudad oculta toda su oferta en la app de familias de forma inmediata. Las reservas existentes no se ven afectadas.</div>
+        </div>
+      </div><!-- /s-cities -->
+
+
+      <!-- ============================================================
+           S-COUPONS (AD-019)
+      ============================================================ -->
+      <div id="s-coupons" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div>
+            <div class="page-title">Cupones de descuento</div>
+            <div class="page-sub">É13 · AD-019 — Campañas de growth con condiciones, vigencia y reporte de uso</div>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('m-coupon')">+ Nuevo cupón</button>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Descuento</th>
+                  <th>Condición</th>
+                  <th>Vigencia</th>
+                  <th>Usos</th>
+                  <th>GMV generado</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:default">
+                  <td><span class="code-chip">BIENVENIDA10</span></td>
+                  <td><strong>10%</strong></td>
+                  <td>Primera reserva</td>
+                  <td>01/01 – 31/12/2026</td>
+                  <td>234 / 1.000</td>
+                  <td>6.480 €</td>
+                  <td><span class="badge badge-approved">Activo</span></td>
+                  <td><span class="switch on" onclick="toggleSwitch(this,'BIENVENIDA10')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><span class="code-chip">VERANO26</span></td>
+                  <td><strong>15 €</strong></td>
+                  <td>Importe mín. 60 €</td>
+                  <td>01/06 – 31/08/2026</td>
+                  <td>89 / 500</td>
+                  <td>5.340 €</td>
+                  <td><span class="badge badge-approved">Activo</span></td>
+                  <td><span class="switch on" onclick="toggleSwitch(this,'VERANO26')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><span class="code-chip">DEPORTES5</span></td>
+                  <td><strong>5%</strong></td>
+                  <td>Categoría: Deportes</td>
+                  <td>01/07 – 31/07/2026</td>
+                  <td>0 / 300</td>
+                  <td>—</td>
+                  <td><span class="badge badge-pending">Programado</span></td>
+                  <td><span class="switch" onclick="toggleSwitch(this,'DEPORTES5')"></span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><span class="code-chip">MUSICA20</span></td>
+                  <td><strong>20%</strong></td>
+                  <td>Proveedor: Academia M. Rivas</td>
+                  <td>01/03 – 31/05/2026</td>
+                  <td>156 / 200</td>
+                  <td>3.900 €</td>
+                  <td><span class="badge badge-suspended">Expirado</span></td>
+                  <td><span class="switch" style="opacity:.4;pointer-events:none"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer" style="font-size:12px;color:var(--text2)">📊 Reporte: los cupones generaron <strong>15.720 € de GMV</strong> en 2026 con un descuento medio del 9,2% — ratio coste/GMV: 1:11.</div>
+        </div>
+      </div><!-- /s-coupons -->
+
+
+      <!-- ============================================================
+           S-ANALYTICS (AD-020)
+      ============================================================ -->
+      <div id="s-analytics" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div>
+            <div class="page-title">Dashboard ejecutivo</div>
+            <div class="page-sub">É14 · AD-020 — KPIs de negocio · Junio 2026 (1–10) vs. mismo período de mayo</div>
+          </div>
+          <select class="fi">
+            <option>Junio 2026</option>
+            <option>Mayo 2026</option>
+            <option>Q2 2026</option>
+          </select>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card c-blue">
+            <div class="stat-label">GMV del período</div>
+            <div class="stat-value">38.4k €</div>
+            <div class="stat-sub" style="color:var(--ok);font-weight:600">▲ +22% vs. período anterior</div>
+          </div>
+          <div class="stat-card c-blue">
+            <div class="stat-label">Reservas</div>
+            <div class="stat-value">1.248</div>
+            <div class="stat-sub" style="color:var(--ok);font-weight:600">▲ +18%</div>
+          </div>
+          <div class="stat-card c-blue">
+            <div class="stat-label">Ticket medio</div>
+            <div class="stat-value">30,8 €</div>
+            <div class="stat-sub" style="color:var(--ok);font-weight:600">▲ +3,4%</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">Conversión global</div>
+            <div class="stat-value">6,8%</div>
+            <div class="stat-sub" style="color:var(--err);font-weight:600">▼ −0,4 pp · revisar funnel</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="card">
+            <div class="card-header"><span>🏫</span><div class="card-title">Supply</div></div>
+            <div class="card-body">
+              <div class="detail-row"><span class="detail-label">Actividades publicadas</span><span class="detail-val">189 <span style="color:var(--ok);font-size:11px">▲ +12</span></span></div>
+              <div class="detail-row"><span class="detail-label">Proveedores activos</span><span class="detail-val">66 <span style="color:var(--ok);font-size:11px">▲ +5</span></span></div>
+              <div class="detail-row"><span class="detail-label">Plazas ofertadas / semana</span><span class="detail-val">2.340</span></div>
+              <div class="detail-row"><span class="detail-label">Ocupación media</span><span class="detail-val">61%</span></div>
+              <div class="detail-row"><span class="detail-label">Rating medio actividades</span><span class="detail-val">4,6★</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span>👨‍👩‍👧</span><div class="card-title">Demanda</div></div>
+            <div class="card-body">
+              <div class="detail-row"><span class="detail-label">Usuarios activos (MAU)</span><span class="detail-val">8.420 <span style="color:var(--ok);font-size:11px">▲ +24%</span></span></div>
+              <div class="detail-row"><span class="detail-label">Búsquedas realizadas</span><span class="detail-val">45.200</span></div>
+              <div class="detail-row"><span class="detail-label">Usuarios nuevos</span><span class="detail-val">1.910</span></div>
+              <div class="detail-row"><span class="detail-label">Tasa de repetición</span><span class="detail-val">34%</span></div>
+              <div class="detail-row"><span class="detail-label">Búsquedas sin resultado</span><span class="detail-val"><a onclick="showSection('s-searches')" style="cursor:pointer">3,1% →</a></span></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /s-analytics -->
+
+
+      <!-- ============================================================
+           S-FUNNEL (AD-021)
+      ============================================================ -->
+      <div id="s-funnel" class="section">
+        <div class="back-link" onclick="showSection('s-analytics')">← Dashboard ejecutivo</div>
+        <div class="page-title">Funnel de conversión</div>
+        <div class="page-sub">É14 · AD-021 — Tasa de paso y abandono por etapa · Junio 2026</div>
+
+        <div class="filters-bar">
+          <select class="fi"><option>Ciudad: Todas</option><option>Madrid</option><option>Barcelona</option><option>Sevilla</option></select>
+          <select class="fi"><option>Categoría: Todas</option><option>Deportes</option><option>Música</option><option>Ciencia</option></select>
+          <select class="fi"><option>Período: Junio 2026</option><option>Mayo 2026</option></select>
+        </div>
+
+        <div class="card">
+          <div class="card-body" style="padding:24px">
+            <div class="funnel-step">
+              <div class="funnel-label">🏠 Home</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%">45.200 · 100%</div></div>
+              <div class="funnel-drop"></div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label">🔍 Búsqueda</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:62%">28.020 · 62%</div></div>
+              <div class="funnel-drop">−38% abandono</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label">📃 Resultados</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:58%">26.210 · 58%</div></div>
+              <div class="funnel-drop">−6,5%</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label">📄 Ficha actividad</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:31%">14.010 · 31%</div></div>
+              <div class="funnel-drop">−46,6% ⚠</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label">📅 Disponibilidad</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:18%">8.140 · 18%</div></div>
+              <div class="funnel-drop">−41,9% ⚠</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label">🛒 Checkout</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:9.4%">4.250 · 9,4%</div></div>
+              <div class="funnel-drop">−47,8% ⚠</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label">💳 Pago</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:7.1%">3.210 · 7,1%</div></div>
+              <div class="funnel-drop">−24,5%</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label">✅ Confirmación</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:6.8%;background:linear-gradient(90deg,var(--ok),#10B981)">3.074 · 6,8%</div></div>
+              <div class="funnel-drop">−4,2%</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="alert alert-info" style="margin-bottom:0">
+              <span class="alert-icon">💡</span>
+              <div>Los 3 mayores abandonos: <strong>resultados → ficha</strong> (−46,6%), <strong>disponibilidad → checkout</strong> (−47,8%) y <strong>ficha → disponibilidad</strong> (−41,9%). Hipótesis: faltan fotos de calidad y los horarios disponibles no encajan con la demanda de fin de semana.</div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /s-funnel -->
+
+
+      <!-- ============================================================
+           S-CHANNELS (AD-022)
+      ============================================================ -->
+      <div id="s-channels" class="section">
+        <div class="back-link" onclick="showSection('s-analytics')">← Dashboard ejecutivo</div>
+        <div class="page-title">Atribución por canal de captación</div>
+        <div class="page-sub">É14 · AD-022 — UTM tracked hasta booking_confirmed · Junio 2026</div>
+
+        <div class="filters-bar">
+          <select class="fi"><option>Período: Junio 2026</option><option>Mayo 2026</option><option>Q2 2026</option></select>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card c-ok">
+            <div class="stat-label">🌱 Orgánico</div>
+            <div class="stat-value">42%</div>
+            <div class="stat-sub">524 reservas · 16.1k € GMV</div>
+          </div>
+          <div class="stat-card c-blue">
+            <div class="stat-label">💰 Paid</div>
+            <div class="stat-value">31%</div>
+            <div class="stat-sub">387 reservas · 11.9k € GMV</div>
+          </div>
+          <div class="stat-card c-warn">
+            <div class="stat-label">🤝 Referral</div>
+            <div class="stat-value">16%</div>
+            <div class="stat-sub">200 reservas · 6.2k € GMV</div>
+          </div>
+          <div class="stat-card c-blue">
+            <div class="stat-label">🔗 Directo</div>
+            <div class="stat-value">11%</div>
+            <div class="stat-sub">137 reservas · 4.2k € GMV</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span>📣</span><div class="card-title">Campañas activas — detalle UTM</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Campaña</th>
+                  <th>Fuente / Medio</th>
+                  <th>Sesiones</th>
+                  <th>Reservas</th>
+                  <th>Conversión</th>
+                  <th>GMV</th>
+                  <th>CAC</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:default">
+                  <td><div class="td-name">verano-actividades-mad</div><div class="td-sub">utm_campaign</div></td>
+                  <td>google / cpc</td>
+                  <td>8.420</td>
+                  <td>218</td>
+                  <td><span class="sla sla-ok">2,6%</span></td>
+                  <td>6.700 €</td>
+                  <td>8,40 €</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">papas-instagram-jun</div><div class="td-sub">utm_campaign</div></td>
+                  <td>meta / paid-social</td>
+                  <td>11.230</td>
+                  <td>142</td>
+                  <td><span class="sla sla-warn">1,3%</span></td>
+                  <td>4.380 €</td>
+                  <td>11,20 €</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">newsletter-familias</div><div class="td-sub">utm_campaign</div></td>
+                  <td>email / crm</td>
+                  <td>2.140</td>
+                  <td>27</td>
+                  <td><span class="sla sla-warn">1,3%</span></td>
+                  <td>830 €</td>
+                  <td>0,90 €</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div class="td-name">programa-invita-amigo</div><div class="td-sub">referral</div></td>
+                  <td>referral / in-app</td>
+                  <td>3.890</td>
+                  <td>200</td>
+                  <td><span class="sla sla-ok">5,1%</span></td>
+                  <td>6.160 €</td>
+                  <td>5,00 € (cupón)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer" style="font-size:12px;color:var(--text2)">💡 El programa de referidos tiene la mejor conversión (5,1%) y el segundo mejor CAC. Candidato a más inversión.</div>
+        </div>
+      </div><!-- /s-channels -->
+
+
+      <!-- ============================================================
+           S-SEARCHES (AD-023)
+      ============================================================ -->
+      <div id="s-searches" class="section">
+        <div class="back-link" onclick="showSection('s-analytics')">← Dashboard ejecutivo</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div>
+            <div class="page-title">Búsquedas sin resultados</div>
+            <div class="page-sub">É14 · AD-023 — Detección de demanda no cubierta · 1.412 búsquedas con 0 resultados en junio (3,1%)</div>
+          </div>
+          <button class="btn btn-ghost" onclick="showToast('⬇ Exportando 1.412 búsquedas a CSV…', '#2563EB')">⬇ Exportar CSV</button>
+        </div>
+
+        <div class="filters-bar">
+          <select class="fi"><option>Ciudad: Todas</option><option>Madrid</option><option>Barcelona</option><option>Sevilla</option></select>
+          <select class="fi"><option>Período: Junio 2026</option><option>Mayo 2026</option></select>
+          <div class="fi-count">Top 6 términos</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Término de búsqueda</th>
+                  <th>Frecuencia</th>
+                  <th>Ciudad principal</th>
+                  <th>Última búsqueda</th>
+                  <th>Sugerencia de catálogo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:default">
+                  <td><strong>"kárate niños"</strong></td>
+                  <td>184</td>
+                  <td>Madrid (61%)</td>
+                  <td>Hoy 09:12h</td>
+                  <td><span class="badge badge-review">Subcategoría: Artes marciales</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>"natación bebés"</strong></td>
+                  <td>142</td>
+                  <td>Barcelona (54%)</td>
+                  <td>Hoy 08:40h</td>
+                  <td><span class="badge badge-review">Rango edad: 0-3 años</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>"patinaje sobre hielo"</strong></td>
+                  <td>97</td>
+                  <td>Madrid (78%)</td>
+                  <td>Ayer 19:33h</td>
+                  <td><span class="badge badge-review">Captar proveedores: pistas hielo</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>"clases de chino"</strong></td>
+                  <td>86</td>
+                  <td>Madrid (52%)</td>
+                  <td>Ayer 17:05h</td>
+                  <td><span class="badge badge-pending">Activar categoría Idiomas</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>"campamento verano"</strong></td>
+                  <td>71</td>
+                  <td>Sevilla (44%)</td>
+                  <td>Hoy 10:02h</td>
+                  <td><span class="badge badge-review">Nuevo formato: campamentos</span></td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><strong>"ajedrez online"</strong></td>
+                  <td>48</td>
+                  <td>Barcelona (39%)</td>
+                  <td>08/06 21:14h</td>
+                  <td><span class="badge badge-review">Formato online (roadmap)</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            <div class="alert alert-ok" style="margin-bottom:0">
+              <span class="alert-icon">💡</span>
+              <div><strong>Oportunidad detectada:</strong> "kárate niños" + "judo" suman 280 búsquedas/mes sin oferta. Priorizar captación de dojos en Madrid — demanda estimada: 900 €/mes GMV.</div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /s-searches -->
+
+
+      <!-- ============================================================
+           S-AUDIT (AD-024)
+      ============================================================ -->
+      <div id="s-audit" class="section">
+        <div class="back-link" onclick="showSection('s-dashboard')">← Dashboard</div>
+        <div class="page-title">Registro de auditoría</div>
+        <div class="page-sub">É14 · AD-024 — Acciones críticas del backoffice · Registro inmutable, no editable</div>
+
+        <div class="alert alert-info">
+          <span class="alert-icon">🛡</span>
+          <div>Este registro es <strong>de solo lectura</strong> y se conserva 7 años por cumplimiento normativo. Cada entrada incluye admin, acción, entidad afectada, timestamp e IP.</div>
+        </div>
+
+        <div class="filters-bar">
+          <input class="fi fi-search" placeholder="🔍  Buscar por entidad o admin…">
+          <select class="fi">
+            <option>Acción: Todas</option>
+            <option>Aprobación</option>
+            <option>Rechazo</option>
+            <option>Suspensión</option>
+            <option>Reembolso</option>
+            <option>Cambio configuración</option>
+          </select>
+          <select class="fi">
+            <option>Admin: Todos</option>
+            <option>Ana García</option>
+            <option>David López</option>
+          </select>
+          <select class="fi">
+            <option>Período: Últimos 7 días</option>
+            <option>Junio 2026</option>
+          </select>
+          <div class="fi-count">6 de 312 registros</div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Admin</th>
+                  <th>Acción</th>
+                  <th>Entidad afectada</th>
+                  <th>Detalle</th>
+                  <th>IP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:default">
+                  <td><div>10/06/2026</div><div class="td-sub">09:42:18</div></td>
+                  <td>Ana García</td>
+                  <td><span class="badge badge-changes">💸 Reembolso</span></td>
+                  <td><div class="td-name">Reserva #KB-4521</div><div class="td-sub">Laura Martínez</div></td>
+                  <td>36,00 € parcial · Stripe re_3PYm82 · Motivo: no-show proveedor</td>
+                  <td style="font-family:monospace;font-size:11px">84.120.34.12</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div>10/06/2026</div><div class="td-sub">09:38:55</div></td>
+                  <td>Ana García</td>
+                  <td><span class="badge badge-approved">✓ Aprobación</span></td>
+                  <td><div class="td-name">Proveedor: Academia Musical Rivas</div><div class="td-sub">ID prov_0382</div></td>
+                  <td>KYC verificado · Email de confirmación enviado</td>
+                  <td style="font-family:monospace;font-size:11px">84.120.34.12</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div>09/06/2026</div><div class="td-sub">17:21:03</div></td>
+                  <td>David López</td>
+                  <td><span class="badge badge-rejected">✗ Rechazo</span></td>
+                  <td><div class="td-name">Actividad: Fútbol sala 6-9 años</div><div class="td-sub">ID act_1204</div></td>
+                  <td>Motivo: contacto externo en descripción · Estado → Borrador</td>
+                  <td style="font-family:monospace;font-size:11px">84.120.36.77</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div>09/06/2026</div><div class="td-sub">12:15:40</div></td>
+                  <td>Ana García</td>
+                  <td><span class="badge badge-review">⚙ Configuración</span></td>
+                  <td><div class="td-name">Cupón: VERANO26</div><div class="td-sub">ID cpn_088</div></td>
+                  <td>Creado: 15 € dto · mín. 60 € · vigencia 01/06–31/08</td>
+                  <td style="font-family:monospace;font-size:11px">84.120.34.12</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div>08/06/2026</div><div class="td-sub">16:47:29</div></td>
+                  <td>David López</td>
+                  <td><span class="badge badge-suspended">🚫 Suspensión</span></td>
+                  <td><div class="td-name">Proveedor: FunPark Ocio SL</div><div class="td-sub">ID prov_0291</div></td>
+                  <td>Motivo: quejas graves reiteradas · 3 actividades desactivadas · 12 usuarios notificados</td>
+                  <td style="font-family:monospace;font-size:11px">84.120.36.77</td>
+                </tr>
+                <tr style="cursor:default">
+                  <td><div>08/06/2026</div><div class="td-sub">10:05:12</div></td>
+                  <td>Ana García</td>
+                  <td><span class="badge badge-review">⚙ Configuración</span></td>
+                  <td><div class="td-name">Ciudad: Sevilla</div><div class="td-sub">ID city_004</div></td>
+                  <td>Radio de búsqueda: 8 km → 10 km</td>
+                  <td style="font-family:monospace;font-size:11px">84.120.34.12</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /s-audit -->
+
     </div><!-- /content-area -->
   </div><!-- /main-area -->
 </div><!-- /admin-shell -->
@@ -2722,6 +3473,101 @@
 </div>
 
 
+<!-- CATEGORY (AD-017) -->
+<div class="modal-overlay" id="m-category">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">🗂</div>
+      <div>
+        <div class="modal-title">Categoría de actividades</div>
+        <div class="modal-sub">Máximo 2 niveles de jerarquía (categoría → subcategoría)</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">Nombre</label>
+        <input class="fi" style="width:100%" value="Deportes">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="mf-group">
+          <label class="mf-label">Icono</label>
+          <select class="mf-select"><option>⚽ Balón</option><option>🎵 Nota musical</option><option>🔬 Microscopio</option><option>🎨 Paleta</option><option>🗣 Conversación</option></select>
+        </div>
+        <div class="mf-group">
+          <label class="mf-label">Color</label>
+          <select class="mf-select"><option>🟢 Verde</option><option>🟣 Morado</option><option>🔵 Azul</option><option>🟠 Naranja</option><option>🔴 Rojo</option></select>
+        </div>
+      </div>
+      <div class="mf-group">
+        <label class="mf-label">Categoría padre <span style="font-weight:400">(vacío = nivel 1)</span></label>
+        <select class="mf-select"><option>— Sin padre (nivel 1) —</option><option>Deportes</option><option>Música</option><option>Ciencia y Tecnología</option><option>Arte y Creatividad</option></select>
+      </div>
+      <div class="alert alert-warn" style="margin-bottom:0">
+        <span class="alert-icon">⚠️</span>
+        <div>Si cambias la categoría de actividades ya publicadas, estas pasarán a la cola de moderación para <strong>re-aprobación</strong>.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-category')">Cancelar</button>
+      <button class="btn btn-primary" onclick="doAction('category')">💾 Guardar categoría</button>
+    </div>
+  </div>
+</div>
+
+<!-- COUPON (AD-019) -->
+<div class="modal-overlay" id="m-coupon">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-hicon">🏷</div>
+      <div>
+        <div class="modal-title">Nuevo cupón de descuento</div>
+        <div class="modal-sub">El código debe ser único · queda registrado en auditoría</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mf-group">
+        <label class="mf-label">Código del cupón</label>
+        <input class="fi" style="width:100%;font-family:monospace;text-transform:uppercase" value="OTONO26" placeholder="CODIGO">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="mf-group">
+          <label class="mf-label">Tipo</label>
+          <select class="mf-select"><option>Porcentaje (%)</option><option>Importe fijo (€)</option></select>
+        </div>
+        <div class="mf-group">
+          <label class="mf-label">Valor</label>
+          <input class="fi" style="width:100%" value="10">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="mf-group">
+          <label class="mf-label">Fecha inicio</label>
+          <input class="fi" style="width:100%" value="15/09/2026">
+        </div>
+        <div class="mf-group">
+          <label class="mf-label">Fecha fin</label>
+          <input class="fi" style="width:100%" value="31/10/2026">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="mf-group">
+          <label class="mf-label">Usos máximos</label>
+          <input class="fi" style="width:100%" value="500">
+        </div>
+        <div class="mf-group">
+          <label class="mf-label">Condición</label>
+          <select class="mf-select"><option>Sin condición</option><option>Primera reserva</option><option>Categoría específica</option><option>Proveedor específico</option><option>Importe mínimo</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('m-coupon')">Cancelar</button>
+      <button class="btn btn-primary" onclick="doAction('coupon')">🏷 Crear cupón</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- ================================================================
      JAVASCRIPT
 ================================================================ -->
@@ -2739,7 +3585,15 @@
     's-payments':        { label: 'AD-013 · Pagos É11',            bc: 'É11 Reservas y Pagos <span class="bc-sep">›</span> <strong>Pagos y liquidaciones</strong>', nav: 'nav-payments' },
     's-incidents':       { label: 'AD-014 · Incidencias É12',      bc: 'É12 Incidencias <span class="bc-sep">›</span> <strong>Cola de incidencias</strong>', nav: 'nav-incidents' },
     's-incident-detail': { label: 'AD-015 · Ciclo de vida',        bc: 'É12 Incidencias <span class="bc-sep">›</span> Cola <span class="bc-sep">›</span> <strong>#INC-208</strong>', nav: 'nav-incidents' },
-    's-support-kpis':    { label: 'AD-016 · KPIs soporte É12',     bc: 'É12 Incidencias <span class="bc-sep">›</span> <strong>KPIs de soporte</strong>', nav: 'nav-support-kpis' }
+    's-support-kpis':    { label: 'AD-016 · KPIs soporte É12',     bc: 'É12 Incidencias <span class="bc-sep">›</span> <strong>KPIs de soporte</strong>', nav: 'nav-support-kpis' },
+    's-categories':      { label: 'AD-017 · Categorías É13',       bc: 'É13 Configuración <span class="bc-sep">›</span> <strong>Categorías</strong>', nav: 'nav-categories' },
+    's-cities':          { label: 'AD-018 · Ciudades É13',         bc: 'É13 Configuración <span class="bc-sep">›</span> <strong>Ciudades</strong>', nav: 'nav-cities' },
+    's-coupons':         { label: 'AD-019 · Cupones É13',          bc: 'É13 Configuración <span class="bc-sep">›</span> <strong>Cupones</strong>', nav: 'nav-coupons' },
+    's-analytics':       { label: 'AD-020 · Dashboard ejecutivo',  bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Dashboard ejecutivo</strong>', nav: 'nav-analytics' },
+    's-funnel':          { label: 'AD-021 · Funnel É14',           bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Funnel de conversión</strong>', nav: 'nav-funnel' },
+    's-channels':        { label: 'AD-022 · Canales É14',          bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Canales de captación</strong>', nav: 'nav-channels' },
+    's-searches':        { label: 'AD-023 · Búsquedas 0 results',  bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Búsquedas sin resultados</strong>', nav: 'nav-searches' },
+    's-audit':           { label: 'AD-024 · Auditoría É14',        bc: 'É14 Analítica <span class="bc-sep">›</span> <strong>Registro de auditoría</strong>', nav: 'nav-audit' }
   };
 
   /* ── ACTIVITY DATA ── */
@@ -2940,7 +3794,9 @@
     refund:        { msg: '💸 Reembolso de 36,00 € procesado vía Stripe — Usuario y proveedor notificados', color: '#D97706', back: null },
     'retry-payout':{ msg: '↻ Payout de 842,35 € reenviado a Escuela Telón Madrid — En proceso',            color: '#2563EB', back: null },
     assign:        { msg: '👤 Incidencia asignada — Notificación enviada al agente',                       color: '#2563EB', back: null },
-    status:        { msg: '✓ Incidencia #INC-208 marcada como resuelta — Encuesta enviada al usuario',     color: '#059669', back: 's-incidents' }
+    status:        { msg: '✓ Incidencia #INC-208 marcada como resuelta — Encuesta enviada al usuario',     color: '#059669', back: 's-incidents' },
+    category:      { msg: '💾 Categoría guardada — Registrado en auditoría',                               color: '#2563EB', back: null },
+    coupon:        { msg: '🏷 Cupón OTONO26 creado — Activo desde el 15/09/2026',                          color: '#059669', back: null }
   };
 
   function doAction(type) {
@@ -2948,12 +3804,20 @@
       approve: 'm-approve', changes: 'm-changes', reject: 'm-reject',
       suspend: 'm-suspend', publish: 'm-publish', 'reject-act': 'm-reject-act',
       refund: 'm-refund', 'retry-payout': 'm-retry-payout',
-      assign: 'm-assign', status: 'm-status'
+      assign: 'm-assign', status: 'm-status',
+      category: 'm-category', coupon: 'm-coupon'
     };
     closeModal(map[type]);
     const cfg = actionMessages[type];
     showToast(cfg.msg, cfg.color);
     if (cfg.back) setTimeout(() => showSection(cfg.back), 600);
+  }
+
+  /* ── SWITCH TOGGLE (É13) ── */
+  function toggleSwitch(el, name) {
+    el.classList.toggle('on');
+    const on = el.classList.contains('on');
+    showToast(on ? `✓ "${name}" activado` : `⏸ "${name}" desactivado — oferta oculta de forma inmediata`, on ? '#059669' : '#D97706');
   }
 
   /* ── ROLE SWITCHER ── */
