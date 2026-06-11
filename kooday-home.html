@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kooday — Actividades extraescolares sin fricción</title>
+<meta name="description" content="Kooday conecta familias con las mejores actividades extraescolares y libera a los proveedores del marketing, los impagos y los locales vacíos.">
+<style>
+  :root {
+    --ink: #172033;
+    --muted: #637083;
+    --soft: #f6f7fb;
+    --line: #e7eaf1;
+    --brand: #ff6b35;
+    --brand-dark: #e85a27;
+    --brand-soft: #fff0e9;
+    --violet: #6c3fc5;
+    --violet-dark: #5830b0;
+    --violet-soft: #f1edff;
+    --blue: #2563eb;
+    --blue-soft: #eef5ff;
+    --green: #07966f;
+    --green-soft: #e8fbf4;
+    --red: #ef4444;
+    --red-soft: #feecec;
+    --card: #ffffff;
+    --shadow: 0 18px 44px rgba(23, 32, 51, .10);
+    --radius: 8px;
+    --accent: var(--brand);
+    --accent-dark: var(--brand-dark);
+    --accent-soft: var(--brand-soft);
+  }
+  body.view-provider {
+    --accent: var(--violet);
+    --accent-dark: var(--violet-dark);
+    --accent-soft: var(--violet-soft);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--soft);
+  }
+  a { color: inherit; text-decoration: none; }
+  button, input, select { font: inherit; }
+
+  /* ---------- view switching ---------- */
+  [data-view] { display: none !important; }
+  body.view-family [data-view~="family"],
+  body.view-provider [data-view~="provider"] { display: block !important; }
+  body.view-family .data-grid[data-view~="family"],
+  body.view-provider .data-grid[data-view~="provider"] { display: grid !important; }
+
+  /* ---------- topbar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 12px clamp(16px, 4vw, 56px);
+    background: rgba(255,255,255,.94);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: -.04em; font-size: 23px; }
+  .brand-mark {
+    width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center;
+    color: #fff; font-size: 17px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 30%, transparent);
+    transition: background .3s;
+  }
+  .nav { display: flex; gap: 4px; align-items: center; }
+  .nav a {
+    padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--muted);
+  }
+  .nav a:hover { background: var(--soft); color: var(--ink); }
+  @media (max-width: 860px) { .nav { display: none; } }
+
+  .switch {
+    display: flex; background: var(--soft); border: 1px solid var(--line);
+    border-radius: 999px; padding: 3px; gap: 2px;
+  }
+  .switch button {
+    border: 0; background: transparent; cursor: pointer; border-radius: 999px;
+    padding: 7px 16px; font-size: 13.5px; font-weight: 700; color: var(--muted);
+    transition: all .2s;
+  }
+  .switch button.active { background: var(--accent); color: #fff; box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent); }
+
+  /* ---------- layout helpers ---------- */
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px); }
+  section { padding: clamp(48px, 7vw, 88px) 0; }
+  .kicker {
+    display: inline-block; font-size: 12.5px; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent-dark);
+    background: var(--accent-soft); border-radius: 999px; padding: 6px 14px; margin-bottom: 16px;
+  }
+  h1 { font-size: clamp(34px, 5vw, 56px); line-height: 1.06; letter-spacing: -.035em; margin: 0 0 18px; font-weight: 900; }
+  h2 { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.12; letter-spacing: -.03em; margin: 0 0 14px; font-weight: 850; }
+  h3 { font-size: 18px; margin: 0 0 8px; letter-spacing: -.015em; }
+  .lead { font-size: clamp(16px, 1.8vw, 19px); color: var(--muted); line-height: 1.6; margin: 0 0 28px; max-width: 640px; }
+  .accent-text { color: var(--accent-dark); }
+  .center { text-align: center; }
+  .center .lead { margin-left: auto; margin-right: auto; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    border: 0; border-radius: 10px; padding: 14px 26px; font-weight: 800; font-size: 15.5px;
+    background: var(--accent); color: #fff;
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--accent) 32%, transparent);
+    transition: transform .15s, background .2s;
+  }
+  .btn:hover { transform: translateY(-2px); background: var(--accent-dark); }
+  .btn.ghost {
+    background: #fff; color: var(--ink); border: 1.5px solid var(--line); box-shadow: none;
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-top: clamp(40px, 6vw, 72px); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+  @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-note { margin-top: 16px; font-size: 13.5px; color: var(--muted); }
+
+  .hero-visual { position: relative; min-height: 360px; }
+  .float-card {
+    position: absolute; background: var(--card); border-radius: 14px; box-shadow: var(--shadow);
+    border: 1px solid var(--line); padding: 16px 18px;
+  }
+  .fc-activity { top: 0; left: 0; width: min(290px, 78%); }
+  .fc-activity .tag { font-size: 11px; font-weight: 800; color: var(--accent-dark); background: var(--accent-soft); padding: 3px 9px; border-radius: 999px; }
+  .fc-activity h4 { margin: 10px 0 4px; font-size: 16px; }
+  .fc-activity p { margin: 0; font-size: 13px; color: var(--muted); }
+  .fc-activity .price { margin-top: 10px; font-weight: 900; font-size: 18px; color: var(--ink); }
+  .fc-activity .price small { font-weight: 600; color: var(--muted); }
+  .fc-pay { top: 38%; right: 0; width: min(250px, 70%); z-index: 2; }
+  .fc-pay .ok { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 14.5px; }
+  .fc-pay .dot { width: 30px; height: 30px; border-radius: 999px; background: var(--green-soft); color: var(--green); display: grid; place-items: center; font-size: 15px; }
+  .fc-pay p { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); }
+  .fc-cal { bottom: 0; left: 8%; width: min(265px, 74%); }
+  .fc-cal .row { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-bottom: 1px dashed var(--line); }
+  .fc-cal .row:last-child { border-bottom: 0; }
+  .fc-cal .row b { font-weight: 700; }
+  .fc-cal .row span { color: var(--muted); }
+  .hero-blob {
+    position: absolute; inset: 8% -4% 4% 10%; z-index: -1; border-radius: 36% 64% 58% 42% / 48% 38% 62% 52%;
+    background: linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--accent) 16%, #fff));
+  }
+  @media (max-width: 640px) {
+    .hero-visual { min-height: 0; }
+    .hero-blob { inset: -4%; }
+    .float-card { position: static; width: 100%; margin-bottom: 14px; }
+    .float-card:last-child { margin-bottom: 0; }
+  }
+
+  /* ---------- stat strip ---------- */
+  .stat-strip { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 0; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  @media (max-width: 860px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat .num { font-size: clamp(24px, 3vw, 34px); font-weight: 900; letter-spacing: -.03em; color: var(--accent-dark); }
+  .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+
+  /* ---------- cards ---------- */
+  .grid { display: grid; gap: 20px; }
+  .grid.c2 { grid-template-columns: repeat(2, 1fr); }
+  .grid.c3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.c4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 980px) { .grid.c4 { grid-template-columns: repeat(2, 1fr); } .grid.c3 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .grid.c2, .grid.c3, .grid.c4 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 26px; box-shadow: 0 6px 18px rgba(23,32,51,.05);
+  }
+  .card .icon {
+    width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
+    font-size: 22px; background: var(--accent-soft); margin-bottom: 16px;
+  }
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.6; }
+  .card .save {
+    margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line);
+    font-size: 13.5px; font-weight: 800; color: var(--green);
+  }
+
+  /* ---------- before/after ---------- */
+  .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 760px) { .vs-grid { grid-template-columns: 1fr; } }
+  .vs { border-radius: 14px; padding: 28px; }
+  .vs.before { background: #fff; border: 1px solid var(--line); }
+  .vs.after { background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 92%, #000) , var(--accent-dark)); color: #fff; box-shadow: var(--shadow); }
+  .vs h3 { font-size: 15px; text-transform: uppercase; letter-spacing: .06em; opacity: .75; margin-bottom: 18px; }
+  .vs ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .vs li { display: flex; gap: 12px; font-size: 14.5px; line-height: 1.5; }
+  .vs.before li { color: var(--muted); }
+  .vs li .mk { flex: 0 0 auto; width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center; font-size: 12px; font-weight: 900; margin-top: 1px; }
+  .vs.before .mk { background: var(--red-soft); color: var(--red); }
+  .vs.after .mk { background: rgba(255,255,255,.22); color: #fff; }
+
+  /* ---------- market data ---------- */
+  .market { background: #101830; color: #fff; }
+  .market .kicker { background: rgba(255,255,255,.12); color: #ffd9c4; }
+  body.view-provider .market .kicker { color: #ddd0f7; }
+  .market .lead { color: #aab4c8; }
+  .data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 12px; }
+  @media (max-width: 900px) { .data-grid { grid-template-columns: 1fr; } }
+  .data-card {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px; padding: 26px;
+  }
+  .data-card .big { font-size: clamp(30px, 3.6vw, 42px); font-weight: 900; letter-spacing: -.03em; color: var(--accent); }
+  body.view-provider .data-card .big { color: #b79bee; }
+  .data-card h4 { margin: 8px 0 8px; font-size: 16px; }
+  .data-card p { margin: 0; font-size: 13.5px; line-height: 1.6; color: #aab4c8; }
+  .data-card .src { display: inline-block; margin-top: 14px; font-size: 12px; color: #7e8aa3; border-bottom: 1px dotted #7e8aa3; }
+  .data-card .src:hover { color: #fff; }
+  .market-conc {
+    margin-top: 28px; padding: 22px 26px; border-radius: 14px; font-size: 15px; line-height: 1.65;
+    background: rgba(255,255,255,.07); border-left: 4px solid var(--accent);
+  }
+  body.view-provider .market-conc { border-left-color: #b79bee; }
+
+  /* ---------- calculator ---------- */
+  .calc {
+    background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow);
+    overflow: hidden; display: grid; grid-template-columns: 1.05fr .95fr;
+  }
+  @media (max-width: 860px) { .calc { grid-template-columns: 1fr; } }
+  .calc-controls { padding: clamp(24px, 3.5vw, 40px); }
+  .calc-result {
+    background: linear-gradient(160deg, var(--accent), var(--accent-dark)); color: #fff;
+    padding: clamp(24px, 3.5vw, 40px); display: flex; flex-direction: column; justify-content: center;
+  }
+  .ctrl { margin-bottom: 24px; }
+  .ctrl label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+  .ctrl label output { color: var(--accent-dark); font-weight: 900; }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .calc-result .row { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,.3); font-size: 14.5px; }
+  .calc-result .row b { font-size: 17px; }
+  .calc-result .total { border-bottom: 0; padding-top: 18px; }
+  .calc-result .total .val { font-size: clamp(34px, 4vw, 46px); font-weight: 900; letter-spacing: -.03em; }
+  .calc-result .foot { font-size: 12px; opacity: .8; margin-top: 14px; line-height: 1.5; }
+
+  /* ---------- pillars provider ---------- */
+  .pillar { position: relative; padding-left: 0; }
+  .pillar .n {
+    font-size: 13px; font-weight: 900; color: var(--accent-dark); letter-spacing: .05em; margin-bottom: 8px;
+  }
+
+  /* ---------- story ---------- */
+  .story { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .story-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+  @media (max-width: 880px) { .story-grid { grid-template-columns: 1fr; } }
+  .timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+  .timeline::before { content: ""; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+  .timeline li { position: relative; padding: 0 0 26px 42px; }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline .dot {
+    position: absolute; left: 0; top: 2px; width: 24px; height: 24px; border-radius: 999px;
+    background: var(--accent-soft); border: 2px solid var(--accent); display: grid; place-items: center; font-size: 11px;
+  }
+  .timeline b { display: block; font-size: 15.5px; margin-bottom: 4px; }
+  .timeline p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+  /* ---------- final CTA ---------- */
+  .final { text-align: center; }
+  .final .panel {
+    background: linear-gradient(160deg, var(--accent), var(--accent-dark)); color: #fff;
+    border-radius: 22px; padding: clamp(40px, 6vw, 72px) clamp(24px, 5vw, 64px); box-shadow: var(--shadow);
+  }
+  .final h2 { color: #fff; }
+  .final p { color: rgba(255,255,255,.85); max-width: 560px; margin: 0 auto 28px; font-size: 16.5px; line-height: 1.6; }
+  .final .btn { background: #fff; color: var(--accent-dark); box-shadow: 0 14px 30px rgba(0,0,0,.18); }
+  .final .btn:hover { background: #fff7f2; }
+
+  /* ---------- footer ---------- */
+  footer { padding: 40px 0 56px; color: var(--muted); font-size: 13px; }
+  footer .cols { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  footer h5 { margin: 0 0 10px; font-size: 13px; color: var(--ink); text-transform: uppercase; letter-spacing: .06em; }
+  footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  footer a { border-bottom: 1px dotted var(--muted); }
+  footer a:hover { color: var(--ink); }
+  .sources { border-top: 1px solid var(--line); padding-top: 18px; line-height: 1.8; }
+</style>
+</head>
+<body class="view-family">
+
+<header class="topbar">
+  <a class="brand" href="#top"><span class="brand-mark">K</span>kooday</a>
+  <nav class="nav">
+    <a href="#ofrecemos">Qué ofrecemos</a>
+    <a href="#diferencia">Por qué Kooday</a>
+    <a href="#mercado">El mercado</a>
+    <a href="#ahorro">Tu ahorro</a>
+    <a href="#historia">Nuestra historia</a>
+  </nav>
+  <div class="switch" role="tablist" aria-label="Tipo de usuario">
+    <button id="btn-family" class="active" onclick="setView('family')">Soy familia</button>
+    <button id="btn-provider" onclick="setView('provider')">Soy proveedor</button>
+  </div>
+</header>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div data-view="family">
+        <span class="kicker">Para familias</span>
+        <h1>Todas las extraescolares de tu ciudad, <span class="accent-text">en un solo lugar</span>.</h1>
+        <p class="lead">Descubre, compara, reserva y paga actividades para tus hijos en minutos. Sin llamadas, sin transferencias, sin grupos de WhatsApp para cuadrar horarios.</p>
+        <div class="hero-cta">
+          <button class="btn" onclick="alert('Demo: registro de familia')">Buscar actividades</button>
+          <a class="btn ghost" href="#ahorro">Calcula tu ahorro</a>
+        </div>
+        <p class="hero-note">Gratis para familias · Cancelación flexible · Pago seguro</p>
+      </div>
+      <div data-view="provider">
+        <span class="kicker">Para proveedores</span>
+        <h1>Llena tus clases. <span class="accent-text">Olvídate del resto.</span></h1>
+        <p class="lead">Kooday te trae familias, te garantiza el cobro por adelantado, posiciona tu academia en tu barrio y te conecta con espacios por horas. Tú solo enseña.</p>
+        <div class="hero-cta">
+          <button class="btn" onclick="alert('Demo: alta de proveedor')">Publicar mi actividad</button>
+          <a class="btn ghost" href="#mercado">Ver datos del mercado</a>
+        </div>
+        <p class="hero-note">Sin cuota fija · Solo pagas por reserva confirmada · Alta en 24 h</p>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-blob"></div>
+      <div data-view="family provider">
+        <div class="float-card fc-activity">
+          <span class="tag">Robótica · 8–12 años</span>
+          <h4>Robótica creativa LEGO®</h4>
+          <p>Martes y jueves 17:30 · A 600 m de tu casa</p>
+          <div class="price">48 €<small>/mes</small> <span style="float:right;font-size:13px;color:var(--green);font-weight:800">4,9 ★ (62)</span></div>
+        </div>
+        <div class="float-card fc-pay">
+          <div class="ok"><span class="dot">✓</span> Pago confirmado</div>
+          <p id="pay-caption">Reserva de octubre pagada. Recibo en tu correo.</p>
+        </div>
+        <div class="float-card fc-cal">
+          <div class="row"><b>Lun</b><span>Natación · 17:00</span></div>
+          <div class="row"><b>Mar</b><span>Robótica · 17:30</span></div>
+          <div class="row"><b>Jue</b><span>Robótica · 17:30</span></div>
+          <div class="row"><b>Vie</b><span>Fútbol sala · 18:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= STAT STRIP ============================= -->
+<div class="stat-strip">
+  <div class="wrap stat-grid">
+    <div data-view="family" class="stat"><div class="num">+500</div><div class="lbl">actividades verificadas cerca de ti</div></div>
+    <div data-view="family" class="stat"><div class="num">~14 h</div><div class="lbl">ahorradas al año por actividad gestionada en Kooday*</div></div>
+    <div data-view="family" class="stat"><div class="num">0 €</div><div class="lbl">de coste para las familias: buscar y reservar es gratis</div></div>
+    <div data-view="family" class="stat"><div class="num">100%</div><div class="lbl">pagos protegidos con cancelación flexible</div></div>
+    <div data-view="provider" class="stat"><div class="num">0 €</div><div class="lbl">de cuota fija: solo pagas comisión por reserva confirmada</div></div>
+    <div data-view="provider" class="stat"><div class="num">100%</div><div class="lbl">de los cobros por adelantado: el impago desaparece</div></div>
+    <div data-view="provider" class="stat"><div class="num">24 h</div><div class="lbl">para publicar tu actividad y empezar a recibir reservas</div></div>
+    <div data-view="provider" class="stat"><div class="num">+1</div><div class="lbl">canal de captación que trabaja por ti los 365 días</div></div>
+  </div>
+</div>
+
+<!-- ============================= QUÉ OFRECEMOS ============================= -->
+<section id="ofrecemos">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker">Qué ofrecemos</span>
+      <h2 data-view="family">Una sola app para toda la vida extraescolar</h2>
+      <h2 data-view="provider">Tu academia, con la maquinaria de una gran empresa</h2>
+      <p class="lead" data-view="family">Kooday reúne en un único lugar todo lo que hoy haces a trozos: Google, llamadas, transferencias y calendarios de papel.</p>
+      <p class="lead" data-view="provider">Captación, cobros, reputación y espacio físico: los cuatro frentes que más tiempo y dinero te quitan, resueltos en una sola plataforma.</p>
+    </div>
+
+    <!-- familia -->
+    <div data-view="family">
+      <div class="grid c4">
+        <div class="card">
+          <div class="icon">🔍</div>
+          <h3>Descubre y compara</h3>
+          <p>Filtra por edad, horario, distancia, precio y valoraciones reales de otras familias. Todo verificado por Kooday.</p>
+          <div class="save">Adiós a horas de Google y llamadas</div>
+        </div>
+        <div class="card">
+          <div class="icon">🗓️</div>
+          <h3>Reserva al instante</h3>
+          <p>Plazas en tiempo real, clase de prueba incluida y confirmación inmediata. Sin esperar a que te devuelvan la llamada.</p>
+          <div class="save">Plaza asegurada en 2 minutos</div>
+        </div>
+        <div class="card">
+          <div class="icon">💳</div>
+          <h3>Paga sin fricción</h3>
+          <p>Un solo pago mensual seguro para todas las actividades de todos tus hijos. Recibos automáticos y cancelación flexible.</p>
+          <div class="save">Cero transferencias y sobres de efectivo</div>
+        </div>
+        <div class="card">
+          <div class="icon">📅</div>
+          <h3>Calendario familiar</h3>
+          <p>Horarios, cambios y avisos del profesor en un calendario compartido con tu pareja o abuelos. Se sincroniza solo.</p>
+          <div class="save">Toda la logística en un vistazo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- proveedor -->
+    <div data-view="provider">
+      <div class="grid c4">
+        <div class="card pillar">
+          <div class="n">PILAR 1 · MARKETING</div>
+          <div class="icon">📣</div>
+          <h3>Captación incluida</h3>
+          <p>Las familias de tu zona ya buscan en Kooday. Tu actividad aparece donde está la demanda, sin pagar agencias ni anuncios.</p>
+          <div class="save">Ahorra 300–600 €/mes en marketing</div>
+        </div>
+        <div class="card pillar">
+          <div class="n">PILAR 2 · COBROS</div>
+          <div class="icon">💶</div>
+          <h3>Cobro garantizado</h3>
+          <p>La familia paga al reservar y tú recibes la liquidación puntual cada mes. Sin perseguir recibos ni cuotas pendientes.</p>
+          <div class="save">El impago desaparece de tu cuenta</div>
+        </div>
+        <div class="card pillar">
+          <div class="n">PILAR 3 · POSICIONAMIENTO</div>
+          <div class="icon">⭐</div>
+          <h3>Reputación que vende</h3>
+          <p>Perfil profesional, reseñas verificadas y posicionamiento en las búsquedas de tu barrio. Tu mejor comercial, trabajando 24/7.</p>
+          <div class="save">Visibilidad sin saber de SEO</div>
+        </div>
+        <div class="card pillar">
+          <div class="n">PILAR 4 · UBICACIÓN</div>
+          <div class="icon">📍</div>
+          <h3>Espacios por horas</h3>
+          <p>Red de aulas, salas y polideportivos disponibles por horas. Crece a nuevos barrios sin firmar un alquiler ni pagar fianzas.</p>
+          <div class="save">Sin local propio: paga solo lo que usas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= POR QUÉ KOODAY (antes / después) ============================= -->
+<section id="diferencia" style="padding-top:0">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker">Qué nos hace diferentes</span>
+      <h2 data-view="family">Tu semana, antes y después de Kooday</h2>
+      <h2 data-view="provider">Tu negocio, antes y después de Kooday</h2>
+    </div>
+
+    <div data-view="family">
+      <div class="vs-grid">
+        <div class="vs before">
+          <h3>Hoy, sin Kooday</h3>
+          <ul>
+            <li><span class="mk">✕</span> Horas buscando en Google y preguntando en grupos de WhatsApp qué academia es buena.</li>
+            <li><span class="mk">✕</span> Llamadas en horario laboral para preguntar plazas, precios y horarios.</li>
+            <li><span class="mk">✕</span> Una transferencia distinta para cada actividad, cada mes, con conceptos que nadie recuerda.</li>
+            <li><span class="mk">✕</span> Horarios apuntados en la nevera; cambios de última hora que se enteran tarde.</li>
+          </ul>
+        </div>
+        <div class="vs after">
+          <h3>Con Kooday</h3>
+          <ul>
+            <li><span class="mk">✓</span> Comparas todas las opciones de tu zona con reseñas verificadas, en una búsqueda.</li>
+            <li><span class="mk">✓</span> Reservas online con plaza confirmada al momento, también a las 23:00.</li>
+            <li><span class="mk">✓</span> Un único pago mensual con recibo automático para todas las actividades.</li>
+            <li><span class="mk">✓</span> Calendario familiar compartido con avisos en tiempo real del profesor.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div data-view="provider">
+      <div class="vs-grid">
+        <div class="vs before">
+          <h3>Hoy, sin Kooday</h3>
+          <ul>
+            <li><span class="mk">✕</span> Pagas flyers, anuncios o una agencia y no sabes cuántos alumnos te trae cada euro.</li>
+            <li><span class="mk">✕</span> Persigues cuotas: en España, cerca del 70% de las facturas a pymes se cobran fuera de plazo.</li>
+            <li><span class="mk">✕</span> Compites contra grandes cadenas en Google sin tiempo ni presupuesto para SEO.</li>
+            <li><span class="mk">✕</span> Un alquiler fijo de local que pagas también en julio, agosto y horas valle.</li>
+          </ul>
+        </div>
+        <div class="vs after">
+          <h3>Con Kooday</h3>
+          <ul>
+            <li><span class="mk">✓</span> Demanda cualificada de tu zona: solo pagas comisión cuando hay reserva confirmada.</li>
+            <li><span class="mk">✓</span> Cobro por adelantado y liquidación puntual: tu tesorería deja de depender de recordatorios.</li>
+            <li><span class="mk">✓</span> Perfil posicionado en tu barrio con reseñas que convierten visitas en matrículas.</li>
+            <li><span class="mk">✓</span> Espacios por horas donde hay demanda: creces sin inmovilizar capital en un local.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= MERCADO ============================= -->
+<section class="market" id="mercado">
+  <div class="wrap">
+    <span class="kicker">El mercado, en datos</span>
+    <h2 data-view="family">Las extraescolares pesan en tiempo y en bolsillo</h2>
+    <h2 data-view="provider">El sector cambia. Los datos lo confirman.</h2>
+    <p class="lead" data-view="family">No es una sensación: organizar la vida extraescolar de tus hijos es una segunda jornada. Estos son los números en España.</p>
+    <p class="lead" data-view="provider">Menos alumnos, cobros más difíciles y competencia digital creciente. Quien se posicione primero, gana. Estos son los números en España.</p>
+
+    <div class="data-grid" data-view="family">
+      <div class="data-card">
+        <div class="big">56–100 €</div>
+        <h4>al mes por actividad y por hijo</h4>
+        <p>Es el coste medio de una extraescolar en España según el tipo de centro (público, concertado o privado). Elegir bien importa.</p>
+        <a class="src" href="https://www.ocu.org/consumo-familia/bebes/informe/gastos-vuelta-cole" target="_blank" rel="noopener">Fuente: OCU 2025</a>
+      </div>
+      <div class="data-card">
+        <div class="big">2.390 €</div>
+        <h4>de gasto escolar por hijo y curso</h4>
+        <p>Las extraescolares son una de las partidas que más sube. Comparar precios y aprovechar clases de prueba evita pagar de más.</p>
+        <a class="src" href="https://www.ocu.org/consumo-familia/bebes/informe/gastos-vuelta-cole" target="_blank" rel="noopener">Fuente: OCU 2025</a>
+      </div>
+      <div class="data-card">
+        <div class="big">1.400 €</div>
+        <h4>al año en extraescolares para conciliar</h4>
+        <p>Muchas familias hacen «equilibrios» económicos para cubrir la franja entre el fin del cole y el fin de la jornada laboral.</p>
+        <a class="src" href="https://www.elespanol.com/castilla-y-leon/sociedad/20250915/extraescolares-reto-economico-familias-conciliar-hacer-equilibrios-euros/1003743910517_0.html" target="_blank" rel="noopener">Fuente: El Español 2025</a>
+      </div>
+    </div>
+
+    <div class="data-grid" data-view="provider">
+      <div class="data-card">
+        <div class="big">~70%</div>
+        <h4>de las facturas a pymes se cobran tarde</h4>
+        <p>Solo el 30,4% de los importes se abona en plazo. El periodo medio de pago es de 80,5 días, frente al límite legal de 60.</p>
+        <a class="src" href="https://cepyme.es/observatorio-de-morosidad-i-tri-2025/" target="_blank" rel="noopener">Fuente: Observatorio de Morosidad Cepyme</a>
+      </div>
+      <div class="data-card">
+        <div class="big">5.350 €</div>
+        <h4>al año cuesta la morosidad a cada pequeña empresa</h4>
+        <p>Es el esfuerzo financiero medio que la deuda comercial genera a una pequeña empresa española. Dinero que no vuelve.</p>
+        <a class="src" href="https://cepyme.es/observatorio-de-morosidad-i-tri-2025/" target="_blank" rel="noopener">Fuente: Cepyme 2025</a>
+      </div>
+      <div class="data-card">
+        <div class="big">−600.000</div>
+        <h4>alumnos en las aulas españolas hasta 2035</h4>
+        <p>Solo primaria perderá casi 400.000 alumnos. Entre 2017 y 2023 ya se cerraron 3.490 aulas de infantil y primaria. Habrá menos familias: captarlas y fidelizarlas será decisivo.</p>
+        <a class="src" href="https://www.canarias7.es/sociedad/colegios-institutos-espanoles-perderan-600000-alumnos-decada-20260428123823-ntrc.html" target="_blank" rel="noopener">Fuente: proyecciones del sector educativo 2026</a>
+      </div>
+    </div>
+
+    <div class="market-conc" data-view="family">
+      <b>Lo que significa para ti:</b> con un gasto así, elegir a ciegas sale caro. Kooday te da la información de todas las opciones de tu zona —precios, reseñas, plazas reales— para que cada euro y cada hora cuenten.
+    </div>
+    <div class="market-conc" data-view="provider">
+      <b>Lo que significa para ti:</b> en un mercado que se contrae, sobrevivir no va de tener el mejor local, sino de ser visible donde buscan las familias, cobrar sin fugas y operar con costes flexibles. Exactamente los cuatro pilares de Kooday.
+    </div>
+  </div>
+</section>
+
+<!-- ============================= AHORRO ============================= -->
+<section id="ahorro">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker">Tu ahorro con Kooday</span>
+      <h2 data-view="family">¿Cuánto vale tu tiempo? Calcúlalo.</h2>
+      <h2 data-view="provider">¿Cuánto te ahorras al año? Calcúlalo.</h2>
+      <p class="lead" data-view="family">Buscar en Google, llamar, hacer transferencias y cuadrar calendarios tiene un coste invisible. Hazlo visible.</p>
+      <p class="lead" data-view="provider">Suma lo que hoy gastas en captar alumnos, perseguir cobros y mantener un local que no siempre usas.</p>
+    </div>
+
+    <!-- calculadora familia -->
+    <div data-view="family">
+      <div class="calc">
+        <div class="calc-controls">
+          <div class="ctrl">
+            <label>Hijos con extraescolares <output id="f-kids-out">2</output></label>
+            <input type="range" id="f-kids" min="1" max="4" value="2" oninput="calcFamily()">
+          </div>
+          <div class="ctrl">
+            <label>Actividades por hijo <output id="f-acts-out">2</output></label>
+            <input type="range" id="f-acts" min="1" max="4" value="2" oninput="calcFamily()">
+          </div>
+          <div class="ctrl">
+            <label>Valor de tu hora <output id="f-rate-out">15 €</output></label>
+            <input type="range" id="f-rate" min="10" max="40" step="5" value="15" oninput="calcFamily()">
+          </div>
+          <p style="font-size:12.5px;color:var(--muted);margin:0;line-height:1.5">Estimación Kooday por actividad y curso: ~6 h buscando y comparando (Google, llamadas, visitas), ~3 h gestionando pagos y recibos, ~5 h coordinando calendario y cambios.</p>
+        </div>
+        <div class="calc-result">
+          <div class="row"><span>Horas buscando en Google y llamando</span><b id="f-search">24 h</b></div>
+          <div class="row"><span>Horas gestionando pagos</span><b id="f-pay">12 h</b></div>
+          <div class="row"><span>Horas cuadrando el calendario</span><b id="f-cal">20 h</b></div>
+          <div class="row total"><span>Recuperas al año</span><span class="val" id="f-total">56 h ≈ 840 €</span></div>
+          <div class="foot">*Estimación propia de Kooday sobre tareas típicas de gestión por curso escolar. Tu tiempo libre no está incluido en el precio: es gratis recuperarlo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- calculadora proveedor -->
+    <div data-view="provider">
+      <div class="calc">
+        <div class="calc-controls">
+          <div class="ctrl">
+            <label>Gasto mensual en captación (anuncios, flyers, agencia) <output id="p-mkt-out">400 €</output></label>
+            <input type="range" id="p-mkt" min="0" max="1500" step="50" value="400" oninput="calcProvider()">
+          </div>
+          <div class="ctrl">
+            <label>Cuotas impagadas o cobradas tarde al mes <output id="p-bad-out">5</output></label>
+            <input type="range" id="p-bad" min="0" max="20" value="5" oninput="calcProvider()">
+          </div>
+          <div class="ctrl">
+            <label>Alquiler mensual de tu local <output id="p-rent-out">900 €</output></label>
+            <input type="range" id="p-rent" min="0" max="3000" step="100" value="900" oninput="calcProvider()">
+          </div>
+          <p style="font-size:12.5px;color:var(--muted);margin:0;line-height:1.5">Supuestos: cuota media 60 €/mes; con espacios por horas se ahorra ~40% del coste fijo de local (meses valle y verano); la captación en Kooday sustituye el gasto fijo por comisión variable.</p>
+        </div>
+        <div class="calc-result">
+          <div class="row"><span>Marketing que dejas de pagar</span><b id="p-r-mkt">4.800 €/año</b></div>
+          <div class="row"><span>Impagos que recuperas</span><b id="p-r-bad">3.600 €/año</b></div>
+          <div class="row"><span>Ahorro en local (espacios por horas)</span><b id="p-r-rent">4.320 €/año</b></div>
+          <div class="row total"><span>Ahorro potencial</span><span class="val" id="p-total">12.720 €/año</span></div>
+          <div class="foot">*Estimación orientativa antes de la comisión Kooday por reserva. Sin cuotas fijas: si no facturas, no pagas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= HISTORIA ============================= -->
+<section class="story" id="historia">
+  <div class="wrap story-grid">
+    <div>
+      <span class="kicker">Nuestra historia</span>
+      <h2>Kooday nació en un cowork, mirando dos mundos que no se encontraban</h2>
+      <p class="lead" style="margin-bottom:0">Compartíamos espacio de trabajo con academias y profesores brillantes que tenían aulas a medio llenar. Y al salir, éramos las familias que no conseguían encontrarlos. El problema no era la oferta ni la demanda: era el puente. Decidimos construirlo.</p>
+    </div>
+    <ul class="timeline">
+      <li>
+        <span class="dot">💡</span>
+        <b>La observación</b>
+        <p>En el cowork vimos el patrón: el mismo espacio lleno por las mañanas y vacío por las tardes, profesores buscando alumnos y padres buscando profesores. Dos búsquedas que nunca se cruzaban.</p>
+      </li>
+      <li>
+        <span class="dot">🗣️</span>
+        <b>La validación</b>
+        <p>Hablamos con decenas de familias y proveedores. Las familias perdían horas en Google y WhatsApp; los proveedores, dinero en marketing, impagos y alquileres. Documentamos 89 historias de usuario reales.</p>
+      </li>
+      <li>
+        <span class="dot">🛠️</span>
+        <b>El producto</b>
+        <p>Diseñamos las tres piezas completas: la app para familias, el panel del proveedor y el backoffice de operación. Más de 59 pantallas que cubren del descubrimiento al pago.</p>
+      </li>
+      <li>
+        <span class="dot">🚀</span>
+        <b>Hoy</b>
+        <p>Kooday es el punto de encuentro: las familias recuperan su tiempo y los proveedores llenan sus clases. El cowork nos enseñó que compartir recursos multiplica: aplicamos esa lógica a todo el sector.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================= CTA FINAL ============================= -->
+<section class="final">
+  <div class="wrap">
+    <div class="panel">
+      <div data-view="family">
+        <h2>Recupera tus tardes. Empieza gratis.</h2>
+        <p>Crea tu cuenta, dinos la edad de tus hijos y te enseñamos las mejores actividades a menos de 15 minutos de tu casa.</p>
+        <button class="btn" onclick="alert('Demo: registro de familia')">Buscar actividades cerca de mí</button>
+      </div>
+      <div data-view="provider">
+        <h2>Tu próxima matrícula ya está buscándote</h2>
+        <p>Publica tu actividad hoy, sin cuota fija ni permanencia. Si no recibes reservas, Kooday no te cuesta nada.</p>
+        <button class="btn" onclick="alert('Demo: alta de proveedor')">Publicar mi actividad gratis</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FOOTER ============================= -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h5>Kooday</h5>
+        <ul>
+          <li><a href="#ofrecemos">Qué ofrecemos</a></li>
+          <li><a href="#mercado">El mercado</a></li>
+          <li><a href="#historia">Nuestra historia</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Producto</h5>
+        <ul>
+          <li><a href="kooday-unified.html" target="_blank">Demo familias y proveedores</a></li>
+          <li><a href="kooday-backoffice.html" target="_blank">Demo backoffice</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contacto</h5>
+        <ul>
+          <li>hola@kooday.es</li>
+          <li>Madrid · España</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sources">
+      <b>Fuentes de los datos de mercado:</b>
+      <a href="https://cepyme.es/observatorio-de-morosidad-i-tri-2025/" target="_blank" rel="noopener">Cepyme — Observatorio de Morosidad</a> ·
+      <a href="https://www.ocu.org/consumo-familia/bebes/informe/gastos-vuelta-cole" target="_blank" rel="noopener">OCU — Gastos de la vuelta al cole 2025</a> ·
+      <a href="https://www.canarias7.es/sociedad/colegios-institutos-espanoles-perderan-600000-alumnos-decada-20260428123823-ntrc.html" target="_blank" rel="noopener">Proyección de pérdida de alumnado 2025–2035</a> ·
+      <a href="https://www.criarconsentidocomun.com/desplome-natalidad-escolarizacion-cierre-escuelas/" target="_blank" rel="noopener">Cierre de aulas por descenso de natalidad</a> ·
+      <a href="https://www.elespanol.com/castilla-y-leon/sociedad/20250915/extraescolares-reto-economico-familias-conciliar-hacer-equilibrios-euros/1003743910517_0.html" target="_blank" rel="noopener">El Español — Coste de las extraescolares</a>
+      <br>© 2026 Kooday. Mockup de página de ventas — los importes de las calculadoras son estimaciones orientativas.
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setView(v) {
+    document.body.className = 'view-' + v;
+    document.getElementById('btn-family').classList.toggle('active', v === 'family');
+    document.getElementById('btn-provider').classList.toggle('active', v === 'provider');
+    document.getElementById('pay-caption').textContent = v === 'family'
+      ? 'Reserva de octubre pagada. Recibo en tu correo.'
+      : 'Liquidación de octubre enviada a tu cuenta.';
+  }
+
+  function calcFamily() {
+    const kids = +document.getElementById('f-kids').value;
+    const acts = +document.getElementById('f-acts').value;
+    const rate = +document.getElementById('f-rate').value;
+    document.getElementById('f-kids-out').textContent = kids;
+    document.getElementById('f-acts-out').textContent = acts;
+    document.getElementById('f-rate-out').textContent = rate + ' €';
+    const n = kids * acts;
+    const search = 6 * n, pay = 3 * n, cal = 5 * n;
+    const total = search + pay + cal;
+    document.getElementById('f-search').textContent = search + ' h';
+    document.getElementById('f-pay').textContent = pay + ' h';
+    document.getElementById('f-cal').textContent = cal + ' h';
+    document.getElementById('f-total').textContent = total + ' h ≈ ' + (total * rate).toLocaleString('es-ES') + ' €';
+  }
+
+  function calcProvider() {
+    const mkt = +document.getElementById('p-mkt').value;
+    const bad = +document.getElementById('p-bad').value;
+    const rent = +document.getElementById('p-rent').value;
+    document.getElementById('p-mkt-out').textContent = mkt.toLocaleString('es-ES') + ' €';
+    document.getElementById('p-bad-out').textContent = bad;
+    document.getElementById('p-rent-out').textContent = rent.toLocaleString('es-ES') + ' €';
+    const yMkt = mkt * 12;
+    const yBad = bad * 60 * 12;          // cuota media 60 €/mes
+    const yRent = Math.round(rent * 12 * 0.4); // ~40% de ahorro con espacios por horas
+    const fmt = n => n.toLocaleString('es-ES') + ' €/año';
+    document.getElementById('p-r-mkt').textContent = fmt(yMkt);
+    document.getElementById('p-r-bad').textContent = fmt(yBad);
+    document.getElementById('p-r-rent').textContent = fmt(yRent);
+    document.getElementById('p-total').textContent = fmt(yMkt + yBad + yRent);
+  }
+
+  calcFamily();
+  calcProvider();
+</script>
+</body>
+</html>
